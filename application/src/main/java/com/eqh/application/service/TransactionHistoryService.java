@@ -1,5 +1,6 @@
 package com.eqh.application.service;
 
+import com.eqh.application.repository.PolicyRepository;
 import com.eqh.application.repository.TransactionHistoryRepository;
 import com.eqh.application.utility.ResidenceStateUtil;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -21,13 +22,16 @@ import java.util.stream.Collectors;
 public class TransactionHistoryService {
 
     @Autowired
-    private TransactionHistoryRepository repository;
+    private TransactionHistoryRepository transactionHistoryRepository;
+
+    @Autowired
+    private PolicyRepository policyRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
 
     public void generateReport() throws IOException {
-        List<Object[]> data = repository.findCustomTransactions();
+        List<Object[]> data = transactionHistoryRepository.findCustomTransactions();
 
         if (data.isEmpty()) {
             throw new IOException("No data found for the report.");
@@ -55,16 +59,12 @@ public class TransactionHistoryService {
                 JsonNode jsonMap = objectMapper.readTree(jsonString);
 
                 String polNumber = Optional.ofNullable(jsonMap.get("polNumber")).map(JsonNode::asText).orElse("");
-                JsonNode arrangement = jsonMap.get("arrangement");
 
-                String productCode = "";
-                if (arrangement != null) {
-                    JsonNode arrSource = arrangement.get("arrSource");
-                    if (arrSource != null && arrSource.isArray() && arrSource.size() > 0) {
-                        JsonNode firstElement = arrSource.get(0);
-                        productCode = Optional.ofNullable(firstElement.get("productCode")).map(JsonNode::asText).orElse("");
-                    }
-                }
+                // Fetch product code from the POLICY table
+                String productCode = policyRepository.findProductCodeByPolicyNumber(polNumber);
+
+                // Extract details from arrangement
+                JsonNode arrangement = jsonMap.get("arrangement");
 
                 // Extract details from arrDestination
                 JsonNode arrDestination = arrangement != null ? arrangement.get("arrDestination") : null;
@@ -84,7 +84,7 @@ public class TransactionHistoryService {
                             // Create a row for each payee
                             List<Object> transformedRow = new ArrayList<>();
                             transformedRow.add(polNumber);
-                            transformedRow.add(productCode);
+                            transformedRow.add(productCode); // Use product code fetched from POLICY table
                             transformedRow.add(firstName); // Add firstName
                             transformedRow.add(lastName);  // Add lastName
                             transformedRow.add(residenceStateText); // Add the HTML display value
@@ -137,10 +137,20 @@ public class TransactionHistoryService {
                         cell.setCellValue((String) value);
                     } else if (value instanceof BigDecimal) {
                         cell.setCellValue(((BigDecimal) value).doubleValue());
+                        // Optionally, you can format this cell as currency
+                        CellStyle cellStyle = workbook.createCellStyle();
+                        DataFormat format = workbook.createDataFormat();
+                        cellStyle.setDataFormat(format.getFormat("$#,##0.00"));
+                        cell.setCellStyle(cellStyle);
                     } else {
                         cell.setCellValue(value != null ? value.toString() : "");
                     }
                 }
+            }
+
+            // Auto-size columns
+            for (int i = 0; i < headers.length; i++) {
+                sheet.autoSizeColumn(i);
             }
 
             try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
