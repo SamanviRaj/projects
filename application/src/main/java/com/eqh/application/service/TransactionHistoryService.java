@@ -7,19 +7,25 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class TransactionHistoryService {
+
+    private static final Logger logger = LoggerFactory.getLogger(TransactionHistoryService.class);
+    private static final String DATE_FORMAT = "ddMMyyyy_HHmmss"; // Desired date format
+    private static final String DATE_FORMAT_FOR_EXCEL = "yyyy-MM-dd";
+    private static final String CURRENCY_FORMAT = "$#,##0.00";
 
     @Autowired
     private TransactionHistoryRepository transactionHistoryRepository;
@@ -30,150 +36,139 @@ public class TransactionHistoryService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public void generateReport() throws IOException {
+    public byte[] generateReportAsBytes() throws IOException {
         List<Object[]> data = transactionHistoryRepository.findCustomTransactions();
 
         if (data.isEmpty()) {
             throw new IOException("No data found for the report.");
         }
 
-        createReportsDirectoryIfNotExists();
-
-        String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        String excelFilePath = "reports/transaction_history_report_" + timestamp + ".xlsx";
-
         List<List<Object>> transformedData = transformData(data);
 
-        generateExcelReport(transformedData, excelFilePath);
+        // Create timestamp
+        String timestamp = new SimpleDateFormat(DATE_FORMAT).format(new Date());
+
+        return generateExcelReportAsBytes(transformedData, timestamp);
     }
 
     private List<List<Object>> transformData(List<Object[]> data) {
         List<List<Object>> result = new ArrayList<>();
 
         for (Object[] row : data) {
-            String jsonString = (String) row[0];
-            BigDecimal grossAmt = (BigDecimal) row[1];
-            Date transEffDate = (Date) row[2]; // Adjust if necessary
-
             try {
-                JsonNode jsonMap = objectMapper.readTree(jsonString);
-
+                JsonNode jsonMap = objectMapper.readTree((String) row[0]);
                 String polNumber = Optional.ofNullable(jsonMap.get("polNumber")).map(JsonNode::asText).orElse("");
+                String productCode = Optional.ofNullable(policyRepository.findProductCodeByPolicyNumber(polNumber)).orElse("Unknown");
 
-                // Fetch product code from the POLICY table
-                String productCode = policyRepository.findProductCodeByPolicyNumber(polNumber);
-                if (productCode == null) {
-                    productCode = "Unknown"; // Handle missing product code gracefully
-                }
-
-                // Extract details from arrangement
                 JsonNode arrangement = jsonMap.get("arrangement");
-
-                // Extract details from arrDestination
                 JsonNode arrDestination = arrangement != null ? arrangement.get("arrDestination") : null;
+
                 if (arrDestination != null && arrDestination.isArray()) {
                     for (JsonNode dest : arrDestination) {
-                        JsonNode payee = dest.get("payee");
-                        if (payee != null) {
-                            JsonNode person = payee.get("person");
-                            String firstName = person != null ? Optional.ofNullable(person.get("firstName")).map(JsonNode::asText).orElse("") : "";
-                            String lastName = person != null ? Optional.ofNullable(person.get("lastName")).map(JsonNode::asText).orElse("") : "";
-                            String residenceState = Optional.ofNullable(payee.get("residenceState")).map(JsonNode::asText).orElse("");
-
-                            // Convert numeric residence state to HTML display value
-                            int residenceStateCode = Integer.parseInt(residenceState);
-                            String residenceStateText = ResidenceStateUtil.getStateName(residenceStateCode);
-
-                            // Extract settlement and late interest amounts
-                            BigDecimal settlementInterestAmt = Optional.ofNullable(dest.get("settlementInterestAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
-                            BigDecimal lateInterestAmt = Optional.ofNullable(dest.get("lateInterestAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
-
-                            // Create a row for each payee
-                            List<Object> transformedRow = new ArrayList<>();
-                            transformedRow.add(polNumber);
-                            transformedRow.add(productCode); // Use product code fetched from POLICY table
-                            transformedRow.add(firstName); // Add firstName
-                            transformedRow.add(lastName);  // Add lastName
-                            transformedRow.add(residenceStateText); // Add the HTML display value
-                            transformedRow.add(grossAmt != null ? grossAmt.toString() : "");
-                            transformedRow.add(transEffDate != null ? new SimpleDateFormat("yyyy-MM-dd").format(transEffDate) : "");
-                            transformedRow.add(settlementInterestAmt != null ? settlementInterestAmt.toString() : ""); // Add settlementInterestAmt
-                            transformedRow.add(lateInterestAmt != null ? lateInterestAmt.toString() : ""); // Add lateInterestAmt
-
-                            result.add(transformedRow);
-                        }
+                        processDestination(result, dest, (BigDecimal) row[1], (Date) row[2], polNumber, productCode);
                     }
                 }
-
             } catch (Exception e) {
-                e.printStackTrace();
-                List<Object> errorRow = Arrays.asList("", "", "", "", "", "", "", "", "Error processing row");
-                result.add(errorRow);
+                logger.error("Error processing row", e);
+                result.add(Arrays.asList("", "", "", "", "", "", "", "", "Error processing row"));
             }
         }
 
         return result;
     }
 
-    private void generateExcelReport(List<List<Object>> data, String filePath) throws IOException {
-        try (Workbook workbook = new XSSFWorkbook()) {
+    private void processDestination(List<List<Object>> result, JsonNode dest, BigDecimal grossAmt, Date transEffDate, String polNumber, String productCode) {
+        JsonNode payee = dest.get("payee");
+        if (payee != null) {
+            JsonNode person = payee.get("person");
+            String firstName = Optional.ofNullable(person.get("firstName")).map(JsonNode::asText).orElse("");
+            String lastName = Optional.ofNullable(person.get("lastName")).map(JsonNode::asText).orElse("");
+            String residenceState = Optional.ofNullable(payee.get("residenceState")).map(JsonNode::asText).orElse("");
+            int residenceStateCode = Integer.parseInt(residenceState);
+            String residenceStateText = ResidenceStateUtil.getStateName(residenceStateCode);
+
+            BigDecimal settlementInterestAmt = Optional.ofNullable(dest.get("settlementInterestAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
+            BigDecimal lateInterestAmt = Optional.ofNullable(dest.get("lateInterestAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
+
+            List<Object> transformedRow = Arrays.asList(
+                    polNumber,
+                    productCode,
+                    firstName,
+                    lastName,
+                    residenceStateText,
+                    grossAmt != null ? grossAmt.toString() : "",
+                    transEffDate != null ? new SimpleDateFormat(DATE_FORMAT_FOR_EXCEL).format(transEffDate) : "",
+                    settlementInterestAmt != null ? settlementInterestAmt.toString() : "",
+                    lateInterestAmt != null ? lateInterestAmt.toString() : ""
+            );
+
+            result.add(transformedRow);
+        }
+    }
+
+    private byte[] generateExcelReportAsBytes(List<List<Object>> data, String timestamp) throws IOException {
+        try (Workbook workbook = new XSSFWorkbook();
+             ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+
             Sheet sheet = workbook.createSheet("Transaction History");
 
-            // Create header row
-            Row headerRow = sheet.createRow(0);
-            String[] headers = {
-                    "Policy Number",
-                    "Product Code",
-                    "First Name",
-                    "Last Name",
-                    "Residence State",
-                    "Gross Amount",
-                    "Transaction Effective Date",
-                    "Settlement Interest Amount",
-                    "Late Interest Amount"
-            };
-            for (int i = 0; i < headers.length; i++) {
-                Cell cell = headerRow.createCell(i);
-                cell.setCellValue(headers[i]);
-            }
+            createHeaderRow(sheet);
 
-            // Populate data rows
             int rowNum = 1;
             for (List<Object> rowData : data) {
                 Row row = sheet.createRow(rowNum++);
-                for (int i = 0; i < rowData.size(); i++) {
-                    Cell cell = row.createCell(i);
-                    Object value = rowData.get(i);
-                    if (value instanceof String) {
-                        cell.setCellValue((String) value);
-                    } else if (value instanceof BigDecimal) {
-                        cell.setCellValue(((BigDecimal) value).doubleValue());
-                        // Optionally, you can format this cell as currency
-                        CellStyle cellStyle = workbook.createCellStyle();
-                        DataFormat format = workbook.createDataFormat();
-                        cellStyle.setDataFormat(format.getFormat("$#,##0.00"));
-                        cell.setCellStyle(cellStyle);
-                    } else {
-                        cell.setCellValue(value != null ? value.toString() : "");
-                    }
-                }
+                populateRow(row, rowData, workbook);
             }
 
-            // Auto-size columns
-            for (int i = 0; i < headers.length; i++) {
-                sheet.autoSizeColumn(i);
-            }
+            autoSizeColumns(sheet);
 
-            try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
-                workbook.write(fileOut);
+            workbook.write(baos);
+            baos.flush();
+            return baos.toByteArray();
+        }
+    }
+
+    private void createHeaderRow(Sheet sheet) {
+        Row headerRow = sheet.createRow(0);
+        String[] headers = {
+                "Policy Number",
+                "Product Code",
+                "First Name",
+                "Last Name",
+                "Residence State",
+                "Gross Amount",
+                "Transaction Effective Date",
+                "Settlement Interest Amount",
+                "Late Interest Amount"
+        };
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+        }
+    }
+
+    private void populateRow(Row row, List<Object> rowData, Workbook workbook) {
+        for (int i = 0; i < rowData.size(); i++) {
+            Cell cell = row.createCell(i);
+            Object value = rowData.get(i);
+            if (value instanceof String) {
+                cell.setCellValue((String) value);
+            } else if (value instanceof BigDecimal) {
+                cell.setCellValue(((BigDecimal) value).doubleValue());
+                CellStyle cellStyle = workbook.createCellStyle();
+                DataFormat format = workbook.createDataFormat();
+                cellStyle.setDataFormat(format.getFormat(CURRENCY_FORMAT));
+                cell.setCellStyle(cellStyle);
+            } else {
+                cell.setCellValue(value != null ? value.toString() : "");
             }
         }
     }
 
-    private void createReportsDirectoryIfNotExists() {
-        File reportsDir = new File("reports");
-        if (!reportsDir.exists()) {
-            reportsDir.mkdirs();
+    private void autoSizeColumns(Sheet sheet) {
+        int numberOfColumns = sheet.getRow(0).getLastCellNum();
+        for (int i = 0; i < numberOfColumns; i++) {
+            sheet.autoSizeColumn(i);
         }
     }
 }
