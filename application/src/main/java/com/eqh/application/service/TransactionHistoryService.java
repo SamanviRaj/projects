@@ -62,6 +62,9 @@ public class TransactionHistoryService {
 
                 // Fetch product code from the POLICY table
                 String productCode = policyRepository.findProductCodeByPolicyNumber(polNumber);
+                if (productCode == null) {
+                    productCode = "Unknown"; // Handle missing product code gracefully
+                }
 
                 // Extract details from arrangement
                 JsonNode arrangement = jsonMap.get("arrangement");
@@ -81,6 +84,10 @@ public class TransactionHistoryService {
                             int residenceStateCode = Integer.parseInt(residenceState);
                             String residenceStateText = ResidenceStateUtil.getStateName(residenceStateCode);
 
+                            // Extract settlement and late interest amounts
+                            BigDecimal settlementInterestAmt = Optional.ofNullable(dest.get("settlementInterestAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
+                            BigDecimal lateInterestAmt = Optional.ofNullable(dest.get("lateInterestAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
+
                             // Create a row for each payee
                             List<Object> transformedRow = new ArrayList<>();
                             transformedRow.add(polNumber);
@@ -90,6 +97,8 @@ public class TransactionHistoryService {
                             transformedRow.add(residenceStateText); // Add the HTML display value
                             transformedRow.add(grossAmt != null ? grossAmt.toString() : "");
                             transformedRow.add(transEffDate != null ? new SimpleDateFormat("yyyy-MM-dd").format(transEffDate) : "");
+                            transformedRow.add(settlementInterestAmt != null ? settlementInterestAmt.toString() : ""); // Add settlementInterestAmt
+                            transformedRow.add(lateInterestAmt != null ? lateInterestAmt.toString() : ""); // Add lateInterestAmt
 
                             result.add(transformedRow);
                         }
@@ -98,7 +107,7 @@ public class TransactionHistoryService {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                List<Object> errorRow = Arrays.asList("", "", "", "", "", "", "");
+                List<Object> errorRow = Arrays.asList("", "", "", "", "", "", "", "", "Error processing row");
                 result.add(errorRow);
             }
         }
@@ -119,7 +128,9 @@ public class TransactionHistoryService {
                     "Last Name",
                     "Residence State",
                     "Gross Amount",
-                    "Transaction Effective Date"
+                    "Transaction Effective Date",
+                    "Settlement Interest Amount",
+                    "Late Interest Amount"
             };
             for (int i = 0; i < headers.length; i++) {
                 Cell cell = headerRow.createCell(i);
