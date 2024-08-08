@@ -211,7 +211,7 @@ public class TransactionHistoryService {
         String[] headers = {
                 "Product Code",
                 "Policy Number",
-                "Party Number",
+                "Party Id",
                 "First Name",
                 "Last Name",
                 "Residence State",

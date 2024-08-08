@@ -26,8 +26,8 @@ public class TransactionHistoryController {
         try {
             byte[] reportBytes = transactionHistoryService.generateReportAsBytes();
 
-            String timestamp = new SimpleDateFormat("ddMMyyyy_HHmmss").format(new Date());
-            String filename = "transaction_history_report_" + timestamp + ".xlsx";
+            String timestamp = new SimpleDateFormat("dd-MM-yyyy_HHmmss").format(new Date());
+            String filename = "transaction_history_death_claim_report_" + timestamp + ".xlsx";
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
