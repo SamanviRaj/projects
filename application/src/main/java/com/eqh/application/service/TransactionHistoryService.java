@@ -148,12 +148,12 @@ public class TransactionHistoryService {
                 partyNumber,
                 firstName,
                 lastName,
+                organization, // Moved "Organization" after "Last Name"
                 residenceStateText,
                 formatDate(transEffDate),
                 formatBigDecimal(settlementInterestAmt),
                 formatBigDecimal(lateInterestAmt),
-                formatBigDecimal(deathBenefitPayoutAmt),
-                organization // Add organization data
+                formatBigDecimal(deathBenefitPayoutAmt)
         ));
     }
 
@@ -195,8 +195,8 @@ public class TransactionHistoryService {
         Row headerRow = sheet.createRow(0);
         String[] headers = {
                 "Product Code", "Policy Number", "Party Id", "First Name", "Last Name",
-                "Residence State", "Transaction Effective Date", "Settlement Interest Amount",
-                "Late Interest Amount", "Gross Amount", "Organization" // Added header
+                "Organization", "Residence State", "Transaction Effective Date", "Settlement Interest Amount",
+                "Late Interest Amount", "Gross Amount"
         };
         IntStream.range(0, headers.length).forEach(i -> {
             Cell cell = headerRow.createCell(i);
