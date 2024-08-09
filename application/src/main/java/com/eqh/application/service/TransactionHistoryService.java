@@ -72,7 +72,7 @@ public class TransactionHistoryService {
                     .map(arr -> arr.get("arrDestination"))
                     .orElse(null);
 
-            if (arrDestination != null && arrDestination.isArray()) {
+            if (arrDestination != null && arrDestination.isArray() && !productCode.equalsIgnoreCase("Unknown")) {
                 result.addAll(StreamSupport.stream(arrDestination.spliterator(), false)
                         .map(dest -> processDestination(dest, (BigDecimal) row[1], (Date) row[2], polNumber, productCode))
                         .flatMap(Collection::stream)
