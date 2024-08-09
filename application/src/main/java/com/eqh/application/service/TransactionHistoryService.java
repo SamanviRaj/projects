@@ -92,8 +92,16 @@ public class TransactionHistoryService {
         String firstName = Optional.ofNullable(payee.get("person")).map(person -> person.get("firstName").asText()).orElse("");
         String lastName = Optional.ofNullable(payee.get("person")).map(person -> person.get("lastName").asText()).orElse("");
         String residenceState = Optional.ofNullable(payee.get("residenceState")).map(JsonNode::asText).orElse("");
-        int residenceStateCode = Integer.parseInt(residenceState);
-        String residenceStateText = ResidenceStateUtil.getStateName(residenceStateCode);
+
+        String residenceStateText = "Unknown";
+        if (!residenceState.isEmpty()) {
+            try {
+                int residenceStateCode = Integer.parseInt(residenceState);
+                residenceStateText = ResidenceStateUtil.getStateName(residenceStateCode);
+            } catch (NumberFormatException e) {
+                logger.warn("Invalid residence state code: {}", residenceState, e);
+            }
+        }
 
         BigDecimal settlementInterestAmt = Optional.ofNullable(dest.get("settlementInterestAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
         BigDecimal lateInterestAmt = Optional.ofNullable(dest.get("lateInterestAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
