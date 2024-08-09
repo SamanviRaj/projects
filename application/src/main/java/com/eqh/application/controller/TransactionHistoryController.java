@@ -1,6 +1,8 @@
 package com.eqh.application.controller;
 
 import com.eqh.application.service.TransactionHistoryService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,16 +20,27 @@ import java.util.Date;
 @RequestMapping("/api/transactions")
 public class TransactionHistoryController {
 
+    private static final Logger logger = LoggerFactory.getLogger(TransactionHistoryController.class);
+    private static final String TIMESTAMP_FORMAT = "dd-MM-yyyy_HHmmss";
+    private static final String FILENAME_PREFIX = "transaction_history_death_claim_report_";
+    private static final String FILE_EXTENSION = ".xlsx";
+    private static final String JSON_FILENAME_PREFIX = "transaction_history_data_";
+    private static final String JSON_FILE_EXTENSION = ".json";
+
+    private final TransactionHistoryService transactionHistoryService;
+
     @Autowired
-    private TransactionHistoryService transactionHistoryService;
+    public TransactionHistoryController(TransactionHistoryService transactionHistoryService) {
+        this.transactionHistoryService = transactionHistoryService;
+    }
 
     @GetMapping("/generate-report")
     public ResponseEntity<byte[]> generateReport() {
         try {
             byte[] reportBytes = transactionHistoryService.generateReportAsBytes();
 
-            String timestamp = new SimpleDateFormat("dd-MM-yyyy_HHmmss").format(new Date());
-            String filename = "transaction_history_death_claim_report_" + timestamp + ".xlsx";
+            String timestamp = new SimpleDateFormat(TIMESTAMP_FORMAT).format(new Date());
+            String filename = FILENAME_PREFIX + timestamp + FILE_EXTENSION;
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
@@ -35,7 +48,26 @@ public class TransactionHistoryController {
 
             return new ResponseEntity<>(reportBytes, headers, HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error generating report", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/download-json")
+    public ResponseEntity<byte[]> downloadJson() {
+        try {
+            byte[] jsonBytes = transactionHistoryService.getJsonDataAsBytes();
+
+            String timestamp = new SimpleDateFormat(TIMESTAMP_FORMAT).format(new Date());
+            String filename = JSON_FILENAME_PREFIX + timestamp + JSON_FILE_EXTENSION;
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setContentDispositionFormData("attachment", filename);
+
+            return new ResponseEntity<>(jsonBytes, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            logger.error("Error downloading JSON data", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

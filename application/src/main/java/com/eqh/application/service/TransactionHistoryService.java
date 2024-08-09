@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -30,6 +30,7 @@ public class TransactionHistoryService {
     private static final String DATE_FORMAT_FOR_EXCEL = "yyyy-MM-dd";
     private static final String CURRENCY_FORMAT = "$#,##0.00";
     private static final String ERROR_PROCESSING_ROW = "Error processing row";
+    private static final String UNKNOWN = "Unknown";
 
     private final TransactionHistoryRepository transactionHistoryRepository;
     private final PolicyRepository policyRepository;
@@ -60,19 +61,41 @@ public class TransactionHistoryService {
         return generateExcelReportAsBytes(transformedData, timestamp);
     }
 
+    public byte[] getJsonDataAsBytes() throws IOException {
+        List<Object[]> data = transactionHistoryRepository.findCustomTransactions();
+
+        if (data.isEmpty()) {
+            throw new IOException("No data found for the JSON data.");
+        }
+
+        List<JsonNode> jsonNodes = data.stream()
+                .map(row -> {
+                    try {
+                        return objectMapper.readTree((String) row[0]);
+                    } catch (IOException e) {
+                        logger.error(ERROR_PROCESSING_ROW, e);
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        return objectMapper.writeValueAsBytes(jsonNodes);
+    }
+
     private List<List<Object>> processRow(Object[] row) {
         List<List<Object>> result = new ArrayList<>();
         try {
             JsonNode jsonMap = objectMapper.readTree((String) row[0]);
 
-            String polNumber = Optional.ofNullable(jsonMap.get("polNumber")).map(JsonNode::asText).orElse("");
-            String productCode = Optional.ofNullable(policyRepository.findProductCodeByPolicyNumber(polNumber)).orElse("Unknown");
+            String polNumber = Optional.ofNullable(jsonMap.get("polNumber")).map(JsonNode::asText).orElse(UNKNOWN);
+            String productCode = Optional.ofNullable(policyRepository.findProductCodeByPolicyNumber(polNumber)).orElse(UNKNOWN);
 
             JsonNode arrDestination = Optional.ofNullable(jsonMap.get("arrangement"))
                     .map(arr -> arr.get("arrDestination"))
                     .orElse(null);
 
-            if (arrDestination != null && arrDestination.isArray() && !productCode.equalsIgnoreCase("Unknown")) {
+            if (arrDestination != null && arrDestination.isArray() && !productCode.equalsIgnoreCase(UNKNOWN)) {
                 result.addAll(StreamSupport.stream(arrDestination.spliterator(), false)
                         .map(dest -> processDestination(dest, (BigDecimal) row[1], (Date) row[2], polNumber, productCode))
                         .flatMap(Collection::stream)
@@ -89,11 +112,11 @@ public class TransactionHistoryService {
         JsonNode payee = dest.get("payee");
         if (payee == null) return Collections.emptyList();
 
-        String firstName = Optional.ofNullable(payee.get("person")).map(person -> person.get("firstName").asText()).orElse("");
-        String lastName = Optional.ofNullable(payee.get("person")).map(person -> person.get("lastName").asText()).orElse("");
+        String firstName = Optional.ofNullable(payee.get("person")).map(person -> person.get("firstName").asText()).orElse(UNKNOWN);
+        String lastName = Optional.ofNullable(payee.get("person")).map(person -> person.get("lastName").asText()).orElse(UNKNOWN);
         String residenceState = Optional.ofNullable(payee.get("residenceState")).map(JsonNode::asText).orElse("");
 
-        String residenceStateText = "Unknown";
+        String residenceStateText = UNKNOWN;
         if (!residenceState.isEmpty()) {
             try {
                 int residenceStateCode = Integer.parseInt(residenceState);
@@ -108,6 +131,17 @@ public class TransactionHistoryService {
         BigDecimal deathBenefitPayoutAmt = Optional.ofNullable(dest.get("deathBenefitPayoutAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
         String partyNumber = Optional.ofNullable(payee.get("partyNumber")).map(JsonNode::asText).orElse("");
 
+        // Check if firstName and lastName are UNKNOWN
+        String organization = UNKNOWN;
+        if (UNKNOWN.equals(firstName) && UNKNOWN.equals(lastName)) {
+            JsonNode organizationNode = Optional.ofNullable(payee.get("organization"))
+                    .map(org -> org.get("dba"))
+                    .orElse(null);
+            if (organizationNode != null) {
+                organization = organizationNode.asText();
+            }
+        }
+
         return Collections.singletonList(Arrays.asList(
                 productCode,
                 polNumber,
@@ -118,16 +152,22 @@ public class TransactionHistoryService {
                 formatDate(transEffDate),
                 formatBigDecimal(settlementInterestAmt),
                 formatBigDecimal(lateInterestAmt),
-                formatBigDecimal(deathBenefitPayoutAmt)
+                formatBigDecimal(deathBenefitPayoutAmt),
+                organization // Add organization data
         ));
     }
 
+
     private String formatBigDecimal(BigDecimal value) {
-        return Optional.ofNullable(value).map(BigDecimal::toString).orElse("");
+        if (value == null) return "";
+        DecimalFormat df = new DecimalFormat(CURRENCY_FORMAT);
+        return df.format(value);
     }
 
     private String formatDate(Date date) {
-        return Optional.ofNullable(date).map(d -> new SimpleDateFormat(DATE_FORMAT_FOR_EXCEL).format(d)).orElse("");
+        return Optional.ofNullable(date)
+                .map(d -> new SimpleDateFormat(DATE_FORMAT_FOR_EXCEL).format(d))
+                .orElse("");
     }
 
     private byte[] generateExcelReportAsBytes(List<List<Object>> data, String timestamp) throws IOException {
@@ -156,7 +196,7 @@ public class TransactionHistoryService {
         String[] headers = {
                 "Product Code", "Policy Number", "Party Id", "First Name", "Last Name",
                 "Residence State", "Transaction Effective Date", "Settlement Interest Amount",
-                "Late Interest Amount", "Gross Amount"
+                "Late Interest Amount", "Gross Amount", "Organization" // Added header
         };
         IntStream.range(0, headers.length).forEach(i -> {
             Cell cell = headerRow.createCell(i);
