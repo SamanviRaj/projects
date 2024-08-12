@@ -52,8 +52,11 @@ public class TransactionHistoryService {
             throw new IOException("No data found for the report.");
         }
 
+        // Load all policy-product mappings in advance
+        Map<String, String> policyProductCodes = loadPolicyProductCodes();
+
         List<List<Object>> transformedData = data.stream()
-                .flatMap(row -> processRow(row).stream())
+                .flatMap(row -> processRow(row, policyProductCodes).stream())
                 .collect(Collectors.toList());
 
         String timestamp = new SimpleDateFormat(DATE_FORMAT).format(new Date());
@@ -83,13 +86,22 @@ public class TransactionHistoryService {
         return objectMapper.writeValueAsBytes(jsonNodes);
     }
 
-    private List<List<Object>> processRow(Object[] row) {
+    private Map<String, String> loadPolicyProductCodes() {
+        List<Object[]> policies = policyRepository.findAllPolicyNumbersWithProductCodes();
+        return policies.stream()
+                .collect(Collectors.toMap(
+                        row -> (String) row[0], // Policy Number
+                        row -> (String) row[1]  // Product Code
+                ));
+    }
+
+    private List<List<Object>> processRow(Object[] row, Map<String, String> policyProductCodes) {
         List<List<Object>> result = new ArrayList<>();
         try {
             JsonNode jsonMap = objectMapper.readTree((String) row[0]);
 
             String polNumber = Optional.ofNullable(jsonMap.get("polNumber")).map(JsonNode::asText).orElse(UNKNOWN);
-            String productCode = Optional.ofNullable(policyRepository.findProductCodeByPolicyNumber(polNumber)).orElse(UNKNOWN);
+            String productCode = policyProductCodes.getOrDefault(polNumber, UNKNOWN); // Use pre-fetched data
 
             JsonNode arrDestination = Optional.ofNullable(jsonMap.get("arrangement"))
                     .map(arr -> arr.get("arrDestination"))
@@ -116,13 +128,14 @@ public class TransactionHistoryService {
         String lastName = Optional.ofNullable(payee.get("person")).map(person -> person.get("lastName").asText()).orElse(UNKNOWN);
         String residenceState = Optional.ofNullable(payee.get("residenceState")).map(JsonNode::asText).orElse("");
 
+        // Validate and convert residenceState
         String residenceStateText = UNKNOWN;
         if (!residenceState.isEmpty()) {
             try {
                 int residenceStateCode = Integer.parseInt(residenceState);
                 residenceStateText = ResidenceStateUtil.getStateName(residenceStateCode);
             } catch (NumberFormatException e) {
-                logger.warn("Invalid residence state code: {}", residenceState, e);
+                logger.warn("Invalid residence state code: {}. Using default '{}'", residenceState, UNKNOWN, e);
             }
         }
 
@@ -158,6 +171,30 @@ public class TransactionHistoryService {
     }
 
 
+    private String getText(JsonNode node, String... path) {
+        JsonNode current = node;
+        for (String p : path) {
+            current = current.get(p);
+            if (current == null) return UNKNOWN;
+        }
+        return current.asText();
+    }
+
+    private BigDecimal getDecimalValue(JsonNode node, String field) {
+        JsonNode valueNode = node.get(field);
+        return valueNode == null ? BigDecimal.ZERO : valueNode.decimalValue();
+    }
+
+    private String getStateName(String residenceState) {
+        try {
+            int residenceStateCode = Integer.parseInt(residenceState);
+            return ResidenceStateUtil.getStateName(residenceStateCode);
+        } catch (NumberFormatException e) {
+            logger.warn("Invalid residence state code: {}", residenceState, e);
+            return UNKNOWN;
+        }
+    }
+
     private String formatBigDecimal(BigDecimal value) {
         if (value == null) return "";
         DecimalFormat df = new DecimalFormat(CURRENCY_FORMAT);
@@ -165,9 +202,7 @@ public class TransactionHistoryService {
     }
 
     private String formatDate(Date date) {
-        return Optional.ofNullable(date)
-                .map(d -> new SimpleDateFormat(DATE_FORMAT_FOR_EXCEL).format(d))
-                .orElse("");
+        return date == null ? "" : new SimpleDateFormat(DATE_FORMAT_FOR_EXCEL).format(date);
     }
 
     private byte[] generateExcelReportAsBytes(List<List<Object>> data, String timestamp) throws IOException {

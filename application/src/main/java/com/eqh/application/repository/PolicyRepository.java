@@ -5,17 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface PolicyRepository extends JpaRepository<Policy, Long> {
 
-    /*
-    *
-    * policy status - R reprsents soft deleted.
-    * policy status - 14 is terminated.
-    * policy status - 13 is Home Office Cancellation.
-    *
-    * */
-    @Query(value="SELECT product_code FROM public.\"POLICY\" WHERE pol_number = :polNumber AND policy_status NOT IN ('R', '14', '13')", nativeQuery = true)
+    @Query(value = "SELECT pol_number, product_code FROM public.\"POLICY\" WHERE policy_status NOT IN ('R', '14', '13')", nativeQuery = true)
+    List<Object[]> findAllPolicyNumbersWithProductCodes();
+
+    @Query(value = "SELECT product_code FROM public.\"POLICY\" WHERE pol_number = :polNumber AND policy_status NOT IN ('R', '14', '13')", nativeQuery = true)
     String findProductCodeByPolicyNumber(@Param("polNumber") String polNumber);
-
 }
-
