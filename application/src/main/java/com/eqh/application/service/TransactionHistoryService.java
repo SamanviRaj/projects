@@ -139,7 +139,7 @@ public class TransactionHistoryService {
             // Process each destination if available
             if (arrDestination != null && arrDestination.isArray() && !productCode.equalsIgnoreCase(UNKNOWN)) {
                 result.addAll(StreamSupport.stream(arrDestination.spliterator(), false)
-                        .map(dest -> processDestination(dest, (BigDecimal) row[1], (Date) row[2], polNumber, productCode))
+                        .map(dest -> processDestination(dest, (BigDecimal) row[1], (Date) row[2],(Date) row[3] , polNumber, productCode))
                         .flatMap(Collection::stream)
                         .collect(Collectors.toList()));
             }
@@ -160,7 +160,7 @@ public class TransactionHistoryService {
      * @param productCode the product code.
      * @return a list of lists containing processed destination data.
      */
-    private List<List<Object>> processDestination(JsonNode dest, BigDecimal grossAmt, Date transEffDate, String polNumber, String productCode) {
+    private List<List<Object>> processDestination(JsonNode dest, BigDecimal grossAmt, Date transEffDate,Date transRunDate, String polNumber, String productCode) {
         JsonNode payee = dest.get("payee");
         if (payee == null) return Collections.emptyList();
 
@@ -168,6 +168,9 @@ public class TransactionHistoryService {
         String firstName = Optional.ofNullable(payee.get("person")).map(person -> person.get("firstName").asText()).orElse(UNKNOWN);
         String lastName = Optional.ofNullable(payee.get("person")).map(person -> person.get("lastName").asText()).orElse(UNKNOWN);
         String residenceState = Optional.ofNullable(payee.get("residenceState")).map(JsonNode::asText).orElse("");
+
+        String govtID = Optional.ofNullable(payee.get("govtID").asText()).orElse(UNKNOWN);
+        String govtIdTC = Optional.ofNullable(payee.get("govtIdTC").asText()).orElse(UNKNOWN);
 
         // Validate and convert residence state
         String residenceStateText = UNKNOWN;
@@ -186,6 +189,9 @@ public class TransactionHistoryService {
         BigDecimal deathBenefitPayoutAmt = Optional.ofNullable(dest.get("deathBenefitPayoutAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
         String partyNumber = Optional.ofNullable(payee.get("partyNumber")).map(JsonNode::asText).orElse("");
 
+        BigDecimal federalWithholdingAmt = Optional.ofNullable(dest.get("payeeWithholding")).map(withholding -> withholding.get("federalWithholdingAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
+        BigDecimal stateWithholdingAmt = Optional.ofNullable(dest.get("payeeWithholding")).map(withholding -> withholding.get("stateWithholdingAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
+
         // Determine organization if names are unknown
         String organization = UNKNOWN;
         if (UNKNOWN.equals(firstName) && UNKNOWN.equals(lastName)) {
@@ -203,12 +209,16 @@ public class TransactionHistoryService {
                 partyNumber,
                 firstName,
                 lastName,
+                govtID,
                 organization, // Moved "Organization" after "Last Name"
                 residenceStateText,
                 formatDate(transEffDate),
+                formatDate(transRunDate),
                 formatBigDecimal(settlementInterestAmt),
                 formatBigDecimal(lateInterestAmt),
-                formatBigDecimal(deathBenefitPayoutAmt)
+                formatBigDecimal(deathBenefitPayoutAmt),
+                formatBigDecimal(federalWithholdingAmt),
+                formatBigDecimal(stateWithholdingAmt)
         ));
     }
 
@@ -275,9 +285,9 @@ public class TransactionHistoryService {
     private void createHeaderRow(Sheet sheet) {
         Row headerRow = sheet.createRow(0);
         String[] headers = {
-                "Product Code", "Policy Number", "Party Id", "First Name", "Last Name",
-                "Organization", "Residence State", "Transaction Effective Date", "Settlement Interest Amount",
-                "Late Interest Amount", "Gross Amount"
+                "Product Code", "Policy Number", "Party Id", "First Name", "Last Name","govtID",
+                "Organization", "Residence State", "Transaction Effective Date","Transaction Run Date", "Settlement Interest Amount",
+                "Late Interest Amount", "Gross Amount" , "Federal Withholding Amount", "State Withholding Amount"
         };
         IntStream.range(0, headers.length).forEach(i -> {
             Cell cell = headerRow.createCell(i);
