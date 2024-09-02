@@ -52,7 +52,7 @@ public class TransactionHistoryService {
      * @throws IOException if an error occurs during data retrieval or report generation.
      */
     public byte[] generateReportAsBytes() throws IOException {
-        List<Object[]> data = transactionHistoryRepository.findCustomTransactions();
+        List<Object[]> data = transactionHistoryRepository.findCustomPayoutDeathClaimTransactions();
 
         if (data.isEmpty()) {
             throw new IOException("No data found for the report.");
@@ -79,7 +79,7 @@ public class TransactionHistoryService {
      * @throws IOException if an error occurs during data retrieval or JSON processing.
      */
     public byte[] getJsonDataAsBytes() throws IOException {
-        List<Object[]> data = transactionHistoryRepository.findCustomTransactions();
+        List<Object[]> data = transactionHistoryRepository.findCustomPayoutDeathClaimTransactions();
 
         if (data.isEmpty()) {
             throw new IOException("No data found for the JSON data.");
@@ -161,16 +161,16 @@ public class TransactionHistoryService {
      * @return a list of lists containing processed destination data.
      */
     private List<List<Object>> processDestination(JsonNode dest, BigDecimal grossAmt, Date transEffDate,Date transRunDate, String polNumber, String productCode) {
-        JsonNode payee = dest.get("payee");
-        if (payee == null) return Collections.emptyList();
+        JsonNode taxableParty = dest.get("taxableParty");
+        if (taxableParty == null ) return Collections.emptyList();
 
         // Extract payee details
-        String firstName = Optional.ofNullable(payee.get("person")).map(person -> person.get("firstName").asText()).orElse(UNKNOWN);
-        String lastName = Optional.ofNullable(payee.get("person")).map(person -> person.get("lastName").asText()).orElse(UNKNOWN);
-        String residenceState = Optional.ofNullable(payee.get("residenceState")).map(JsonNode::asText).orElse("");
+        String firstName = Optional.ofNullable(taxableParty.get("person")).map(person -> person.get("firstName").asText()).orElse(UNKNOWN);
+        String lastName = Optional.ofNullable(taxableParty.get("person")).map(person -> person.get("lastName").asText()).orElse(UNKNOWN);
+        String residenceState = Optional.ofNullable(taxableParty.get("residenceState")).map(JsonNode::asText).orElse("");
 
-        String govtID = Optional.ofNullable(payee.get("govtID").asText()).orElse(UNKNOWN);
-        String govtIdTC = Optional.ofNullable(payee.get("govtIdTC").asText()).orElse(UNKNOWN);
+        String govtID = Optional.ofNullable(taxableParty.get("govtID").asText()).orElse(UNKNOWN);
+        String govtIdTC = Optional.ofNullable(taxableParty.get("govtIdTC").asText()).orElse(UNKNOWN);
 
         // Validate and convert residence state
         String residenceStateText = UNKNOWN;
@@ -187,7 +187,7 @@ public class TransactionHistoryService {
         BigDecimal settlementInterestAmt = Optional.ofNullable(dest.get("settlementInterestAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
         BigDecimal lateInterestAmt = Optional.ofNullable(dest.get("lateInterestAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
         BigDecimal deathBenefitPayoutAmt = Optional.ofNullable(dest.get("deathBenefitPayoutAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
-        String partyNumber = Optional.ofNullable(payee.get("partyNumber")).map(JsonNode::asText).orElse("");
+        String partyNumber = Optional.ofNullable(taxableParty.get("partyNumber")).map(JsonNode::asText).orElse("");
 
         BigDecimal federalWithholdingAmt = Optional.ofNullable(dest.get("payeeWithholding")).map(withholding -> withholding.get("federalWithholdingAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
         BigDecimal stateWithholdingAmt = Optional.ofNullable(dest.get("payeeWithholding")).map(withholding -> withholding.get("stateWithholdingAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
@@ -195,7 +195,7 @@ public class TransactionHistoryService {
         // Determine organization if names are unknown
         String organization = UNKNOWN;
         if (UNKNOWN.equals(firstName) && UNKNOWN.equals(lastName)) {
-            JsonNode organizationNode = Optional.ofNullable(payee.get("organization"))
+            JsonNode organizationNode = Optional.ofNullable(taxableParty.get("organization"))
                     .map(org -> org.get("dba"))
                     .orElse(null);
             if (organizationNode != null) {
