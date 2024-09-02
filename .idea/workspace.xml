@@ -4,15 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fe5e9b3b-e079-4f9a-993c-12f50649dd98" name="Changes" comment="">
+    <list default="true" id="f3c0a9c1-0aa4-4e0b-a6ab-e26feacb72fc" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/application/src/main/java/com/eqh/application/dto/PartyDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/src/main/java/com/eqh/application/feignClient/PartyClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/party/src/main/java/com/eqh/party/controller/partyController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/party/src/main/java/com/eqh/party/entity/Address.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/party/src/main/java/com/eqh/party/entity/EmailAddress.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/party/src/main/java/com/eqh/party/entity/Party.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/party/src/main/java/com/eqh/party/repository/PartyRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/party/src/main/java/com/eqh/party/service/PartyService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/eqh/application/repository/PolicyRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/eqh/application/repository/PolicyRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/eqh/application/service/TransactionHistoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/eqh/application/service/TransactionHistoryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/application/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -27,24 +44,25 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectId" id="2kZ66hAZKxL0Lfc8A5vLl2bd4Jb" />
+  <component name="ProjectId" id="2lVvA1YjaonZjREfmw4R2XzvtNs" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main"
   }
 }]]></component>
   <component name="RunManager">
-    <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.eqh.application.Application" />
-      <module name="application" />
+    <configuration name="PartyApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.eqh.party.PartyApplication" />
+      <module name="party" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.eqh.application.*" />
+          <option name="PATTERN" value="com.eqh.party.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -54,49 +72,19 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Application" />
+        <item itemvalue="Application.PartyApplication" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="fe5e9b3b-e079-4f9a-993c-12f50649dd98" name="Changes" comment="" />
-      <created>1723478579033</created>
+      <changelist id="f3c0a9c1-0aa4-4e0b-a6ab-e26feacb72fc" name="Changes" comment="" />
+      <created>1725277912826</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1723478579033</updated>
+      <updated>1725277912826</updated>
     </task>
     <servers />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/application/src/main/java/com/eqh/application/service/TransactionHistoryService.java</url>
-          <line>48</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/application/src/main/java/com/eqh/application/service/TransactionHistoryService.java</url>
-          <line>100</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/application/src/main/java/com/eqh/application/service/TransactionHistoryService.java</url>
-          <line>209</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/application/src/main/java/com/eqh/application/service/TransactionHistoryService.java</url>
-          <line>88</line>
-          <properties class="com.eqh.application.service.TransactionHistoryService" method="loadPolicyProductCodes">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
