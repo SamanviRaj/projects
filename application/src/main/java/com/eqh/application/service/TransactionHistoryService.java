@@ -1,5 +1,7 @@
 package com.eqh.application.service;
 
+import com.eqh.application.dto.Address;
+import com.eqh.application.feignClient.PartyClient;
 import com.eqh.application.repository.PolicyRepository;
 import com.eqh.application.repository.TransactionHistoryRepository;
 import com.eqh.application.utility.ResidenceStateUtil;
@@ -36,13 +38,16 @@ public class TransactionHistoryService {
     private final PolicyRepository policyRepository;
     private final ObjectMapper objectMapper;
 
+    private final PartyClient partyClient;
+
     @Autowired
     public TransactionHistoryService(TransactionHistoryRepository transactionHistoryRepository,
                                      PolicyRepository policyRepository,
-                                     ObjectMapper objectMapper) {
+                                     ObjectMapper objectMapper, PartyClient partyClient) {
         this.transactionHistoryRepository = transactionHistoryRepository;
         this.policyRepository = policyRepository;
         this.objectMapper = objectMapper;
+        this.partyClient = partyClient;
     }
 
     /**
@@ -203,8 +208,33 @@ public class TransactionHistoryService {
             }
         }
 
+        // Fetch addresses using Feign client
+        List<Address> addresses = Collections.emptyList();
+        if (partyNumber != null) {
+            addresses = partyClient.getAddresses(partyNumber);
+        }
+
+        // Find the preferred address and concatenate line1 and line2
+        String preferredMailingAddress = addresses.stream()
+                .filter(Address::getPrefAddr)
+                .findFirst()
+                .map(address -> (address.getLine1() != null ? "Line 1 :"+address.getLine1()+" " : "") + (address.getLine2() != null ? "Line 2 :"+address.getLine2()+" " : " " )
+                + (address.getZip() != null ? "Zip :"+address.getZip()+" " : ""))
+                .orElse("");
+
+        String mailingAddress = addresses.stream()
+                .filter(address -> !address.getPrefAddr())
+                .findFirst()
+                .map(address -> (address.getLine1() != null ? "Line 1 :"+address.getLine1()+" " : "") + (address.getLine2() != null ? "Line 2 :"+address.getLine2()+" " : " " )
+                        + (address.getZip() != null ? "Zip :"+address.getZip()+" " : ""))
+                .orElse("");
+
+        // Extract year from transRunDate
+        String runYear = transRunDate == null ? "" : new SimpleDateFormat("yyyy").format(transRunDate);
+
         return Collections.singletonList(Arrays.asList(
                 productCode,
+                runYear,
                 polNumber,
                 partyNumber,
                 firstName,
@@ -218,7 +248,9 @@ public class TransactionHistoryService {
                 formatBigDecimal(lateInterestAmt),
                 formatBigDecimal(deathBenefitPayoutAmt),
                 formatBigDecimal(federalWithholdingAmt),
-                formatBigDecimal(stateWithholdingAmt)
+                formatBigDecimal(stateWithholdingAmt),
+                preferredMailingAddress,
+                mailingAddress
         ));
     }
 
@@ -285,9 +317,10 @@ public class TransactionHistoryService {
     private void createHeaderRow(Sheet sheet) {
         Row headerRow = sheet.createRow(0);
         String[] headers = {
-                "Product Code", "Policy Number", "Party Id", "First Name", "Last Name","govtID",
-                "Organization", "Residence State", "Transaction Effective Date","Transaction Run Date", "Settlement Interest Amount",
-                "Late Interest Amount", "Gross Amount" , "Federal Withholding Amount", "State Withholding Amount"
+                "Product Code", "Run Year" ,"Policy Number", "Party Id", "First Name", "Last Name", "govtID",
+                "Organization", "Residence State", "Transaction Effective Date", "Transaction Run Date",
+                "Settlement Interest Amount", "Late Interest Amount", "Gross Amount",
+                "Federal Withholding Amount", "State Withholding Amount", "Preferred Mailing Address","mailingAddress"
         };
         IntStream.range(0, headers.length).forEach(i -> {
             Cell cell = headerRow.createCell(i);
