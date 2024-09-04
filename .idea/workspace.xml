@@ -5,8 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f3c0a9c1-0aa4-4e0b-a6ab-e26feacb72fc" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/application/src/main/java/com/eqh/application/utility/ResidenceCountryUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/application/src/main/resources/OLI_LU_NATION.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/src/main/java/com/eqh/application/service/TransactionHistoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/eqh/application/service/TransactionHistoryService.java" afterDir="false" />
     </list>

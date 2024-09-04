@@ -219,8 +219,12 @@ public class TransactionHistoryService {
         String preferredMailingAddress = addresses.stream()
                 .filter(Address::getPrefAddr)
                 .findFirst()
-                .map(address -> (address.getLine1() != null ? "Line 1 :"+address.getLine1()+" " : "") + (address.getLine2() != null ? "Line 2 :"+address.getLine2()+" " : " " )
-                + (address.getZip() != null ? "Zip :"+address.getZip()+" " : ""))
+                .map(address -> (address.getLine1() != null ? "Line 1 :"+address.getLine1()+" " : "") +
+                        (address.getLine2() != null ? "Line 2 :"+address.getLine2()+" " : " " ) +
+                        (address.getLine3() != null ? "Line 3 :"+address.getLine3()+" " : " " ) +
+                        (address.getLine4() != null ? "Line 4 :"+address.getLine4()+" " : " " ) +
+                        (address.getLine5() != null ? "Line 5 :"+address.getLine5()+" " : " " ) +
+                        (address.getZip() != null ? "Zip :"+address.getZip()+" " : ""))
                 .orElse("");
 
         // Validate and convert residence state
@@ -234,8 +238,12 @@ public class TransactionHistoryService {
         String mailingAddress = addresses.stream()
                 .filter(address -> !address.getPrefAddr())
                 .findFirst()
-                .map(address -> (address.getLine1() != null ? "Line 1 :"+address.getLine1()+" " : "") + (address.getLine2() != null ? "Line 2 :"+address.getLine2()+" " : " " )
-                        + (address.getZip() != null ? "Zip :"+address.getZip()+" " : ""))
+                .map(address -> (address.getLine1() != null ? "Line 1 :"+address.getLine1()+" " : "") +
+                        (address.getLine2() != null ? "Line 2 :"+address.getLine2()+" " : " " ) +
+                        (address.getLine3() != null ? "Line 3 :"+address.getLine3()+" " : " " ) +
+                        (address.getLine4() != null ? "Line 4 :"+address.getLine4()+" " : " " ) +
+                        (address.getLine5() != null ? "Line 5 :"+address.getLine5()+" " : " " ) +
+                        (address.getZip() != null ? "Zip :"+address.getZip()+" " : ""))
                 .orElse("");
 
         // Extract year from transRunDate
