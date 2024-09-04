@@ -4,6 +4,7 @@ import com.eqh.application.dto.Address;
 import com.eqh.application.feignClient.PartyClient;
 import com.eqh.application.repository.PolicyRepository;
 import com.eqh.application.repository.TransactionHistoryRepository;
+import com.eqh.application.utility.ResidenceCountryUtil;
 import com.eqh.application.utility.ResidenceStateUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -222,6 +223,14 @@ public class TransactionHistoryService {
                 + (address.getZip() != null ? "Zip :"+address.getZip()+" " : ""))
                 .orElse("");
 
+        // Validate and convert residence state
+        String residenceCountry = addresses.stream()
+                .filter(Address::getPrefAddr)
+                .findFirst()
+                .map(address -> ResidenceCountryUtil.getCountryName(Integer.parseInt(address.getAddressCountrytc() != null ? address.getAddressCountrytc() : "0"))).orElse("");
+
+
+        // Find the non-preferred address and concatenate line1 and line2
         String mailingAddress = addresses.stream()
                 .filter(address -> !address.getPrefAddr())
                 .findFirst()
@@ -233,22 +242,23 @@ public class TransactionHistoryService {
         String runYear = transRunDate == null ? "" : new SimpleDateFormat("yyyy").format(transRunDate);
 
         return Collections.singletonList(Arrays.asList(
-                productCode,
                 runYear,
+                productCode,
                 polNumber,
-                partyNumber,
-                firstName,
-                lastName,
-                govtID,
-                organization, // Moved "Organization" after "Last Name"
-                residenceStateText,
                 formatDate(transEffDate),
                 formatDate(transRunDate),
-                formatBigDecimal(settlementInterestAmt),
-                formatBigDecimal(lateInterestAmt),
-                formatBigDecimal(deathBenefitPayoutAmt),
+                partyNumber,
+                govtID,
+                firstName,
+                lastName,
+                formatBigDecimal(deathBenefitPayoutAmt),//Gross Amount
                 formatBigDecimal(federalWithholdingAmt),
                 formatBigDecimal(stateWithholdingAmt),
+                formatBigDecimal(settlementInterestAmt),
+                formatBigDecimal(lateInterestAmt),
+                residenceStateText,
+                organization, // Moved "Organization" after "Last Name"
+                residenceCountry,
                 preferredMailingAddress,
                 mailingAddress
         ));
@@ -317,10 +327,10 @@ public class TransactionHistoryService {
     private void createHeaderRow(Sheet sheet) {
         Row headerRow = sheet.createRow(0);
         String[] headers = {
-                "Product Code", "Run Year" ,"Policy Number", "Party Id", "First Name", "Last Name", "govtID",
-                "Organization", "Residence State", "Transaction Effective Date", "Transaction Run Date",
-                "Settlement Interest Amount", "Late Interest Amount", "Gross Amount",
-                "Federal Withholding Amount", "State Withholding Amount", "Preferred Mailing Address","mailingAddress"
+                "Run Year" ,"Product Code", "Policy Number", "Transaction Effective Date", "Transaction Run Date",
+                "Party Id", "govtID","First Name", "Last Name","Gross Amount", "Federal Withholding Amount", "State Withholding Amount",
+                "Settlement Interest Amount", "Late Interest Amount","Residence State","Organization","residenceCountry",
+                "Preferred Mailing Address","mailingAddress"
         };
         IntStream.range(0, headers.length).forEach(i -> {
             Cell cell = headerRow.createCell(i);

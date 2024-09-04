@@ -1,0 +1,1782 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fsc:attribute-def description="OLI_LU_NATION" id="_71FkaWENEdyqDI5HrpW3Kg" name="OLI_LU_NATION" xmlns:fsc="http://base.accelerator.org/XSD/rf/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://base.accelerator.org/XSD/rf/core uav" >
+	<fsc:type>
+		<fsc:fscstring maxLength="30" ></fsc:fscstring>
+	</fsc:type>
+	<fsc:allowedvalue id="_D6JcDigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="0"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Unknown"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcDygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="United States of America"/>
+			<fsc:display locale="EN" type="abbrev" value="US"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcECgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="2"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Canada"/>
+			<fsc:display locale="EN" type="abbrev" value="CN"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcESgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="7"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Russian Federation"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcEigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="20"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Egypt"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcEygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="27"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="South Africa"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcFCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="30"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Greece"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcFSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="31"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Netherlands"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcFigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="32"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Belgium"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcFygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="33"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="France"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcGCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="34"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Spain"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcGSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="36"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Hungary"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcGigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="38"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Yugoslavia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcGygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="39"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Italy"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcHCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="40"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Romania"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcHSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="41"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Switzerland"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcHigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="42"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Czechloslovakia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcHygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="43"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Austria"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcICgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="44"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="United Kingdom"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcISgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="45"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Denmark"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcIigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="46"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Sweden"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcIygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="47"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Norway"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcJCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="48"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Poland"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcJSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="49"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Germany"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcJigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="51"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Peru"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcJygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="52"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Mexico"/>
+			<fsc:display locale="EN" type="abbrev" value="MX"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcKCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="53"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Cuba"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcKSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="54"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Argentina"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcKigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="55"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Brazil"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcKygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="56"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Chile"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcLCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="57"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Colombia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcLSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="58"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Venezuela"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcLigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="60"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Malaysia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcLygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="61"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Australia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcMCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="62"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Indonesia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcMSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="63"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Philippines"/>
+			<fsc:display locale="EN" type="abbrev" value="OC"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcMigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="64"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="New Zealand"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcMygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="65"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Singapore"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcNCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="66"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Thailand"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcNSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="81"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Japan"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcNigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="82"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Korea"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcNygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="84"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Vietnam"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcOCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="86"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="China"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcOSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="90"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Turkey"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcOigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="91"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="India"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcOygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="92"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Pakistan"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcPCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="93"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Afghanistan"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcPSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="94"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Sri Lanka"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcPigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="95"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Burma (Union Of Myanmar)"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcPygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="98"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Iran, Islamic Republic of"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcQCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="212"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Morocco"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcQSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="213"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Algeria"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcQigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="216"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Tunisia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcQygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="218"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Libyan Arab Jamahiriya"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcRCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="220"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Gambia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcRSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="221"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Senegal"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcRigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="222"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Mauritania"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcRygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="223"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Mali"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcSCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="224"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Guinea"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcSSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="225"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Ivory Coast, Republic Of"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcSigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="226"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Burkina Faso"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcSygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="227"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Niger"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcTCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="228"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Togo"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcTSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="229"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Benin"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcTigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="230"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Mauritius"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcTygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="231"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Liberia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcUCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="232"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Sierra Leone"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcUSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="233"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Ghana"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcUigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="234"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Nigeria"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcUygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="235"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Chad"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcVCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="236"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Central African Republic"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcVSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="237"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Cameroon"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcVigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="238"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Cape Verde"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcVygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="239"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Sao Tome and Principe"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcWCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="240"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Equatorial Guinea"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcWSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="241"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Gabon"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcWigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="242"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Bahamas"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcWygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="243"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Zaire"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcXCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="244"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Angola"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcXSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="246"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Barbados"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcXigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="247"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Ascension Islands"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcXygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="249"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Sudan"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcYCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="250"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Rwanda"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcYSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="251"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Ethiopia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcYigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="252"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Somalia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcYygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="253"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Djibouti"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcZCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="254"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Kenya"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcZSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="255"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Tanzania, United Republic of"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcZigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="256"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Uganda"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcZygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="257"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Burundi"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcaCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="258"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Mozambique"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcaSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="260"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Zambia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcaigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="261"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Madagascar"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcaygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="262"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Reunion"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcbCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="263"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Zimbabwe"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcbSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="264"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Namibia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcbigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="265"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Malawi"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcbygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="266"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Lesotho"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JccCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="267"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Botswana"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JccSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="268"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Antigua and Barbuda"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JccigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="269"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Comoros"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JccygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="270"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Guinea-Bissau"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcdCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="271"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Congo, the Democratic Republic of the"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcdSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="284"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Virgin Islands, British"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcdigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="290"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Saint Helena"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcdygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="297"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Aruba"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JceCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="298"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Faroe Islands"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JceSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="299"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Greenland"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JceigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="345"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Cayman Islands"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JceygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="350"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Gilbratar"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcfCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="351"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Portugal"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcfSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="352"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Luxembourg"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcfigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="353"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Ireland"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcfygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="354"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Iceland"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcgCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="355"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Albania"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcgSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="356"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Malta"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcgigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="357"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Cyprus"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcgygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="358"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Finland"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JchCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="359"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Bulgaria"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JchSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="360"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Guernsey"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JchigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="370"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Lithuania"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JchygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="371"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Latvia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JciCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="372"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Estonia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JciSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="373"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Moldova, Republic of"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JciigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="374"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Armenia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JciygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="375"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Belarus"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcjCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="376"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Andorra"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcjSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="378"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="San Marino"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcjigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="380"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Ukraine"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcjygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="385"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Croatia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JckCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="386"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Slovenia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JckSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="387"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Bosnia and Herzegovina"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JckigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="389"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Macedonia, The Former Yugoslav Republic of"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JckygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="420"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Czech Republic"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JclCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="421"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Slovakia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JclSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="423"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Liechtenstein"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcligJEeCaXsw6fcHnRw" >
+		<fsc:internal value="441"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Bermuda"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JclygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="473"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Grenada"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcmCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="500"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Falkland Islands (Malvinas)"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcmSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="501"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Belize"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcmigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="502"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Guatemala"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcmygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="503"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="El Salvador"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcnCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="504"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Honduras"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcnSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="505"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Nicaragua"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcnigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="506"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Costa Rica"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcnygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="508"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Saint Pierre and Miquelon"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcoCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="509"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Haiti"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcoSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="510"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Puerto Rico"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcoigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="511"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Virgin Islands, US"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcoygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="512"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="South Georgia and the South Sandwich Islands"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcpCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="590"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Guadeloupe"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcpSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="591"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Bolivia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcpigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="592"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Guyana"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcpygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="593"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Ecuador"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcqCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="594"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="French Guiana"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcqSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="595"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Paraguay"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcqigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="596"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Martinique"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcqygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="597"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Suriname"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcrCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="598"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Uruguay"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcrSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="599"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Netherlands Antilles"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcrigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="649"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Turks and Caicos Islands"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcrygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="664"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Montserrat"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcsCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="670"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Saipan"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcsSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="671"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Guam"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcsigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="672"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Antarctica"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcsygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="673"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Brunei Darussalam"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JctCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="674"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Nauru"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JctSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="675"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Papua New Guinea"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JctigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="676"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Tonga"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JctygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="677"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Solomon Islands"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcuCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="678"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Vanuatu"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcuSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="679"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Fiji"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcuigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="681"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Wallis and Futuna"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcuygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="682"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Cook Islands"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcvCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="683"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Niue"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcvSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="684"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="American Samoa"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcvigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="685"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Western Samoa"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcvygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="686"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Kiribati"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcwCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="687"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="New Caledonia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcwSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="688"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Tuvalu"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcwigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="689"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="French Polynesia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcwygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="693"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Palau"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcxCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="694"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Marshall Islands"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcxSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="695"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Micronesia, Federated States of"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcxigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="758"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Saint Lucia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcxygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="767"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Dominica"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcyCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="784"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Saint Vincent and the Grenadines"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcySgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="809"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Dominican Republic"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcyigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="852"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Hong Kong"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JcyygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="853"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Macao"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JczCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="855"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Cambodia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JczSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="856"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Lao People's Democratic Republic"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JczigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="868"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Trinidad and Tobago"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JczygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="869"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Saint Kitts and Nevis"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc0CgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="876"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Jamaica"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc0SgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="880"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Bangladesh"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc0igJEeCaXsw6fcHnRw" >
+		<fsc:internal value="886"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Taiwan, Province of China"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc0ygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="950"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Myanmar"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc1CgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="951"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Korea, Republic of"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc1SgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="952"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Korea, Democratic People's Republic of"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc1igJEeCaXsw6fcHnRw" >
+		<fsc:internal value="961"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Lebanon"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc1ygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="962"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Jordan"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc2CgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="963"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Syrian Arab Republic"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc2SgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="964"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Iraq"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc2igJEeCaXsw6fcHnRw" >
+		<fsc:internal value="965"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Kuwait"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc2ygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="966"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Saudi Arabia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc3CgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="967"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Yemen"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc3SgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="968"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Oman"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc3igJEeCaXsw6fcHnRw" >
+		<fsc:internal value="971"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="United Arab Emirates"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc3ygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="972"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Israel"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc4CgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="973"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Bahrain"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc4SgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="974"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Qatar"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc4igJEeCaXsw6fcHnRw" >
+		<fsc:internal value="975"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Bhutan"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc4ygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="977"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Nepal"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc5CgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="992"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Tajikistan"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc5SgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="993"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Turkmenistan"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc5igJEeCaXsw6fcHnRw" >
+		<fsc:internal value="994"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Azerbaijan"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc5ygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="995"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Georgia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc6CgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="998"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Uzbekistan"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc6SgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1001"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Anguilla"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc6igJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1002"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Panama (also known as Canal Zone)"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc6ygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1003"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Cote d'Ivoire"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc7CgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1004"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Eritrea"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc7SgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1005"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Kazakhstan"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc7igJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1006"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Kyrgyzstan"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc7ygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1007"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Cocos (Keeling) Islands"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc8CgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1008"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Mongolia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc8SgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1009"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Bouvet Island"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc8igJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1010"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Seychelles"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc8ygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1011"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="British Indian Ocean Territory"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc9CgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1012"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Cocoa Islands"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc9SgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1013"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Samoa"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc9igJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1014"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Timor-Leste"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc9ygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1015"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="French Southern Territories"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc-CgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1016"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Heard Island and McDonald Islands"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc-SgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1017"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Mayotte"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc-igJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1018"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Pitcairn"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc-ygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1019"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Svalbard and Jan Mayen"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc_CgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1020"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Tokelau"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc_SgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1021"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="United States Minor Outlying Islands"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc_igJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1022"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Western Sahara"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6Jc_ygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1023"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Maldives"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JdACgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1024"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Christmas Island"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JdASgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1025"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Norfolk Island"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JdAigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1026"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Curacao"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JdAygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1027"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Congo"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JdBCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1028"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Monaco"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JdBSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1029"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Holy See (Vatican City State)"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JdBigJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1030"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Diego Garcia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JdBygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1031"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Swaziland"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JdCCgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1032"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Palestinian Territory, Occupied"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D6JdCSgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="2147483647"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Other"/>
+      		<fsc:display locale="EN" type="abbrev" value="FC"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:keysets>
+		<fsc:keyset name="ALL" >
+			<fsc:keyvalues>
+				<fsc:avref id="_D6JcDygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcDigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcECgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcESgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcEigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcEygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcFCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcFSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcFigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcFygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcGCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcGSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcGigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcGygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcHCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcHSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcHigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcHygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcICgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcISgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcIigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcIygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcJCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcJSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcJigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcJygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcKCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcKSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcKigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcKygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcLCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcLSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcLigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcLygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcMCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcMSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcMigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcMygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcNCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcNSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcNigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcNygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcOCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcOSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcOigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcOygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcPCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcPSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcPigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcPygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcQCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcQSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcQigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcQygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcRCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcRSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcRigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcRygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcSCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcSSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcSigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcSygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcTCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcTSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcTigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcTygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcUCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcUSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcUigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcUygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcVCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcVSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcVigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcVygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcWCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcWSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcWigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcWygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcXCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcXSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcXigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcXygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcYCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcYSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcYigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcYygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcZCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcZSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcZigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcZygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcaCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcaSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcaigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcaygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcbCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcbSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcbigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcbygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JccCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JccSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JccigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JccygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcdCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcdSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcdigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcdygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JceCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JceSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JceigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JceygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcfCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcfSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcfigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcfygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcgCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcgSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcgigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcgygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JchCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JchSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JchigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JchygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JciCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JciSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JciigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JciygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcjCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcjSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcjigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcjygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JckCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JckSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JckigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JckygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JclCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JclSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcligJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JclygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcmCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcmSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcmigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcmygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcnCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcnSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcnigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcnygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcoCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcoSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcoigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcoygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcpCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcpSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcpigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcpygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcqCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcqSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcqigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcqygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcrCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcrSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcrigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcrygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcsCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcsSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcsigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcsygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JctCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JctSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JctigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JctygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcuCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcuSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcuigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcuygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcvCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcvSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcvigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcvygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcwCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcwSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcwigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcwygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcxCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcxSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcxigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcxygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcyCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcySgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcyigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JcyygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JczCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JczSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JczigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JczygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc0CgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc0SgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc0igJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc0ygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc1CgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc1SgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc1igJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc1ygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc2CgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc2SgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc2igJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc2ygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc3CgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc3SgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc3igJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc3ygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc4CgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc4SgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc4igJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc4ygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc5CgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc5SgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc5igJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc5ygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc6CgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc6SgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc6igJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc6ygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc7CgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc7SgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc7igJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc7ygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc8CgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc8SgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc8igJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc8ygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc9CgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc9SgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc9igJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc9ygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc-CgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc-SgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc-igJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc-ygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc_CgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc_SgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc_igJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6Jc_ygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JdACgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JdASgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JdAigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JdAygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JdBCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JdBSgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JdBigJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JdBygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JdCCgJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D6JdCSgJEeCaXsw6fcHnRw" ></fsc:avref>
+			</fsc:keyvalues>
+		</fsc:keyset>
+		<fsc:keysetusage core_display_trans="null" core_system_trans="null" core_validation="null" ></fsc:keysetusage>
+	</fsc:keysets>
+</fsc:attribute-def>

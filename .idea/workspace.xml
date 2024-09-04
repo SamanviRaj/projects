@@ -5,12 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f3c0a9c1-0aa4-4e0b-a6ab-e26feacb72fc" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/application/src/main/java/com/eqh/application/dto/Address.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/application/src/main/java/com/eqh/application/dto/Party.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/src/main/java/com/eqh/application/utility/ResidenceCountryUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/src/main/resources/OLI_LU_NATION.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/application/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/eqh/application/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/eqh/application/Application.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/src/main/java/com/eqh/application/feignClient/PartyClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/eqh/application/feignClient/PartyClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/src/main/java/com/eqh/application/service/TransactionHistoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/application/src/main/java/com/eqh/application/service/TransactionHistoryService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,14 +40,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/rthota7/OneDrive - DXC Production/Desktop/eqh/application/src/main/resources"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\rthota7\OneDrive - DXC Production\Desktop\eqh\application\src\main\resources" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.eqh.application.dto" />
     </key>
