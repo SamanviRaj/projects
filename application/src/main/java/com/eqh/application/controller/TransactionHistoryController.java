@@ -1,5 +1,6 @@
 package com.eqh.application.controller;
 
+import com.eqh.application.service.PeriodicPayoutTransactionHistoryService;
 import com.eqh.application.service.TransactionHistoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +30,12 @@ public class TransactionHistoryController {
 
     private final TransactionHistoryService transactionHistoryService;
 
+    private final PeriodicPayoutTransactionHistoryService periodicPayoutTransactionHistoryService;
+
     @Autowired
-    public TransactionHistoryController(TransactionHistoryService transactionHistoryService) {
+    public TransactionHistoryController(TransactionHistoryService transactionHistoryService,PeriodicPayoutTransactionHistoryService periodicPayoutTransactionHistoryService) {
         this.transactionHistoryService = transactionHistoryService;
+        this.periodicPayoutTransactionHistoryService = periodicPayoutTransactionHistoryService;
     }
 
     @GetMapping("/generate-report")
@@ -53,6 +57,24 @@ public class TransactionHistoryController {
         }
     }
 
+    @GetMapping("periodicpayout/generate-report")
+    public ResponseEntity<byte[]> periodicPayoutgenerateReport() {
+        try {
+            byte[] reportBytes = periodicPayoutTransactionHistoryService.generateReportAsBytes();
+
+            String timestamp = new SimpleDateFormat(TIMESTAMP_FORMAT).format(new Date());
+            String filename = FILENAME_PREFIX + timestamp + FILE_EXTENSION;
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentDispositionFormData("attachment", filename);
+
+            return new ResponseEntity<>(reportBytes, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            logger.error("Error generating report", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/download-json")
     public ResponseEntity<byte[]> downloadJson() {
         try {
