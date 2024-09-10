@@ -1,6 +1,7 @@
 package com.eqh.application.service;
 
 import com.eqh.application.repository.PeriodicPayoutTransactionHistoryRepository;
+import com.eqh.application.repository.PolicyRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.poi.ss.usermodel.*;
@@ -14,6 +15,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,16 +26,30 @@ public class PeriodicPayoutTransactionHistoryService {
 
     private static final Logger logger = LoggerFactory.getLogger(PeriodicPayoutTransactionHistoryService.class);
     private static final String DATE_FORMAT = "ddMMyyyy_HHmmss";
-    private static final String DATE_FORMAT_FOR_EXCEL = "yyyy-MM-dd";  // For parsing
-    private static final String DATE_FORMAT_FOR_DISPLAY = "dd/MM/yyyy"; // For display
+    private static final String DATE_FORMAT_FOR_EXCEL = "yyyy-MM-dd";
+    private static final String DATE_FORMAT_FOR_DISPLAY = "dd/MM/yyyy";
     private static final String CURRENCY_FORMAT = "$#,##0.00";
 
+    private static final String[] HEADERS = {
+            "runYear", "polNumber", "transRunDate", "Suspend Code",
+            "Federal Non-Taxable Amount", "Gross Amount", "End Date", "Modal Benefit",
+            "Management Code", "Policy Status", "Product Code"
+    };
+
     private final PeriodicPayoutTransactionHistoryRepository repository;
+    private final PolicyRepository policyRepository;
     private final ObjectMapper objectMapper;
+    private final SimpleDateFormat excelDateFormat = new SimpleDateFormat(DATE_FORMAT_FOR_EXCEL);
+    private final SimpleDateFormat displayDateFormat = new SimpleDateFormat(DATE_FORMAT_FOR_DISPLAY);
+    private final DecimalFormat currencyFormat = new DecimalFormat(CURRENCY_FORMAT);
 
     @Autowired
-    public PeriodicPayoutTransactionHistoryService(PeriodicPayoutTransactionHistoryRepository repository, ObjectMapper objectMapper) {
+    public PeriodicPayoutTransactionHistoryService(
+            PeriodicPayoutTransactionHistoryRepository repository,
+            PolicyRepository policyRepository,
+            ObjectMapper objectMapper) {
         this.repository = repository;
+        this.policyRepository = policyRepository;
         this.objectMapper = objectMapper;
     }
 
@@ -44,8 +60,26 @@ public class PeriodicPayoutTransactionHistoryService {
             throw new IOException("No data found for the report.");
         }
 
+        // Extract unique policy numbers
+        Set<String> policyNumbers = data.stream()
+                .map(row -> {
+                    try {
+                        JsonNode jsonNode = objectMapper.readTree((String) row[0]);
+                        return jsonNode.path("polNumber").asText();
+                    } catch (IOException e) {
+                        logger.error("Error parsing JSON for row: " + Arrays.toString(row), e);
+                        return "";
+                    }
+                })
+                .filter(polNumber -> !polNumber.isEmpty())
+                .collect(Collectors.toSet());
+
+        // Fetch product info for all policy numbers
+        Map<String, ProductInfo> productInfoMap = fetchProductInfoForPolicyNumbers(policyNumbers);
+
+        // Transform data
         List<List<Object>> transformedData = data.stream()
-                .map(this::processRow)
+                .map(row -> processRow(row, productInfoMap))
                 .collect(Collectors.toList());
 
         String timestamp = new SimpleDateFormat(DATE_FORMAT).format(new Date());
@@ -53,15 +87,34 @@ public class PeriodicPayoutTransactionHistoryService {
         return generateExcelReportAsBytes(transformedData, timestamp);
     }
 
-    private List<Object> processRow(Object[] row) {
+    private Map<String, ProductInfo> fetchProductInfoForPolicyNumbers(Set<String> policyNumbers) {
+        // Convert Set to List
+        List<String> policyNumberList = new ArrayList<>(policyNumbers);
+
+        // Fetch product info for all policy numbers
+        List<Object[]> productInfoList = policyRepository.findProductInfoByPolicyNumbers(policyNumberList);
+
+        // Map the results to a Map for quick lookup
+        return productInfoList.stream()
+                .collect(Collectors.toMap(
+                        arr -> (String) arr[0], // polNumber
+                        arr -> new ProductInfo((String) arr[1], (String) arr[2], (String) arr[3]) // managementCode, policyStatus, productCode
+                ));
+    }
+
+
+    private List<Object> processRow(Object[] row, Map<String, ProductInfo> productInfoMap) {
         String messageImageJson = (String) row[0];
         JsonNode jsonNode;
         try {
             jsonNode = objectMapper.readTree(messageImageJson);
         } catch (IOException e) {
-            logger.error("Error parsing JSON", e);
+            logger.error("Error parsing JSON for row: " + Arrays.toString(row), e);
             return Arrays.asList("Error processing JSON");
         }
+
+        String polNumber = jsonNode.path("polNumber").asText();
+        ProductInfo productInfo = productInfoMap.getOrDefault(polNumber, new ProductInfo("", "", ""));
 
         Date transRunDate = parseDate(jsonNode.path("transRunDate").asText());
         String runYear = transRunDate == null ? "" : new SimpleDateFormat("yyyy").format(transRunDate);
@@ -73,12 +126,16 @@ public class PeriodicPayoutTransactionHistoryService {
 
         return Arrays.asList(
                 runYear,
+                polNumber,
                 formatDate(transRunDate),
                 suspendCode,
                 formatBigDecimal(federalNonTaxableAmt),
                 formatBigDecimal(grossAmt),
                 endDate,
-                formatBigDecimal(modalBenefit)
+                formatBigDecimal(modalBenefit),
+                productInfo.getManagementCode(),
+                productInfo.getPolicyStatus(),
+                productInfo.getProductCode()
         );
     }
 
@@ -87,21 +144,19 @@ public class PeriodicPayoutTransactionHistoryService {
             return null;
         }
         try {
-            return new SimpleDateFormat(DATE_FORMAT_FOR_EXCEL).parse(dateStr);
-        } catch (Exception e) {
+            return excelDateFormat.parse(dateStr);
+        } catch (ParseException e) {
             logger.error("Error parsing date string: " + dateStr, e);
             return null;
         }
     }
 
     private String formatBigDecimal(BigDecimal value) {
-        if (value == null) return "";
-        DecimalFormat df = new DecimalFormat(CURRENCY_FORMAT);
-        return df.format(value);
+        return value == null ? "" : currencyFormat.format(value);
     }
 
     private String formatDate(Date date) {
-        return date == null ? "" : new SimpleDateFormat(DATE_FORMAT_FOR_DISPLAY).format(date);
+        return date == null ? "" : displayDateFormat.format(date);
     }
 
     private byte[] generateExcelReportAsBytes(List<List<Object>> data, String timestamp) throws IOException {
@@ -136,18 +191,9 @@ public class PeriodicPayoutTransactionHistoryService {
 
     private void createHeaderRow(Sheet sheet) {
         Row headerRow = sheet.createRow(0);
-        String[] headers = {
-                "runYear",
-                "transRunDate",
-                "Suspend Code",
-                "Federal Non-Taxable Amount",
-                "Gross Amount",
-                "End Date",
-                "Modal Benefit"
-        };
-        IntStream.range(0, headers.length).forEach(i -> {
+        IntStream.range(0, HEADERS.length).forEach(i -> {
             Cell cell = headerRow.createCell(i);
-            cell.setCellValue(headers[i]);
+            cell.setCellValue(HEADERS[i]);
         });
     }
 
@@ -169,5 +215,30 @@ public class PeriodicPayoutTransactionHistoryService {
     private void autoSizeColumns(Sheet sheet) {
         int numberOfColumns = sheet.getRow(0).getLastCellNum();
         IntStream.range(0, numberOfColumns).forEach(sheet::autoSizeColumn);
+    }
+
+    // Helper class to store product information
+    private static class ProductInfo {
+        private final String managementCode;
+        private final String policyStatus;
+        private final String productCode;
+
+        public ProductInfo(String managementCode, String policyStatus, String productCode) {
+            this.managementCode = managementCode;
+            this.policyStatus = policyStatus;
+            this.productCode = productCode;
+        }
+
+        public String getManagementCode() {
+            return managementCode;
+        }
+
+        public String getPolicyStatus() {
+            return policyStatus;
+        }
+
+        public String getProductCode() {
+            return productCode;
+        }
     }
 }
