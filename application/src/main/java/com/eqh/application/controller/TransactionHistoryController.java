@@ -24,6 +24,7 @@ public class TransactionHistoryController {
     private static final Logger logger = LoggerFactory.getLogger(TransactionHistoryController.class);
     private static final String TIMESTAMP_FORMAT = "dd-MM-yyyy_HHmmss";
     private static final String FILENAME_PREFIX = "transaction_history_death_claim_report_";
+    private static final String PERIODIC_PAYOUT_FILENAME_PREFIX = "transaction_history_periodic_payout_report_";
     private static final String FILE_EXTENSION = ".xlsx";
     private static final String JSON_FILENAME_PREFIX = "transaction_history_data_";
     private static final String JSON_FILE_EXTENSION = ".json";
@@ -63,7 +64,7 @@ public class TransactionHistoryController {
             byte[] reportBytes = periodicPayoutTransactionHistoryService.generateReportAsBytes();
 
             String timestamp = new SimpleDateFormat(TIMESTAMP_FORMAT).format(new Date());
-            String filename = FILENAME_PREFIX + timestamp + FILE_EXTENSION;
+            String filename = PERIODIC_PAYOUT_FILENAME_PREFIX + timestamp + FILE_EXTENSION;
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
