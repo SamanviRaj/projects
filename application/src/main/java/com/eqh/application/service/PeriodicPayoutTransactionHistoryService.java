@@ -33,7 +33,7 @@ public class PeriodicPayoutTransactionHistoryService {
     private static final String[] HEADERS = {
             "runYear", "polNumber", "transRunDate", "Suspend Code",
             "Federal Non-Taxable Amount", "Gross Amount", "End Date", "Modal Benefit",
-            "Management Code", "Policy Status", "Product Code"
+            "Management Code", "Product Code" ,"Policy Status"
     };
 
     private final PeriodicPayoutTransactionHistoryRepository repository;
@@ -134,8 +134,8 @@ public class PeriodicPayoutTransactionHistoryService {
                 endDate,
                 formatBigDecimal(modalBenefit),
                 productInfo.getManagementCode(),
-                productInfo.getPolicyStatus(),
-                productInfo.getProductCode()
+                productInfo.getProductCode(),
+                productInfo.getPolicyStatus()
         );
     }
 
