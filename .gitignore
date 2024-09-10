@@ -1,6 +1,6 @@
 
-### IntelliJ IDEA ###
-.idea
+# Ignore the .idea directory
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -10,3 +10,6 @@
 
 ### VS Code ###
 .vscode/
+
+# Ignore specific file in .idea directory
+.idea/workspace.xml
