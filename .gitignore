@@ -13,3 +13,5 @@
 
 # Ignore specific file in .idea directory
 .idea/workspace.xml
+
+.gitignore.bak
