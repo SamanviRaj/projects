@@ -38,7 +38,7 @@ public class PeriodicPayoutTransactionHistoryService {
             "runYear", "polNumber", "transRunDate", "Suspend Code",
             "Federal Non-Taxable Amount", "Gross Amount", "End Date", "Modal Benefit",
             "Management Code", "Product Code", "Policy Status", "Party ID", "Govt ID", "Party Full Name", "Govt ID Status",
-            "govt ID Type Code", "Residence State", "payeeStatus"
+            "govt ID Type Code", "Residence State", "payeeStatus","QualPlanType"
     };
 
     private final PeriodicPayoutTransactionHistoryRepository repository;
@@ -103,7 +103,7 @@ public class PeriodicPayoutTransactionHistoryService {
         return productInfoList.stream()
                 .collect(Collectors.toMap(
                         arr -> (String) arr[0], // polNumber
-                        arr -> new ProductInfo((String) arr[1], (String) arr[2], (String) arr[3]) // managementCode, policyStatus, productCode
+                        arr -> new ProductInfo((String) arr[1], (String) arr[2], (String) arr[3], (String) arr[4]) // managementCode, policyStatus, productCode
                 ));
     }
 
@@ -117,7 +117,7 @@ public class PeriodicPayoutTransactionHistoryService {
         }
 
         String polNumber = jsonNode.path("polNumber").asText();
-        ProductInfo productInfo = productInfoMap.getOrDefault(polNumber, new ProductInfo("", "", ""));
+        ProductInfo productInfo = productInfoMap.getOrDefault(polNumber, new ProductInfo("", "", "", ""));
 
         Date transRunDate = parseDate(jsonNode.path("transRunDate").asText());
         String runYear = Optional.ofNullable(transRunDate)
@@ -233,7 +233,8 @@ public class PeriodicPayoutTransactionHistoryService {
                 transformedGovtIDStatus,
                 transformedGovtIdTCode,
                 transformedResidenceState,
-                payeeStatus
+                payeeStatus,
+                productInfo.getQualPlanType()
         );
     }
 
@@ -321,10 +322,13 @@ public class PeriodicPayoutTransactionHistoryService {
         private final String policyStatus;
         private final String productCode;
 
-        public ProductInfo(String managementCode, String policyStatus, String productCode) {
+        private final String qualPlanType;
+
+        public ProductInfo(String managementCode, String policyStatus, String productCode,String qual_plan_type) {
             this.managementCode = managementCode;
             this.policyStatus = policyStatus;
             this.productCode = productCode;
+            this.qualPlanType =  qual_plan_type;
         }
 
         public String getManagementCode() {
@@ -337,6 +341,9 @@ public class PeriodicPayoutTransactionHistoryService {
 
         public String getProductCode() {
             return productCode;
+        }
+        public String getQualPlanType() {
+            return qualPlanType;
         }
     }
 }
