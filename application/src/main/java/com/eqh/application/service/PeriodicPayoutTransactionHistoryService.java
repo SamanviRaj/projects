@@ -58,6 +58,33 @@ public class PeriodicPayoutTransactionHistoryService {
         this.objectMapper = objectMapper;
     }
 
+    public byte[] getMessageImagesAsJson() throws IOException {
+        List<Object[]> transactions = repository.findCustomPayoutDeathClaimTransactions();
+
+        // Map to hold message images
+        Map<String, JsonNode> messageImages = transactions.stream()
+                .collect(Collectors.toMap(
+                        row -> (String) row[0], // Assuming the first column is a string identifier
+                        row -> {
+                            Object jsonObject = row[1]; // This might be a String or BigDecimal
+                            try {
+                                if (jsonObject instanceof String) {
+                                    return objectMapper.readTree((String) jsonObject);
+                                } else if (jsonObject instanceof BigDecimal) {
+                                    return objectMapper.readTree(((BigDecimal) jsonObject).toString());
+                                } else {
+                                    throw new IllegalArgumentException("Unexpected data type for JSON parsing: " + jsonObject.getClass());
+                                }
+                            } catch (IOException e) {
+                                throw new RuntimeException("Error parsing message_image JSON", e);
+                            }
+                        }
+                ));
+
+        // Convert the map to JSON
+        return objectMapper.writeValueAsBytes(messageImages);
+    }
+
     public byte[] generateReportAsBytes() throws IOException {
         List<Object[]> data = repository.findCustomPayoutDeathClaimTransactions();
 
