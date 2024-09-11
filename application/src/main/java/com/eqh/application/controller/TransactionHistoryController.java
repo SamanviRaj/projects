@@ -103,7 +103,7 @@ public class TransactionHistoryController {
      * @param years List of years to filter the transactions.
      * @return A ResponseEntity with the JSON file.
      */
-    @GetMapping("/download-message-images")
+    @GetMapping("periodicpayout/download-json")
     public ResponseEntity<byte[]> downloadMessageImages() {
         try {
             byte[] jsonBytes = periodicPayoutTransactionHistoryService.getMessageImagesAsJson();
