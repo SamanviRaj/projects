@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fsc:attribute-def description="OLI_LU_GOVTIDTC" id="_D5G50SgJEeCaXsw6fcHnRw" name="OLI_LU_GOVTIDTC" xmlns:fsc="http://base.accelerator.org/XSD/rf/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://base.accelerator.org/XSD/rf/core uav" >
+	<fsc:type>
+		<fsc:fscstring maxLength="30" ></fsc:fscstring>
+	</fsc:type>
+	<fsc:allowedvalue id="_D5jn7igJEeCaXsw6fcHnRw" >
+		<fsc:internal value="0"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Unknown"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D5jn7ygJEeCaXsw6fcHnRw" >
+		<fsc:internal value="1"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Social Security Number US"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D5jn8CgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="2"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Taxpayer Identification Number"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="OLI_GOVTID_SIN" >
+		<fsc:internal value="3"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Social Insurance Number in Canada"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="OLI_GOVTID_TRN" >
+		<fsc:internal value="4"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Tax Reference Number South Africa"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="OLI_GOVTID_ACN" >
+		<fsc:internal value="5"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="ACN number Australia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="OLI_GOVTID_ARBN" >
+		<fsc:internal value="6"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="ARBN number Australia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="OLI_GOVTID_SIS" >
+		<fsc:internal value="7"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="SIS number Australia"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="OLI_GOVTID_USEMPID" >
+		<fsc:internal value="8"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="US Employer Identification Number"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="OLI_GOVTID_USNONRESTID" >
+		<fsc:internal value="9"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Tax ID for US non-resident alien"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D5jn8SgJEeCaXsw6fcHnRw" >
+		<fsc:internal value="10"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Generic Foreign ID"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="OLI_GOVTID_CANBN" >
+		<fsc:internal value="11"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Canadian Business Number"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="OLI_GOVTID_CANNEQ" >
+		<fsc:internal value="12"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Canadian Quebec Enterprise Number"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="OLI_GOVTID_CANEIN" >
+		<fsc:internal value="13"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Canadian Employer Identification Number"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="OLI_GOVTID_PASSPORTID" >
+		<fsc:internal value="17"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Passport"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="OLI_GOVTID_GREENCARD" >
+		<fsc:internal value="18"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Permanent resident (green card)"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="OLI_GOVTID_MEDICARENUM" >
+		<fsc:internal value="19"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Medicare Number"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="OLI_GOVTID_MEDICAIDNUM" >
+		<fsc:internal value="20"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Medicaid Number"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="OLI_GOVTID_CHINAMIL" >
+		<fsc:internal value="21"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Chinese Military ID"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="OLI_GOVTID_NPI" >
+		<fsc:internal value="22"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="National Provider Identifier (NPI)"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D5jn8igJEeCaXsw6fcHnRw" >
+		<fsc:internal value="2147483647"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Other Personal Tax ID"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	
+	<fsc:allowedvalue id="OLI_GOVTID_DL" >
+		<fsc:internal value="29"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Driver's license"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="_D8jn4rsJEeCaXsw6fcHnRw" >
+		<fsc:internal value="34"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="State ID"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="OLI_GOVTID_Us_Visa" >
+		<fsc:internal value="1000500001"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="U.S. Visa"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="OLI_GOVTID_EAD" >
+		<fsc:internal value="1000500002"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Employment authorization card (EAD)"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	
+	<fsc:defaultvalue>
+		<fsc:defaultavref></fsc:defaultavref>
+	</fsc:defaultvalue>
+	<fsc:keysets>
+		<fsc:keyset name="nbvalues" >
+			<fsc:keyvalues>
+				<fsc:avref id="_D5jn7ygJEeCaXsw6fcHnRw" ></fsc:avref>
+				<fsc:avref id="_D5jn8CgJEeCaXsw6fcHnRw" ></fsc:avref>
+			</fsc:keyvalues>
+		</fsc:keyset>
+		<fsc:keysetusage core_display_trans="null" core_system_trans="null" core_validation="null" ></fsc:keysetusage>
+	</fsc:keysets>
+</fsc:attribute-def>

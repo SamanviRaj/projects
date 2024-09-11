@@ -3,6 +3,7 @@ package com.eqh.application.service;
 import com.eqh.application.repository.PeriodicPayoutTransactionHistoryRepository;
 import com.eqh.application.repository.PolicyRepository;
 import com.eqh.application.utility.GovtIDStatusUtil;
+import com.eqh.application.utility.GovtIdTCodeUtil;
 import com.eqh.application.utility.ResidenceStateUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -188,6 +189,19 @@ public class PeriodicPayoutTransactionHistoryService {
             logger.warn("Empty or null government ID status code: " + taxableToGovtIDStatus);
         }
 
+        // Transform taxableToGovtIdTCode using GovtIdTCodeUtil
+        String transformedGovtIdTCode = "Unknown";
+        if (taxableToGovtIdTCode != null && !taxableToGovtIdTCode.trim().isEmpty()) {
+            try {
+                int govtIdTCode = Integer.parseInt(taxableToGovtIdTCode.trim());
+                transformedGovtIdTCode = GovtIdTCodeUtil.getIdTCodeName(govtIdTCode);
+            } catch (NumberFormatException e) {
+                logger.warn("Invalid government ID type code: " + taxableToGovtIdTCode, e);
+            }
+        } else {
+            logger.warn("Empty or null government ID type code: " + taxableToGovtIdTCode);
+        }
+
         return Arrays.asList(
                 runYear,
                 polNumber,
@@ -203,12 +217,13 @@ public class PeriodicPayoutTransactionHistoryService {
                 taxablePartyNumber,
                 taxableToGovtID,
                 taxablePartyName,
-                transformedGovtIDStatus, // Use the transformed government ID status
-                taxableToGovtIdTCode,
-                transformedResidenceState, // Use the transformed state name
+                transformedGovtIDStatus, // Updated to use transformed value
+                transformedGovtIdTCode, // Updated to use transformed value
+                transformedResidenceState, // Updated to use transformed value
                 payeeStatus
         );
     }
+
 
 
 
