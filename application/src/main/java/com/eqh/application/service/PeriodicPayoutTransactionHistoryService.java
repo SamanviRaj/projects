@@ -4,6 +4,7 @@ import com.eqh.application.repository.PeriodicPayoutTransactionHistoryRepository
 import com.eqh.application.repository.PolicyRepository;
 import com.eqh.application.utility.GovtIDStatusUtil;
 import com.eqh.application.utility.GovtIdTCodeUtil;
+import com.eqh.application.utility.PolicyStatusUtil;
 import com.eqh.application.utility.ResidenceStateUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,9 +37,8 @@ public class PeriodicPayoutTransactionHistoryService {
     private static final String[] HEADERS = {
             "runYear", "polNumber", "transRunDate", "Suspend Code",
             "Federal Non-Taxable Amount", "Gross Amount", "End Date", "Modal Benefit",
-            "Management Code", "Product Code" ,"Policy Status","Party ID","Govt ID","Party Full Name","Govt ID Status",
-            "govt ID Type Code","Residence State","payeeStatus"
-
+            "Management Code", "Product Code", "Policy Status", "Party ID", "Govt ID", "Party Full Name", "Govt ID Status",
+            "govt ID Type Code", "Residence State", "payeeStatus"
     };
 
     private final PeriodicPayoutTransactionHistoryRepository repository;
@@ -202,6 +202,19 @@ public class PeriodicPayoutTransactionHistoryService {
             logger.warn("Empty or null government ID type code: " + taxableToGovtIdTCode);
         }
 
+        // Transform productInfo policy status using PolicyStatusUtil
+        String transformedPolicyStatus = "Unknown";
+        if (productInfo.getPolicyStatus() != null && !productInfo.getPolicyStatus().trim().isEmpty()) {
+            try {
+                int policyStatusCode = Integer.parseInt(productInfo.getPolicyStatus().trim());
+                transformedPolicyStatus = PolicyStatusUtil.getPolicyStatusName(policyStatusCode);
+            } catch (NumberFormatException e) {
+                logger.warn("Invalid policy status code: " + productInfo.getPolicyStatus(), e);
+            }
+        } else {
+            logger.warn("Empty or null policy status code: " + productInfo.getPolicyStatus());
+        }
+
         return Arrays.asList(
                 runYear,
                 polNumber,
@@ -213,23 +226,16 @@ public class PeriodicPayoutTransactionHistoryService {
                 formatBigDecimal(modalBenefit),
                 productInfo.getManagementCode(),
                 productInfo.getProductCode(),
-                productInfo.getPolicyStatus(),
+                transformedPolicyStatus, // Updated to use transformed value
                 taxablePartyNumber,
                 taxableToGovtID,
                 taxablePartyName,
-                transformedGovtIDStatus, // Updated to use transformed value
-                transformedGovtIdTCode, // Updated to use transformed value
-                transformedResidenceState, // Updated to use transformed value
+                transformedGovtIDStatus,
+                transformedGovtIdTCode,
+                transformedResidenceState,
                 payeeStatus
         );
     }
-
-
-
-
-
-
-
 
     private Date parseDate(String dateStr) {
         if (dateStr == null || dateStr.isEmpty()) {

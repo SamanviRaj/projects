@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fsc:attribute-def xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:fsc="http://base.accelerator.org/XSD/rf/core" xsi:schemaLocation="http://base.accelerator.org/XSD/rf/core uav" description="OLI_LU_POLSTAT" name="OLI_LU_POLSTAT" id="_71Fkf2ENEdyqDI5HrpW3Kg">
+  <fsc:type>
+    <fsc:fscstring maxLength="30"/>
+  </fsc:type>
+  <fsc:allowedvalue id="_D6Jg7CgJEeCaXsw6fcHnRw">
+    <fsc:internal value="0"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Unknown"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg7SgJEeCaXsw6fcHnRw">
+    <fsc:internal value="1"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Active (inforce)."/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg7igJEeCaXsw6fcHnRw">
+    <fsc:internal value="2"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Inactive"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg7ygJEeCaXsw6fcHnRw">
+    <fsc:internal value="3"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Paid-Up"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg8CgJEeCaXsw6fcHnRw">
+    <fsc:internal value="4"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Lapsed"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg8SgJEeCaXsw6fcHnRw">
+    <fsc:internal value="5"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Lapse Pending."/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg8igJEeCaXsw6fcHnRw">
+    <fsc:internal value="6"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Surrendered"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg8ygJEeCaXsw6fcHnRw">
+    <fsc:internal value="7"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Not Taken."/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg9CgJEeCaXsw6fcHnRw">
+    <fsc:internal value="8"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Pending Issue (application accepted to process)."/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg9SgJEeCaXsw6fcHnRw">
+    <fsc:internal value="9"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Waiver"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg9igJEeCaXsw6fcHnRw">
+    <fsc:internal value="10"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Death Claim Pending."/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg9ygJEeCaXsw6fcHnRw">
+    <fsc:internal value="11"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Death Claim Paid."/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg-CgJEeCaXsw6fcHnRw">
+    <fsc:internal value="12"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Proposed (e.g. holding object for illustration - pre-application)"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg-SgJEeCaXsw6fcHnRw">
+    <fsc:internal value="13"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Home Office Cancellation"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg-igJEeCaXsw6fcHnRw">
+    <fsc:internal value="14"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Terminated"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg-ygJEeCaXsw6fcHnRw">
+    <fsc:internal value="15"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Under Disability"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg_CgJEeCaXsw6fcHnRw">
+    <fsc:internal value="16"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Cash Value Paid."/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg_SgJEeCaXsw6fcHnRw">
+    <fsc:internal value="17"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Expired ETI"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg_igJEeCaXsw6fcHnRw">
+    <fsc:internal value="18"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Extended Term"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6Jg_ygJEeCaXsw6fcHnRw">
+    <fsc:internal value="19"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Reissue"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhACgJEeCaXsw6fcHnRw">
+    <fsc:internal value="20"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Reduced Paid Up"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhASgJEeCaXsw6fcHnRw">
+    <fsc:internal value="21"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Applied For"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhAigJEeCaXsw6fcHnRw">
+    <fsc:internal value="22"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Pending Transmission (application completed and ready to be sent but transmission has not taken place)."/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhAygJEeCaXsw6fcHnRw">
+    <fsc:internal value="23"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Incomplete (application was incomplete)."/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhBCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="24"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Approved, not issued."/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhBSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="25"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Issued, not paid"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhBigJEeCaXsw6fcHnRw">
+    <fsc:internal value="26"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Counter offer (policy is not issued as requested - counteroffer made by HO)."/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhBygJEeCaXsw6fcHnRw">
+    <fsc:internal value="27"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Carrier declined to issue"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhCCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="28"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Carrier decline to reinstate"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhCSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="29"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Carrier deferred (e.g. carrier is deferring coverage until certain conditions are met)."/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhCigJEeCaXsw6fcHnRw">
+    <fsc:internal value="30"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Conversion with a new number"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhCygJEeCaXsw6fcHnRw">
+    <fsc:internal value="31"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Contractual change pending."/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhDCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="32"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Back Billed"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhDSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="33"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Illustration declined"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhDigJEeCaXsw6fcHnRw">
+    <fsc:internal value="34"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Eligible, Issue Pending"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhDygJEeCaXsw6fcHnRw">
+    <fsc:internal value="35"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Declined Not Eligible"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhECgJEeCaXsw6fcHnRw">
+    <fsc:internal value="36"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Annuitized"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhESgJEeCaXsw6fcHnRw">
+    <fsc:internal value="37"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Reinstated"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhEigJEeCaXsw6fcHnRw">
+    <fsc:internal value="38"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Pending Reinstatement"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhEygJEeCaXsw6fcHnRw">
+    <fsc:internal value="39"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Canceled"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhFCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="40"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Matured"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhFSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="41"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Conversion Pending"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhFigJEeCaXsw6fcHnRw">
+    <fsc:internal value="42"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Grace Period"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhFygJEeCaXsw6fcHnRw">
+    <fsc:internal value="43"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Policy was issued with changes"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhGCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="44"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Issued with Requirements"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhGSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="45"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Invalid"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhGigJEeCaXsw6fcHnRw">
+    <fsc:internal value="46"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Pending Replacement"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhGygJEeCaXsw6fcHnRw">
+    <fsc:internal value="47"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Fully Paid-Up"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhHCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="48"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Active - Preliminary Term"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhHSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="50"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Free Look"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhHigJEeCaXsw6fcHnRw">
+    <fsc:internal value="51"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Policy was not placed for unspecified reasons"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhHygJEeCaXsw6fcHnRw">
+    <fsc:internal value="52"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Coverage is &quot;active&quot; but one (or more) of insureds have died"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhICgJEeCaXsw6fcHnRw">
+    <fsc:internal value="53"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Conditional Approval"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhISgJEeCaXsw6fcHnRw">
+    <fsc:internal value="54"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Submitted to Underwriting"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhIigJEeCaXsw6fcHnRw">
+    <fsc:internal value="55"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Suspend"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhIygJEeCaXsw6fcHnRw">
+    <fsc:internal value="56"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Re-entry pending"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhJCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="57"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Quoted"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhJSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="58"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Approved Tentative Offer"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhJigJEeCaXsw6fcHnRw">
+    <fsc:internal value="59"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="HO Withdrew"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhJygJEeCaXsw6fcHnRw">
+    <fsc:internal value="60"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Producer Withdrew"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhKCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="61"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Lapsing on a daily cost basis"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhKSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="62"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Postponed"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhKigJEeCaXsw6fcHnRw">
+    <fsc:internal value="63"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Block Conversion"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhKygJEeCaXsw6fcHnRw">
+    <fsc:internal value="64"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Conversion with the same number"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhLCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="65"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Not Taken Out"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhLSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="89"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Terminated - Reserves Released"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhLigJEeCaXsw6fcHnRw">
+    <fsc:internal value="90"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Active Rider Terminated - Policy Converted to NFO (non forfeiture options)"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhLygJEeCaXsw6fcHnRw">
+    <fsc:internal value="91"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Paid-Up Rider Terminated - Policy Converted to NFO (non forfeiture options)"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhMCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="92"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Status of 'member left'"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhMSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="93"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Status of 'Departure Extension'"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhMigJEeCaXsw6fcHnRw">
+    <fsc:internal value="94"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Inforce- Attained Age Conversion"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhMygJEeCaXsw6fcHnRw">
+    <fsc:internal value="95"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Disability claim pending without policy termination"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhNCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="97"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Reconsider and Approve"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhNSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="98"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Further Information Unobtainable Rejection"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhNigJEeCaXsw6fcHnRw">
+    <fsc:internal value="99"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Exercised"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhNygJEeCaXsw6fcHnRw">
+    <fsc:internal value="100"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Claim pending without policy termination"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhOCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="103"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Approve - Issue Hold"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhOSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="105"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Converted Out"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhOSgJEeCasew6fcHnRw">
+    <fsc:internal value="109"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Request Failed"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhOSgJEeCerdw6fcHnRw">
+    <fsc:internal value="111"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Rescinded"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="D">
+    <fsc:internal value="D"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Logically Deleted"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhOSgJEeCerdw6fcHasn">
+    <fsc:internal value="R"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="System Replaced"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhOigJEeCaXsw6fcHnRw">
+    <fsc:internal value="1000500001"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Payor Death"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhOygJEeCaXsw6fcHnRw">
+    <fsc:internal value="1000500002"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="COI and Disability Waiver"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhPCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="1000500003"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Coverages on both RPU and ETI"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhPSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="1000500004"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Active Rider Terminated - Policy Converted to NFO"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhPigJEeCaXsw6fcHnRw">
+    <fsc:internal value="1000500005"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Paid Up Rider Terminated - Policy Converted to NFO"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhPygJEeCaXsw6fcHnRw">
+    <fsc:internal value="1000500009"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Single Premium"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhQCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="1000500010"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Single Premium in lieu of Matured Endowment"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500011">
+    <fsc:internal value="1000500011"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Deceased and Paying"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhQigJEeCaXsw6fcHnRw">
+    <fsc:internal value="1000500200"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Ceased Internally"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhQygJEeCaXsw6fcHnRw">
+    <fsc:internal value="1000500201"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Ceased Externally"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_OLIPOLSTAT_QDROSURRENDER">
+    <fsc:internal value="1000500211"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="QDRO Surrendered"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhRCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="2147483647"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Other"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:defaultvalue/>
+  <fsc:keysets>
+    <fsc:keyset name="FromIssuedNotPaidKS">
+      <fsc:keyvalues>
+        <fsc:avref id="_D6Jg8ygJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6Jg-SgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhAygJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhBCgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhBygJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhEygJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhICgJEeCaXsw6fcHnRw"/>
+      </fsc:keyvalues>
+    </fsc:keyset>
+    <fsc:keyset name="AutoCancel">
+      <fsc:keyvalues>
+        <fsc:avref id="_D6Jg8ygJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6Jg-SgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhBygJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhHigJEeCaXsw6fcHnRw"/>
+      </fsc:keyvalues>
+    </fsc:keyset>
+    <fsc:keyset name="FromActiveKS">
+      <fsc:keyvalues>
+        <fsc:avref id="_D6Jg7igJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6Jg-SgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhCigJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhEigJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhFSgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhHSgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhKigJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhKygJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhOSgJEeCaXsw6fcHnRw"/>
+      </fsc:keyvalues>
+    </fsc:keyset>
+    <fsc:keyset name="FromOtherKS">
+      <fsc:keyvalues>
+        <fsc:avref id="_D6Jg8ygJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6Jg-SgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhAygJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhBCgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhBygJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhEygJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhICgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6Jg7igJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6Jg-SgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhCigJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhEigJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhFSgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhHSgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhKigJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhKygJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhOSgJEeCaXsw6fcHnRw"/>
+        <fsc.avref id="_OLIPOLSTAT_QDROSURRENDER"/>
+      </fsc:keyvalues>
+    </fsc:keyset>
+    <fsc:keyset name="UnderwritingStatus">
+    	<fsc:keyvalues>
+    		<fsc:avref id="_D6Jg7SgJEeCaXsw6fcHnRw"/>
+    		<fsc:avref id="_D6JhBygJEeCaXsw6fcHnRw"/>
+    		<fsc:avref id="_D6JhISgJEeCaXsw6fcHnRw"/>
+    	</fsc:keyvalues>
+    </fsc:keyset>
+    <fsc:keyset name="RowStatus">
+      <fsc:keyvalues>
+        <fsc:avref id="D"/>
+      </fsc:keyvalues>
+    </fsc:keyset>
+    <fsc:keyset name="FromPriorInsuranceKS">
+      <fsc:keyvalues>
+        <fsc:avref id="_D6Jg7SgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhBSgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhESgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6Jg_igJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhACgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6Jg8SgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6Jg9SgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6Jg-ygJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhGygJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhOygJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhPCgJEeCaXsw6fcHnRw"/>
+      </fsc:keyvalues>
+    </fsc:keyset>
+    <fsc:keysetusage core_display_trans="null" core_system_trans="null" core_validation="null"/>
+  </fsc:keysets>
+</fsc:attribute-def>
