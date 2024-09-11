@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fsc:attribute-def xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:fsc="http://base.fsconnect.org/XSD/rf/core" xsi:schemaLocation="http://base.fsconnect.org/XSD/rf/core uav" description="OLI_LU_GOVTIDSTAT" name="OLI_LU_GOVTIDSTAT" id="_D5G50CgJEeCaXsw6fcHnRw">
+  <fsc:type>
+    <fsc:fscstring maxLength="30"/>
+  </fsc:type>
+  <fsc:allowedvalue id="_D5jn5SgJEeCaXsw6fcHnRw">
+    <fsc:internal value="0"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Unknown"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D5jn5igJEeCaXsw6fcHnRw">
+    <fsc:internal value="1"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Certified"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D5jn5ygJEeCaXsw6fcHnRw">
+    <fsc:internal value="2"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Not Certified"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D5jn6CgJEeCaXsw6fcHnRw">
+    <fsc:internal value="7"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="IRS Request for Certification"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D5jn6SgJEeCaXsw6fcHnRw">
+    <fsc:internal value="8"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="IRS Request for Certification - 2 in 3 years"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D5jn6igJEeCaXsw6fcHnRw">
+    <fsc:internal value="9"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="IRS Notification Received"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D5jn6ygJEeCaXsw6fcHnRw">
+    <fsc:internal value="1000500001"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Exempt Not Certified"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D5jn7CgJEeCaXsw6fcHnRw">
+    <fsc:internal value="1000500002"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Exempt Certified"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D5jn7SgJEeCaXsw6fcHnRw">
+    <fsc:internal value="1000500003"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="W-8 Received"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:defaultvalue>
+    <fsc:defaultavref/>
+  </fsc:defaultvalue>
+  <fsc:keysets>
+    <fsc:keysetusage core_display_trans="null" core_system_trans="null" core_validation="null"/>
+  </fsc:keysets>
+</fsc:attribute-def>

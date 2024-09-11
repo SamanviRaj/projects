@@ -2,6 +2,8 @@ package com.eqh.application.service;
 
 import com.eqh.application.repository.PeriodicPayoutTransactionHistoryRepository;
 import com.eqh.application.repository.PolicyRepository;
+import com.eqh.application.utility.GovtIDStatusUtil;
+import com.eqh.application.utility.ResidenceStateUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.poi.ss.usermodel.*;
@@ -33,7 +35,9 @@ public class PeriodicPayoutTransactionHistoryService {
     private static final String[] HEADERS = {
             "runYear", "polNumber", "transRunDate", "Suspend Code",
             "Federal Non-Taxable Amount", "Gross Amount", "End Date", "Modal Benefit",
-            "Management Code", "Product Code" ,"Policy Status"
+            "Management Code", "Product Code" ,"Policy Status","Party ID","Govt ID","Party Full Name","Govt ID Status",
+            "govt ID Type Code","Residence State","payeeStatus"
+
     };
 
     private final PeriodicPayoutTransactionHistoryRepository repository;
@@ -102,27 +106,87 @@ public class PeriodicPayoutTransactionHistoryService {
                 ));
     }
 
-
     private List<Object> processRow(Object[] row, Map<String, ProductInfo> productInfoMap) {
-        String messageImageJson = (String) row[0];
         JsonNode jsonNode;
         try {
-            jsonNode = objectMapper.readTree(messageImageJson);
+            jsonNode = objectMapper.readTree((String) row[0]);
         } catch (IOException e) {
             logger.error("Error parsing JSON for row: " + Arrays.toString(row), e);
-            return Arrays.asList("Error processing JSON");
+            return Collections.singletonList("Error processing JSON");
         }
 
         String polNumber = jsonNode.path("polNumber").asText();
         ProductInfo productInfo = productInfoMap.getOrDefault(polNumber, new ProductInfo("", "", ""));
 
         Date transRunDate = parseDate(jsonNode.path("transRunDate").asText());
-        String runYear = transRunDate == null ? "" : new SimpleDateFormat("yyyy").format(transRunDate);
+        String runYear = Optional.ofNullable(transRunDate)
+                .map(date -> new SimpleDateFormat("yyyy").format(date))
+                .orElse("");
         String suspendCode = jsonNode.path("suspendCode").asText();
-        BigDecimal federalNonTaxableAmt = jsonNode.path("payeePayouts").get(0).path("federalNonTaxableAmt").decimalValue();
-        BigDecimal grossAmt = jsonNode.path("payeePayouts").get(0).path("grossAmt").decimalValue();
-        String endDate = jsonNode.path("benefits").get(0).path("endDate").asText();
-        BigDecimal modalBenefit = jsonNode.path("benefits").get(0).path("modalBenefit").decimalValue();
+
+        // Initialize variables for aggregated or extracted data
+        BigDecimal federalNonTaxableAmt = BigDecimal.ZERO;
+        BigDecimal grossAmt = BigDecimal.ZERO;
+        BigDecimal modalBenefit = BigDecimal.ZERO;
+        String taxablePartyNumber = "";
+        String endDate = "";
+        String taxableToGovtID = "";
+        String taxablePartyName = "";
+        String taxableToGovtIDStatus = "";
+        String taxableToGovtIdTCode = "";
+        String taxableToResidenceState = "";
+        String payeeStatus = "";
+
+        // Process payeePayouts array
+        JsonNode payeePayoutsNode = jsonNode.path("payeePayouts");
+        if (payeePayoutsNode.isArray()) {
+            for (JsonNode payout : payeePayoutsNode) {
+                federalNonTaxableAmt = federalNonTaxableAmt.add(payout.path("federalNonTaxableAmt").decimalValue());
+                grossAmt = grossAmt.add(payout.path("grossAmt").decimalValue());
+                taxablePartyNumber = payout.path("taxablePartyNumber").asText(taxablePartyNumber); // Use last non-empty value
+                taxableToGovtID = payout.path("taxableToGovtID").asText(taxableToGovtID); // Use last non-empty value
+                taxablePartyName = payout.path("taxablePartyName").asText(taxablePartyName); // Use last non-empty value
+                taxableToGovtIDStatus = payout.path("taxableToGovtIDStat").asText(taxableToGovtIDStatus); // Use last non-empty value
+                taxableToGovtIdTCode = payout.path("taxableToGovtIdTC").asText(taxableToGovtIdTCode); // Use last non-empty value
+                taxableToResidenceState = payout.path("taxableToResidenceState").asText(taxableToResidenceState); // Use last non-empty value
+                payeeStatus = payout.path("payeeStatus").asText(payeeStatus); // Use last non-empty value
+            }
+        }
+
+        // Process benefits array
+        JsonNode benefitsNode = jsonNode.path("benefits");
+        if (benefitsNode.isArray()) {
+            for (JsonNode benefit : benefitsNode) {
+                endDate = benefit.path("endDate").asText(endDate); // Use last non-empty value
+                modalBenefit = modalBenefit.add(benefit.path("modalBenefit").decimalValue()); // Aggregate modal benefits
+            }
+        }
+
+        // Transform taxableToResidenceState using ResidenceStateUtil
+        String transformedResidenceState = "Unknown";
+        if (taxableToResidenceState != null && !taxableToResidenceState.trim().isEmpty()) {
+            try {
+                int residenceStateCode = Integer.parseInt(taxableToResidenceState.trim());
+                transformedResidenceState = ResidenceStateUtil.getStateName(residenceStateCode);
+            } catch (NumberFormatException e) {
+                logger.warn("Invalid residence state code: " + taxableToResidenceState, e);
+            }
+        } else {
+            logger.warn("Empty or null residence state code: " + taxableToResidenceState);
+        }
+
+        // Transform taxableToGovtIDStatus using GovtIDStatusUtil
+        String transformedGovtIDStatus = "Unknown";
+        if (taxableToGovtIDStatus != null && !taxableToGovtIDStatus.trim().isEmpty()) {
+            try {
+                int govtIDStatusCode = Integer.parseInt(taxableToGovtIDStatus.trim());
+                transformedGovtIDStatus = GovtIDStatusUtil.getStatusName(govtIDStatusCode);
+            } catch (NumberFormatException e) {
+                logger.warn("Invalid government ID status code: " + taxableToGovtIDStatus, e);
+            }
+        } else {
+            logger.warn("Empty or null government ID status code: " + taxableToGovtIDStatus);
+        }
 
         return Arrays.asList(
                 runYear,
@@ -135,9 +199,22 @@ public class PeriodicPayoutTransactionHistoryService {
                 formatBigDecimal(modalBenefit),
                 productInfo.getManagementCode(),
                 productInfo.getProductCode(),
-                productInfo.getPolicyStatus()
+                productInfo.getPolicyStatus(),
+                taxablePartyNumber,
+                taxableToGovtID,
+                taxablePartyName,
+                transformedGovtIDStatus, // Use the transformed government ID status
+                taxableToGovtIdTCode,
+                transformedResidenceState, // Use the transformed state name
+                payeeStatus
         );
     }
+
+
+
+
+
+
 
     private Date parseDate(String dateStr) {
         if (dateStr == null || dateStr.isEmpty()) {
