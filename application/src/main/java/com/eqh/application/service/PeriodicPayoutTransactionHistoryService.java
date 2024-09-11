@@ -34,11 +34,11 @@ public class PeriodicPayoutTransactionHistoryService {
     private static final String DATE_FORMAT_FOR_DISPLAY = "dd/MM/yyyy";
     private static final String CURRENCY_FORMAT = "$#,##0.00";
 
+
     private static final String[] HEADERS = {
-            "runYear", "polNumber", "transRunDate", "Suspend Code",
-            "Federal Non-Taxable Amount", "Gross Amount", "End Date", "Modal Benefit",
-            "Management Code", "Product Code", "Policy Status", "Party ID", "Govt ID", "Party Full Name", "Govt ID Status",
-            "govt ID Type Code", "Residence State", "payeeStatus","QualPlanType"
+            "runYear", "transRunDate","Management Code",  "Product Code", "polNumber", "Policy Status",
+            "QualPlanType","Suspend Code","Party ID","Govt ID", "Party Full Name", "Govt ID Status",
+            "govt ID Type Code","payeeStatus", "Residence State"
     };
 
     private final PeriodicPayoutTransactionHistoryRepository repository;
@@ -217,25 +217,21 @@ public class PeriodicPayoutTransactionHistoryService {
 
         return Arrays.asList(
                 runYear,
-                polNumber,
                 formatDate(transRunDate),
-                suspendCode,
-                formatBigDecimal(federalNonTaxableAmt),
-                formatBigDecimal(grossAmt),
-                endDate,
-                formatBigDecimal(modalBenefit),
                 productInfo.getManagementCode(),
                 productInfo.getProductCode(),
+                polNumber,
                 transformedPolicyStatus, // Updated to use transformed value
+                productInfo.getQualPlanType(),
+                suspendCode,
                 taxablePartyNumber,
                 taxableToGovtID,
                 taxablePartyName,
                 transformedGovtIDStatus,
                 transformedGovtIdTCode,
-                transformedResidenceState,
                 payeeStatus,
-                productInfo.getQualPlanType()
-        );
+                transformedResidenceState
+                );
     }
 
     private Date parseDate(String dateStr) {
