@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fsc:attribute-def description="OLIEXT_LU_PAYEESTATUS" id="_D5G7ISgJEeCaXsw6fcHnRw" name="OLIEXT_LU_PAYEESTATUS" xmlns:fsc="http://base.accelerator.org/XSD/rf/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://base.accelerator.org/XSD/rf/core uav" >
+	<fsc:type>
+		<fsc:fscstring maxLength="30" ></fsc:fscstring>
+	</fsc:type>
+	<fsc:allowedvalue id="1000500001" >
+		<fsc:internal value="1000500001"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Paying"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="1000500002" >
+		<fsc:internal value="1000500002"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Not Paying"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="1000500003" >
+		<fsc:internal value="1000500003"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Due and Unpaid"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:allowedvalue id="1000500004" >
+		<fsc:internal value="1000500004"/>
+		<fsc:external>
+			<fsc:display locale="EN" type="html" value="Terminated"/>
+		</fsc:external>
+	</fsc:allowedvalue>
+	<fsc:defaultvalue>
+		<fsc:defaultavref></fsc:defaultavref>
+	</fsc:defaultvalue>
+	<fsc:keysets>
+		<fsc:keyset name="PayoutPayeeAllocation">
+			<fsc:keyvalues>
+				<fsc:avref id="1000500001"/>
+				<fsc:avref id="1000500002"/>
+				<fsc:avref id="1000500003"/>
+				<fsc:avref id="1000500004"/>
+			</fsc:keyvalues>
+		</fsc:keyset>
+		<fsc:keysetusage core_display_trans="null" core_system_trans="null" core_validation="null" ></fsc:keysetusage>
+	</fsc:keysets>
+</fsc:attribute-def>

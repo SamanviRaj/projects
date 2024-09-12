@@ -34,7 +34,7 @@ public class PeriodicPayoutTransactionHistoryService {
 
     private static final String[] HEADERS = {
             "runYear", "transRunDate","Management Code",  "Product Code", "polNumber", "Policy Status",
-            "QualPlanType","Suspend Code","Party ID","Govt ID", "Party Full Name", "Govt ID Status",
+            "QualPlanType","Suspend Code","Party ID", "Party Full Name","Govt ID", "Govt ID Status",
             "govt ID Type Code","payeeStatus", "Residence State"
     };
 
@@ -255,6 +255,9 @@ public class PeriodicPayoutTransactionHistoryService {
             logger.warn("Empty or null policy status code: " + productInfo.getPolicyStatus());
         }
 
+        // Transform payeeStatus using PayeeStatusUtil
+        String transformedPayeeStatus = PayeeStatusUtil.getDisplayName(Integer.parseInt(payeeStatus.trim()));
+
         return Arrays.asList(
                 runYear,
                 formatDate(transRunDate),
@@ -265,14 +268,15 @@ public class PeriodicPayoutTransactionHistoryService {
                 transformedQualPlanType, // Updated to use transformed value
                 transformedSuspendCode, // Updated to use transformed value
                 taxablePartyNumber,
-                taxableToGovtID,
                 taxablePartyName,
+                taxableToGovtID,
                 transformedGovtIDStatus,
                 transformedGovtIdTCode,
-                payeeStatus,
+                transformedPayeeStatus, // Updated to use transformed value
                 transformedResidenceState
         );
     }
+
 
 
 
