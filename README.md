@@ -4,9 +4,11 @@ REST API :-
 
 EXCEL Report -> GET -  http://localhost:8082/api/transactions/generate-report
 
-http://localhost:8082/api/transactions/periodicpayout/generate-report
-
 Json file -> GET - http://localhost:8082/api/transactions/download-json
+
+PP EXCEL Report -> http://localhost:8082/api/transactions/periodicpayout/generate-report
+
+Json file -> GET - http://localhost:8082/api/transactions/periodicpayout/download-json
 
 Note :
 Added docker file but unable to run it as DEV1 DB connection VPN
