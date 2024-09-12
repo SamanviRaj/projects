@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fsc:attribute-def description="OLIEXT_LU_SUSPEND" name="OLIEXT_LU_SUSPEND" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:fsc="http://base.accelerator.org/XSD/rf/core" xsi:schemaLocation="http://base.accelerator.org/XSD/rf/core attribute-def.xsd" >
+  <fsc:type>
+    <fsc:fscstring maxLength="30"/>
+  </fsc:type>
+  <fsc:allowedvalue id="1000500001">
+    <fsc:internal value="1000500001" />
+    <fsc:external>
+      <fsc:display value="Not Suspended" />
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500002">
+    <fsc:internal value="1000500002" />
+    <fsc:external>
+      <fsc:display value="Active PDF Exists" />
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500003">
+    <fsc:internal value="1000500003" />
+    <fsc:external>
+      <fsc:display value="Administration Expense Charge Error" />
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500004">
+    <fsc:internal value="1000500004" />
+    <fsc:external>
+      <fsc:display value="Automatic Payout Rejected"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500005">
+    <fsc:internal value="1000500005" />
+    <fsc:external>
+      <fsc:display value="Automatic Premium Loan Rejected"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500006">
+    <fsc:internal value="1000500006" />
+    <fsc:external>
+      <fsc:display value="Batch Error"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500007">
+    <fsc:internal value="1000500007" />
+    <fsc:external>
+      <fsc:display value="COI Errored"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500008">
+    <fsc:internal value="1000500008" />
+    <fsc:external>
+      <fsc:display value="COLA Transaction Errored"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500009">
+    <fsc:internal value="1000500009" />
+    <fsc:external>
+      <fsc:display value="Complex Change - (DOB, Sex)"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500010">
+    <fsc:internal value="1000500010" />
+    <fsc:external>
+      <fsc:display value="Database Access Error"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500011">
+    <fsc:internal value="1000500011" />
+    <fsc:external>
+      <fsc:display value="Party Access Error - Restore Archived History"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500012">
+    <fsc:internal value="1000500012" />
+    <fsc:external>
+      <fsc:display value="Dividend Processing Error"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500013">
+    <fsc:internal value="1000500013" />
+    <fsc:external>
+      <fsc:display value="Excess Value Rejected"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500014">
+    <fsc:internal value="1000500014" />
+    <fsc:external>
+      <fsc:display value="GPO / Interest Renewal Error"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500015">
+    <fsc:internal value="1000500015" />
+    <fsc:external>
+      <fsc:display value="Insufficient Funds for Tax Incurred on Loan"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500016">
+    <fsc:internal value="1000500016" />
+    <fsc:external>
+      <fsc:display value="Insufficient Policy Funds and Money in Suspense"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500017">
+    <fsc:internal value="1000500017" />
+    <fsc:external>
+      <fsc:display value="Internal Equity Index Fund Activity Error"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500018">
+    <fsc:internal value="1000500018" />
+    <fsc:external>
+      <fsc:display value="Internal Systematic Withdrawal Maximum Exceeded"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500019">
+    <fsc:internal value="1000500019" />
+    <fsc:external>
+      <fsc:display value="Internal Transaction Error"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500020">
+    <fsc:internal value="1000500020" />
+    <fsc:external>
+      <fsc:display value="Lapse, Lapse Pending and Money in Suspense"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500021">
+    <fsc:internal value="1000500021" />
+    <fsc:external>
+      <fsc:display value="Loan Capitalization Error"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500022">
+    <fsc:internal value="1000500022" />
+    <fsc:external>
+      <fsc:display value="Money Fund Interest Renewal Error"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500023">
+    <fsc:internal value="1000500023" />
+    <fsc:external>
+      <fsc:display value="NFO Pending Error"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500024">
+    <fsc:internal value="1000500024" />
+    <fsc:external>
+      <fsc:display value="Partial Payment Required"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500025">
+    <fsc:internal value="1000500025" />
+    <fsc:external>
+      <fsc:display value="Reissue Suspended"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500026">
+    <fsc:internal value="1000500026" />
+    <fsc:external>
+      <fsc:display value="RMD Errored"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500027">
+    <fsc:internal value="1000500027" />
+    <fsc:external>
+      <fsc:display value="System Suspended"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500028">
+    <fsc:internal value="1000500028" />
+    <fsc:external>
+      <fsc:display value="Product Definition Access Error"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500029">
+    <fsc:internal value="1000500029" />
+    <fsc:external>
+      <fsc:display value="Term Rider Incomplete"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500030">
+    <fsc:internal value="1000500030" />
+    <fsc:external>
+      <fsc:display value="Terminated Master File"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500031">
+    <fsc:internal value="1000500031" />
+    <fsc:external>
+      <fsc:display value="Unable to Calculate Initial Guideline Premium"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500032">
+    <fsc:internal value="1000500032" />
+    <fsc:external>
+      <fsc:display value="User Suspended"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500033">
+    <fsc:internal value="1000500033" />
+    <fsc:external>
+      <fsc:display value="Other"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500034">
+    <fsc:internal value="1000500034" />
+    <fsc:external>
+      <fsc:display value="Party Add request failed to process"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500035">
+    <fsc:internal value="1000500035" />
+    <fsc:external>
+      <fsc:display value="Insufficient funds"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500036">
+    <fsc:internal value="1000500036" />
+    <fsc:external>
+      <fsc:display value="Waiver benefit terminated and coverage on waiver status"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+   <fsc:allowedvalue id="1000500037">
+    <fsc:internal value="1000500037" />
+    <fsc:external>
+      <fsc:display value="Target premium load calculation error"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500038">
+    <fsc:internal value="1000500038" />
+    <fsc:external>
+      <fsc:display value="Unable to Calculate Accumulated Cash Value"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500039">
+    <fsc:internal value="1000500039" />
+    <fsc:external>
+      <fsc:display value="Sum of Payee percentages must equal 100"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500040">
+    <fsc:internal value="1000500040" />
+    <fsc:external>
+      <fsc:display value="Dollar Cost Average Error" />
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500041">
+    <fsc:internal value="1000500041" />
+    <fsc:external>
+      <fsc:display value="Reducing Term Payout Error" />
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1000500042">
+  <fsc:internal value="1000500042" />
+  <fsc:external>
+    <fsc:display value="Unable to Calculate Long Term Care Benefit Amount" />
+  </fsc:external>
+</fsc:allowedvalue>
+ <fsc:allowedvalue id="1000500043">
+  <fsc:internal value="1000500043" />
+  <fsc:external>
+    <fsc:display value="Payee Withholding Exceeds Payout Amount" />
+  </fsc:external>
+</fsc:allowedvalue>
+    <fsc:allowedvalue id="1D">
+    <fsc:internal value="1D" />
+    <fsc:external>
+      <fsc:display value="Payee missing. Lost Payee, D Stop" />
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1I">
+    <fsc:internal value="1I" />
+    <fsc:external>
+      <fsc:display value="Law Department restriction" />
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="1P">
+    <fsc:internal value="1P" />
+    <fsc:external>
+      <fsc:display value="Awaiting return of documents" />
+    </fsc:external>
+  </fsc:allowedvalue>
+   <fsc:allowedvalue id="EQH001">
+    <fsc:internal value="EQH001" />
+    <fsc:external>
+      <fsc:display value="Date of Death Unknown" />
+    </fsc:external>
+  </fsc:allowedvalue>
+   <fsc:allowedvalue id="1000500044">
+  <fsc:internal value="1000500044" />
+  <fsc:external>
+    <fsc:display value="Bank Info for EFT not found" />
+  </fsc:external>
+</fsc:allowedvalue>
+<fsc:allowedvalue id="1000500045">
+  <fsc:internal value="1000500045" />
+  <fsc:external>
+    <fsc:display value="Allocation amount or percentage for payee is required"/>
+  </fsc:external>
+</fsc:allowedvalue>
+ </fsc:attribute-def>

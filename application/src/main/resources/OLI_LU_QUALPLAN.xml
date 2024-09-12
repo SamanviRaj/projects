@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fsc:attribute-def xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:fsc="http://base.accelerator.org/XSD/rf/core" xsi:schemaLocation="http://base.accelerator.org/XSD/rf/core uav" description="OLI_LU_QUALPLAN" name="OLI_LU_QUALPLAN" id="_71FkhWENEdyqDI5HrpW3Kg">
+  <fsc:type>
+    <fsc:fscstring maxLength="30"/>
+  </fsc:type>
+  <fsc:allowedvalue id="_D6JhgygJEeCaXsw6fcHnRw">
+    <fsc:internal value="0"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Unknown"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhhCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="1"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Non-qualified"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhhSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="2"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="401(k)"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhhigJEeCaXsw6fcHnRw">
+    <fsc:internal value="3"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="403(b) - Tax Sheltered Annuity"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhhygJEeCaXsw6fcHnRw">
+    <fsc:internal value="4"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="457 Deferred Compensation Plan"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhiCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="5"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Traditional IRA"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhiSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="6"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Roth IRA"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhiigJEeCaXsw6fcHnRw">
+    <fsc:internal value="7"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="IRA - Education"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhiygJEeCaXsw6fcHnRw">
+    <fsc:internal value="8"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="408(k) - SEP"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhjCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="9"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="RESP (Registered Education Savings Plan)"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhjSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="10"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="RRSP (Registered Retirement Savings Plan)"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhjigJEeCaXsw6fcHnRw">
+    <fsc:internal value="11"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="RRIF (Registered Retirement Income Fund)"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhjygJEeCaXsw6fcHnRw">
+    <fsc:internal value="12"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="ESOP (Employee Stock Ownership Plan)"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhkCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="13"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="H.R. 10"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhkSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="14"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Conforming to State President Regulation"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhkigJEeCaXsw6fcHnRw">
+    <fsc:internal value="15"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Non-conforming to State President Regulation"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhkygJEeCaXsw6fcHnRw">
+    <fsc:internal value="16"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Preservation Fund - Pension"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhlCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="17"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Preservation Fund - Provident"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhlSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="18"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Preferred Compensation"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhligJEeCaXsw6fcHnRw">
+    <fsc:internal value="20"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Spousal RRSP"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhlygJEeCaXsw6fcHnRw">
+    <fsc:internal value="21"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="LIF - Life Income Fund"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhmCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="22"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Spousal RRIF"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhmSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="23"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="RRTF"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhmigJEeCaXsw6fcHnRw">
+    <fsc:internal value="24"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Registered Home Ownership Savings Plan"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhmygJEeCaXsw6fcHnRw">
+    <fsc:internal value="25"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Deferred Profit Sharing Plan"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhnCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="26"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Group Registered Savings Plan"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhnSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="27"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Spousal Group Registered Savings Plan"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhnigJEeCaXsw6fcHnRw">
+    <fsc:internal value="28"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="RESP Family Plan"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhnygJEeCaXsw6fcHnRw">
+    <fsc:internal value="29"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="IRA - Roth Conversion"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhoCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="30"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="S.I.M.P.L.E. Qualified Plan - 408(b)"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhoSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="31"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Pension Trust Plan"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhoigJEeCaXsw6fcHnRw">
+    <fsc:internal value="32"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="VEBA/501(c)(9) Trust"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhoygJEeCaXsw6fcHnRw">
+    <fsc:internal value="33"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="IRA - Spousal"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhpCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="34"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Cash Balance Plan-Defined Contribution"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhpSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="35"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Cash Balance Plan-Defined Benefit"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhpigJEeCaXsw6fcHnRw">
+    <fsc:internal value="36"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Target Benefit Plan"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhpygJEeCaXsw6fcHnRw">
+    <fsc:internal value="37"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Foreign National"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhqCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="38"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Profit Sharing Plan"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhqSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="39"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Money Purchase"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhqigJEeCaXsw6fcHnRw">
+    <fsc:internal value="40"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="408(k) - SARSEP"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhqygJEeCaXsw6fcHnRw">
+    <fsc:internal value="41"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Texas ORP - Optional Retirement Program"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhrCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="42"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="403(a) - Qualified Employee Annuity Plan"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhrSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="43"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Non-transferable Qualified Annuity"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhrigJEeCaXsw6fcHnRw">
+    <fsc:internal value="44"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="401(a)"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhrygJEeCaXsw6fcHnRw">
+    <fsc:internal value="45"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Qualified, type unspecified"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhsCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="46"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Governmental"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhsSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="48"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="501(c)"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhsigJEeCaXsw6fcHnRw">
+    <fsc:internal value="49"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="415(m)"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhsygJEeCaXsw6fcHnRw">
+    <fsc:internal value="50"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Keogh / HR10"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhtCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="52"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Prescribed Registered Retirement Income Fund"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhtSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="53"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="IRA - Stretch"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhtigJEeCaXsw6fcHnRw">
+    <fsc:internal value="54"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="PVT"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhtygJEeCaXsw6fcHnRw">
+    <fsc:internal value="61"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="104(a) - Structured Settlement, Subsection Unspecified"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhuCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="67"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="414(h)"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhuSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="68"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="S.I.M.P.L.E. Qualified Plan - 401(k)"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhuigJEeCaXsw6fcHnRw">
+    <fsc:internal value="69"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="412(i) Plan"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhuygJEeCaXsw6fcHnRw">
+    <fsc:internal value="70"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="419 - Welfare Benefit Plan"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhvCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="77"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Roth 401(k)"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhvSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="78"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Roth 403(b)"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhvigJEeCaXsw6fcHnRw">
+    <fsc:internal value="100"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Untaxed Policyholder Fund"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhvygJEeCaXsw6fcHnRw">
+    <fsc:internal value="101"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Individual Policyholder Fund"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhwCgJEeCaXsw6fcHnRw">
+    <fsc:internal value="102"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Company-Owned Policyholder Fund"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_D6JhwSgJEeCaXsw6fcHnRw">
+    <fsc:internal value="2147483647"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Other"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_LIoo0V0iEeOZNt7-fcM8og">
+    <fsc:internal value="1000500001"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Non-qualified Life"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_XQ2F4F0kEeOZNt7-fcM8og">
+    <fsc:internal value="79"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="TFSA (Tax Free Savings Account)"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_ZdCQoF0kEeOZNt7-fcM8og">
+    <fsc:internal value="105"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Endowment"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_cwY3wF0kEeOZNt7-fcM8og">
+    <fsc:internal value="106"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Pension Fund"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_fpYeIF0kEeOZNt7-fcM8og">
+    <fsc:internal value="107"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Provident Fund"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:allowedvalue id="_ihxAgF0kEeOZNt7-fcM8og">
+    <fsc:internal value="108"/>
+    <fsc:external>
+      <fsc:display locale="EN" type="html" value="Variable Retirement Income Fund"/>
+    </fsc:external>
+  </fsc:allowedvalue>
+  <fsc:defaultvalue/>
+  <fsc:keysets>
+    <fsc:keyset name="Annuity">
+      <fsc:keyvalues>
+        <fsc:avref id="_D6JhhCgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhhSgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhiCgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhiygJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhoCgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhrigJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhrygJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhiSgJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhnygJEeCaXsw6fcHnRw"/>
+        <fsc:avref id="_D6JhhigJEeCaXsw6fcHnRw"/>
+      </fsc:keyvalues>
+    </fsc:keyset>
+    <fsc:keysetusage core_display_trans="null" core_system_trans="null" core_validation="null"/>
+  </fsc:keysets>
+</fsc:attribute-def>

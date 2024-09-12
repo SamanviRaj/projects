@@ -2,10 +2,7 @@ package com.eqh.application.service;
 
 import com.eqh.application.repository.PeriodicPayoutTransactionHistoryRepository;
 import com.eqh.application.repository.PolicyRepository;
-import com.eqh.application.utility.GovtIDStatusUtil;
-import com.eqh.application.utility.GovtIdTCodeUtil;
-import com.eqh.application.utility.PolicyStatusUtil;
-import com.eqh.application.utility.ResidenceStateUtil;
+import com.eqh.application.utility.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.poi.ss.usermodel.*;
@@ -190,6 +187,22 @@ public class PeriodicPayoutTransactionHistoryService {
             }
         }
 
+        // Transform suspendCode using SuspendCodeUtil
+        String transformedSuspendCode = SuspendCodeUtil.getSuspendCodeName(suspendCode);
+
+        // Transform QualPlanType using QualPlanUtil
+        String transformedQualPlanType = "Unknown";
+        if (productInfo.getQualPlanType() != null && !productInfo.getQualPlanType().trim().isEmpty()) {
+            try {
+                String qualPlanType = productInfo.getQualPlanType().trim();
+                transformedQualPlanType = QualPlanUtil.getDisplayName(Integer.parseInt(qualPlanType));
+            } catch (Exception e) {
+                logger.warn("Error transforming QualPlanType: " + productInfo.getQualPlanType(), e);
+            }
+        } else {
+            logger.warn("Empty or null QualPlanType: " + productInfo.getQualPlanType());
+        }
+
         // Transform taxableToResidenceState using ResidenceStateUtil
         String transformedResidenceState = "Unknown";
         if (taxableToResidenceState != null && !taxableToResidenceState.trim().isEmpty()) {
@@ -249,8 +262,8 @@ public class PeriodicPayoutTransactionHistoryService {
                 productInfo.getProductCode(),
                 polNumber,
                 transformedPolicyStatus, // Updated to use transformed value
-                productInfo.getQualPlanType(),
-                suspendCode,
+                transformedQualPlanType, // Updated to use transformed value
+                transformedSuspendCode, // Updated to use transformed value
                 taxablePartyNumber,
                 taxableToGovtID,
                 taxablePartyName,
@@ -258,8 +271,10 @@ public class PeriodicPayoutTransactionHistoryService {
                 transformedGovtIdTCode,
                 payeeStatus,
                 transformedResidenceState
-                );
+        );
     }
+
+
 
     private Date parseDate(String dateStr) {
         if (dateStr == null || dateStr.isEmpty()) {
