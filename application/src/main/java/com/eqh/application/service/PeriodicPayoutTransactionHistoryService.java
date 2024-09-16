@@ -1,5 +1,6 @@
 package com.eqh.application.service;
 
+import com.eqh.application.dto.Address;
 import com.eqh.application.repository.PeriodicPayoutTransactionHistoryRepository;
 import com.eqh.application.repository.PolicyRepository;
 import com.eqh.application.utility.*;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import com.eqh.application.feignClient.PartyClient;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,7 +37,7 @@ public class PeriodicPayoutTransactionHistoryService {
     private static final String[] HEADERS = {
             "runYear", "transRunDate","Management Code",  "Product Code", "polNumber", "Policy Status",
             "QualPlanType","Suspend Code","Party ID", "Party Full Name","Govt ID", "Govt ID Status",
-            "govt ID Type Code","payeeStatus", "Residence State"
+            "govt ID Type Code","payeeStatus", "Residence State" , "Residence Country"
     };
 
     private final PeriodicPayoutTransactionHistoryRepository repository;
@@ -45,14 +47,18 @@ public class PeriodicPayoutTransactionHistoryService {
     private final SimpleDateFormat displayDateFormat = new SimpleDateFormat(DATE_FORMAT_FOR_DISPLAY);
     private final DecimalFormat currencyFormat = new DecimalFormat(CURRENCY_FORMAT);
 
+    private final PartyClient partyClient;
+
     @Autowired
     public PeriodicPayoutTransactionHistoryService(
             PeriodicPayoutTransactionHistoryRepository repository,
             PolicyRepository policyRepository,
-            ObjectMapper objectMapper) {
+            ObjectMapper objectMapper,
+            PartyClient partyClient) {
         this.repository = repository;
         this.policyRepository = policyRepository;
         this.objectMapper = objectMapper;
+        this.partyClient = partyClient;
     }
 
     public byte[] getMessageImagesAsJson() throws IOException {
@@ -161,6 +167,7 @@ public class PeriodicPayoutTransactionHistoryService {
         String taxableToGovtIdTCode = "";
         String taxableToResidenceState = "";
         String payeeStatus = "";
+        String taxableToResidenceCountry = "";
 
         // Process payeePayouts array
         JsonNode payeePayoutsNode = jsonNode.path("payeePayouts");
@@ -175,6 +182,7 @@ public class PeriodicPayoutTransactionHistoryService {
                 taxableToGovtIdTCode = payout.path("taxableToGovtIdTC").asText(taxableToGovtIdTCode); // Use last non-empty value
                 taxableToResidenceState = payout.path("taxableToResidenceState").asText(taxableToResidenceState); // Use last non-empty value
                 payeeStatus = payout.path("payeeStatus").asText(payeeStatus); // Use last non-empty value
+                taxableToResidenceCountry = payout.path("taxableToResidenceCountry").asText(taxableToResidenceCountry);
             }
         }
 
@@ -214,6 +222,20 @@ public class PeriodicPayoutTransactionHistoryService {
             }
         } else {
             logger.warn("Empty or null residence state code: " + taxableToResidenceState);
+        }
+
+
+        // Transform taxableToResidenceCountry using ResidenceStateUtil
+        String transformedResidenceCountry = "Unknown";
+        if (taxableToResidenceCountry != null && !taxableToResidenceCountry.trim().isEmpty()) {
+            try {
+                int residenceCountryCode = Integer.parseInt(taxableToResidenceCountry.trim());
+                transformedResidenceCountry = ResidenceCountryUtil.getCountryName(residenceCountryCode);
+            } catch (NumberFormatException e) {
+                logger.warn("Invalid residence state code: " + taxableToResidenceCountry, e);
+            }
+        } else {
+            logger.warn("Empty or null residence state code: " + taxableToResidenceCountry);
         }
 
         // Transform taxableToGovtIDStatus using GovtIDStatusUtil
@@ -273,7 +295,8 @@ public class PeriodicPayoutTransactionHistoryService {
                 transformedGovtIDStatus,
                 transformedGovtIdTCode,
                 transformedPayeeStatus, // Updated to use transformed value
-                transformedResidenceState
+                transformedResidenceState,
+                transformedResidenceCountry
         );
     }
 
