@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Service
 public class PeriodicPayoutTransactionHistoryService {
@@ -37,7 +38,8 @@ public class PeriodicPayoutTransactionHistoryService {
     private static final String[] HEADERS = {
             "runYear", "transRunDate","Management Code",  "Product Code", "polNumber", "Policy Status",
             "QualPlanType","Suspend Code","Party ID", "Party Full Name","Govt ID", "Govt ID Status",
-            "govt ID Type Code","payeeStatus", "Residence State" , "Residence Country"
+            "govt ID Type Code","payeeStatus", "Residence State" , "Residence Country", "preferredMailingAddress",
+            "mailingAddress"
     };
 
     private final PeriodicPayoutTransactionHistoryRepository repository;
@@ -84,6 +86,8 @@ public class PeriodicPayoutTransactionHistoryService {
                         }
                 ));
 
+
+
         // Convert the map to JSON
         return objectMapper.writeValueAsBytes(messageImages);
     }
@@ -112,15 +116,98 @@ public class PeriodicPayoutTransactionHistoryService {
         // Fetch product info for all policy numbers
         Map<String, ProductInfo> productInfoMap = fetchProductInfoForPolicyNumbers(policyNumbers);
 
+        // Extract unique taxablePartyNumbers
+        Set<String> uniqueTaxablePartyNumbers = data.stream()
+                .map(row -> {
+                    try {
+                        JsonNode jsonNode = objectMapper.readTree((String) row[0]);
+                        JsonNode payeePayoutsNode = jsonNode.path("payeePayouts");
+                        Set<String> taxablePartyNumbers = new HashSet<>();
+                        if (payeePayoutsNode.isArray()) {
+                            for (JsonNode payoutNode : payeePayoutsNode) {
+                                String taxablePartyNumber = payoutNode.path("taxablePartyNumber").asText();
+                                if (!taxablePartyNumber.isEmpty()) {
+                                    taxablePartyNumbers.add(taxablePartyNumber);
+                                }
+                            }
+                        }
+                        return taxablePartyNumbers;
+                    } catch (IOException e) {
+                        logger.error("Error parsing JSON for row: " + Arrays.toString(row), e);
+                        return new HashSet<String>();
+                    }
+                })
+                .flatMap(Set::stream) // Flatten the set of sets
+                .collect(Collectors.toSet()); // Collect unique taxablePartyNumbers
+
+        // Print unique taxablePartyNumbers
+        System.out.println("Unique Taxable Party Numbers:");
+        uniqueTaxablePartyNumbers.forEach(System.out::println);
+
+        Map<String, Map<String, String>> mailingAddressesMap = fetchMailingAddressesForTaxablePartyNumbers(uniqueTaxablePartyNumbers);
+
+        // Transform data
         // Transform data
         List<List<Object>> transformedData = data.stream()
-                .map(row -> processRow(row, productInfoMap))
+                .map(row -> processRow(row, productInfoMap, mailingAddressesMap))
                 .collect(Collectors.toList());
 
         String timestamp = new SimpleDateFormat(DATE_FORMAT).format(new Date());
 
         return generateExcelReportAsBytes(transformedData, timestamp);
     }
+
+    public Map<String, Map<String, String>> fetchMailingAddressesForTaxablePartyNumbers(Set<String> uniqueTaxablePartyNumbers) {
+        // Initialize a map to hold the mailing addresses for each taxable party number
+        Map<String, Map<String, String>> mailingAddressesMap = new HashMap<>();
+
+        for (String taxablePartyNumber : uniqueTaxablePartyNumbers) {
+            // Fetch addresses using Feign client
+            List<Address> addresses = Collections.emptyList();
+            if (taxablePartyNumber != null) {
+                addresses = partyClient.getAddresses(taxablePartyNumber);
+            }
+
+            // Process addresses to get preferred and non-preferred mailing addresses
+            String preferredMailingAddress = getFormattedAddress(
+                    addresses.stream().filter(Address::getPrefAddr).findFirst().orElse(null)
+            );
+
+            String mailingAddress = getFormattedAddress(
+                    addresses.stream().filter(address -> !address.getPrefAddr()).findFirst().orElse(null)
+            );
+
+            // Store the addresses in the map
+            Map<String, String> addressesMap = new HashMap<>();
+            addressesMap.put("preferredAddress", preferredMailingAddress);
+            addressesMap.put("mailingAddress", mailingAddress);
+
+            mailingAddressesMap.put(taxablePartyNumber, addressesMap);
+        }
+
+        return mailingAddressesMap;
+    }
+
+    private String getFormattedAddress(Address address) {
+        if (address == null) {
+            return "";
+        }
+
+        return Stream.of(
+                        formatLine("Line 1", address.getLine1()),
+                        formatLine("Line 2", address.getLine2()),
+                        formatLine("Line 3", address.getLine3()),
+                        formatLine("Line 4", address.getLine4()),
+                        formatLine("Line 5", address.getLine5()),
+                        formatLine("Zip", address.getZip())
+                ).filter(s -> !s.isEmpty())
+                .collect(Collectors.joining(" "));
+    }
+
+    private String formatLine(String label, String value) {
+        return (value != null) ? label + ": " + value + " " : "";
+    }
+
 
     private Map<String, ProductInfo> fetchProductInfoForPolicyNumbers(Set<String> policyNumbers) {
         // Convert Set to List
@@ -137,7 +224,7 @@ public class PeriodicPayoutTransactionHistoryService {
                 ));
     }
 
-    private List<Object> processRow(Object[] row, Map<String, ProductInfo> productInfoMap) {
+    private List<Object> processRow(Object[] row, Map<String, ProductInfo> productInfoMap, Map<String, Map<String, String>> mailingAddressesMap) {
         JsonNode jsonNode;
         try {
             jsonNode = objectMapper.readTree((String) row[0]);
@@ -280,6 +367,11 @@ public class PeriodicPayoutTransactionHistoryService {
         // Transform payeeStatus using PayeeStatusUtil
         String transformedPayeeStatus = PayeeStatusUtil.getDisplayName(Integer.parseInt(payeeStatus.trim()));
 
+        // Retrieve addresses from the map
+        Map<String, String> addressesMap = mailingAddressesMap.getOrDefault(taxablePartyNumber, new HashMap<>());
+        String preferredMailingAddress = addressesMap.getOrDefault("preferredAddress", "");
+        String mailingAddress = addressesMap.getOrDefault("mailingAddress", "");
+
         return Arrays.asList(
                 runYear,
                 formatDate(transRunDate),
@@ -296,7 +388,9 @@ public class PeriodicPayoutTransactionHistoryService {
                 transformedGovtIdTCode,
                 transformedPayeeStatus, // Updated to use transformed value
                 transformedResidenceState,
-                transformedResidenceCountry
+                transformedResidenceCountry,
+                preferredMailingAddress,
+                mailingAddress
         );
     }
 
