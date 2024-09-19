@@ -20,6 +20,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import com.eqh.application.feignClient.PartyClient;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -64,7 +65,9 @@ public class PeriodicPayoutTransactionHistoryService {
     }
 
     public byte[] getMessageImagesAsJson() throws IOException {
-        List<Object[]> transactions = repository.findCustomPayoutDeathClaimTransactions();
+        LocalDateTime startDate = LocalDateTime.of(2024, 7, 15, 0, 0);
+
+        List<Object[]> transactions = repository.findCustomPayoutDeathClaimTransactions(startDate);
 
         // Map to hold message images
         Map<String, JsonNode> messageImages = transactions.stream()
@@ -93,7 +96,8 @@ public class PeriodicPayoutTransactionHistoryService {
     }
 
     public byte[] generateReportAsBytes() throws IOException {
-        List<Object[]> data = repository.findCustomPayoutDeathClaimTransactions();
+        LocalDateTime startDate = LocalDateTime.of(2024, 7, 15, 0, 0);
+        List<Object[]> data = repository.findCustomPayoutDeathClaimTransactions(startDate);
 
         if (data.isEmpty()) {
             throw new IOException("No data found for the report.");
