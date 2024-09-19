@@ -78,6 +78,19 @@ public class TransactionHistoryController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("periodicpayout/generate-report-chunk")
+    public ResponseEntity<String> periodicPayoutGenerateReport(@RequestParam(defaultValue = "1000") int chunkSize) {
+        try {
+            // Start the report generation in a separate thread
+            periodicPayoutTransactionHistoryService.generateReportInChunks(chunkSize);
+            return new ResponseEntity<>("Report generation started. You will be notified when it's complete.", HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error starting report generation", e);
+            return new ResponseEntity<>("Error starting report generation", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/download-json")
     public ResponseEntity<byte[]> downloadJson() {
         try {
@@ -100,7 +113,7 @@ public class TransactionHistoryController {
     /**
      * Endpoint to download message_image data as a JSON file.
      *
-     * @param years List of years to filter the transactions.
+     * @param
      * @return A ResponseEntity with the JSON file.
      */
     @GetMapping("periodicpayout/download-json")
