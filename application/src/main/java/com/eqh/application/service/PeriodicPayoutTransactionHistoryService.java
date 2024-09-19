@@ -1,8 +1,12 @@
 package com.eqh.application.service;
 
 import com.eqh.application.dto.Address;
-import com.eqh.application.repository.PeriodicPayoutTransactionHistoryRepository;
-import com.eqh.application.repository.PolicyRepository;
+import com.eqh.application.dto.ProductInfo;
+import com.eqh.application.entity.PayoutPaymentHistory;
+import com.eqh.application.entity.PayoutPaymentHistoryAdjustment;
+import com.eqh.application.entity.PayoutPaymentHistoryDeduction;
+import com.eqh.application.entity.Policy;
+import com.eqh.application.repository.*;
 import com.eqh.application.utility.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,19 +53,35 @@ public class PeriodicPayoutTransactionHistoryService {
     private final SimpleDateFormat excelDateFormat = new SimpleDateFormat(DATE_FORMAT_FOR_EXCEL);
     private final SimpleDateFormat displayDateFormat = new SimpleDateFormat(DATE_FORMAT_FOR_DISPLAY);
     private final DecimalFormat currencyFormat = new DecimalFormat(CURRENCY_FORMAT);
-
     private final PartyClient partyClient;
+    private final PayoutPaymentHistoryRepository payoutPaymentHistoryRepository;
+    private final PolicyPayoutRepository policyPayoutRepository;
+    private final PayoutPayeeRepository payoutPayeeRepository;
+
+    private final PayoutPaymentHistoryAdjustmentRepository payoutPaymentHistoryAdjustmentRepository;
+
+    private final PayoutPaymentHistoryDeductionRepository payoutPaymentHistoryDeductionRepository;
 
     @Autowired
     public PeriodicPayoutTransactionHistoryService(
             PeriodicPayoutTransactionHistoryRepository repository,
             PolicyRepository policyRepository,
             ObjectMapper objectMapper,
-            PartyClient partyClient) {
+            PartyClient partyClient,
+            PayoutPaymentHistoryRepository payoutPaymentHistoryRepository,
+            PolicyPayoutRepository policyPayoutRepository,
+            PayoutPayeeRepository payoutPayeeRepository,
+            PayoutPaymentHistoryAdjustmentRepository payoutPaymentHistoryAdjustmentRepository,
+            PayoutPaymentHistoryDeductionRepository payoutPaymentHistoryDeductionRepository) {
         this.repository = repository;
         this.policyRepository = policyRepository;
         this.objectMapper = objectMapper;
         this.partyClient = partyClient;
+        this.payoutPaymentHistoryRepository = payoutPaymentHistoryRepository;
+        this.policyPayoutRepository = policyPayoutRepository;
+        this.payoutPayeeRepository = payoutPayeeRepository;
+        this.payoutPaymentHistoryAdjustmentRepository = payoutPaymentHistoryAdjustmentRepository;
+        this.payoutPaymentHistoryDeductionRepository = payoutPaymentHistoryDeductionRepository;
     }
 
     public byte[] getMessageImagesAsJson() throws IOException {
@@ -376,6 +396,31 @@ public class PeriodicPayoutTransactionHistoryService {
         String preferredMailingAddress = addressesMap.getOrDefault("preferredAddress", "");
         String mailingAddress = addressesMap.getOrDefault("mailingAddress", "");
 
+        // Fetch Policy by polNumber
+       /* Long policyId = policyRepository.findPolicyByNumberAndStatus(polNumber);
+        Long policyPayoutId = policyPayoutRepository.findPolicyPayoutByPolicyId(policyId);
+        // Fetch PayoutPayee by taxablePartyNumber
+        Long payoutPayeeId = payoutPayeeRepository.findPayoutPayeeByPolicyPayoutIdAndPartyNumber(policyPayoutId, String.valueOf(taxablePartyNumber));
+        // Fetch PayoutPaymentHistory by policyPayoutId and payoutPayeeId
+        List<PayoutPaymentHistory> payoutPaymentHistory = payoutPaymentHistoryRepository.findPayoutPaymentHistoryByPayeePartyNumberAndPayeeId(String.valueOf(taxablePartyNumber), payoutPayeeId);*/
+
+        // I want to call PayoutPaymentHistoryAdjustmentRepository  and PayoutPaymentHistoryDeductionRepository by passing above polNumber and taxablePartyNumber
+        List<PayoutPaymentHistoryAdjustment> payoutPaymentHistoryAdjustment = payoutPaymentHistoryAdjustmentRepository.findByPayeePartyNumberAndPolicyNumber(polNumber, String.valueOf(taxablePartyNumber));
+        List<PayoutPaymentHistoryDeduction> payoutPaymentHistoryDeduction = payoutPaymentHistoryDeductionRepository.findByPayeePartyNumberAndPolicyNumber(polNumber, String.valueOf(taxablePartyNumber));
+
+        // Print PayoutPaymentHistoryAdjustment list
+        System.out.println("Payout Payment History Adjustments:");
+        payoutPaymentHistoryAdjustment.forEach(adjustment ->
+                System.out.println(" - " + adjustment)
+        );
+
+        // Print PayoutPaymentHistoryDeduction list
+        System.out.println("Payout Payment History Deductions:");
+        payoutPaymentHistoryDeduction.forEach(deduction ->
+                System.out.println(" - " + deduction)
+        );
+
+
         return Arrays.asList(
                 runYear,
                 formatDate(transRunDate),
@@ -479,34 +524,4 @@ public class PeriodicPayoutTransactionHistoryService {
         IntStream.range(0, numberOfColumns).forEach(sheet::autoSizeColumn);
     }
 
-    // Helper class to store product information
-    private static class ProductInfo {
-        private final String managementCode;
-        private final String policyStatus;
-        private final String productCode;
-
-        private final String qualPlanType;
-
-        public ProductInfo(String managementCode, String policyStatus, String productCode,String qual_plan_type) {
-            this.managementCode = managementCode;
-            this.policyStatus = policyStatus;
-            this.productCode = productCode;
-            this.qualPlanType =  qual_plan_type;
-        }
-
-        public String getManagementCode() {
-            return managementCode;
-        }
-
-        public String getPolicyStatus() {
-            return policyStatus;
-        }
-
-        public String getProductCode() {
-            return productCode;
-        }
-        public String getQualPlanType() {
-            return qualPlanType;
-        }
-    }
 }
