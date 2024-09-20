@@ -2,159 +2,157 @@ package com.eqh.application.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "payout_payee", schema = "public")
+@Table(name = "PAYOUT_PAYEE", schema = "public")
 public class PayoutPayee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "banking_number", length = 15)
+    @Column(name = "banking_number")
     private String bankingNumber;
 
-    @Column(name = "capital_gains", precision = 17, scale = 2)
+    @Column(name = "capital_gains")
     private BigDecimal capitalGains;
 
-    @Column(name = "combine_payouts", nullable = false)
+    @Column(name = "combine_payouts")
     private Boolean combinePayouts;
 
-    @Column(name = "disburse_to_payee", nullable = false)
+    @Column(name = "disburse_to_payee")
     private Boolean disburseToPayee;
 
-    @Column(name = "distribution_code", length = 10)
+    @Column(name = "distribution_code")
     private String distributionCode;
 
-    @Column(name = "distribution_pct", precision = 9, scale = 3)
+    @Column(name = "distribution_pct")
     private BigDecimal distributionPct;
-
-    @Column(name = "do_not_withhold_for_federal")
-    private Boolean doNotWithholdForFederal;
 
     @Column(name = "do_not_withhold_for_state")
     private Boolean doNotWithholdForState;
 
-    @Column(name = "due_and_unpaid_amt", precision = 17, scale = 2)
+    @Column(name = "due_and_unpaid_amt")
     private BigDecimal dueAndUnpaidAmt;
 
-    @Column(name = "federal_deduction_other_than_standard", precision = 17, scale = 2)
-    private BigDecimal federalDeductionOtherThanStandard;
-
-    @Column(name = "federal_dependents_other_credit_amt", precision = 17, scale = 2)
-    private BigDecimal federalDependentsOtherCreditAmt;
-
-    @Column(name = "federal_other_income_pension_amt", precision = 17, scale = 2)
-    private BigDecimal federalOtherIncomePensionAmt;
-
-    @Column(name = "federal_other_than_job_pension_income_amt", precision = 17, scale = 2)
-    private BigDecimal federalOtherThanJobPensionIncomeAmt;
-
-    @Column(name = "federal_standard_deduction_ind")
-    private Boolean federalStandardDeductionInd;
-
-    @Column(name = "federal_withholding_additional_amt", precision = 17, scale = 2)
+    @Column(name = "federal_withholding_additional_amt")
     private BigDecimal federalWithholdingAdditionalAmt;
 
-    @Column(name = "federal_withholding_override_amt", precision = 17, scale = 2)
+    @Column(name = "federal_withholding_override_amt")
     private BigDecimal federalWithholdingOverrideAmt;
 
-    @Column(name = "garnishment_memo", length = 40)
-    private String garnishmentMemo;
-
-    @Column(name = "inhibit_tax_reporting", nullable = false)
+    @Column(name = "inhibit_tax_reporting")
     private Boolean inhibitTaxReporting;
 
-    @Column(name = "legal_representative", length = 10)
+    @Column(name = "legal_representative")
     private String legalRepresentative;
 
-    @Column(name = "marital_filing_status_federal", length = 10)
+    @Column(name = "marital_filing_status_federal")
     private String maritalFilingStatusFederal;
 
-    @Column(name = "marital_filing_status_state", length = 10)
+    @Column(name = "marital_filing_status_state")
     private String maritalFilingStatusState;
 
     @Column(name = "number_of_federal_primary_exemptions")
-    private Short numberOfFederalPrimaryExemptions;
+    private Integer numberOfFederalPrimaryExemptions;
 
     @Column(name = "number_of_state_blind_exemptions")
-    private Short numberOfStateBlindExemptions;
+    private Integer numberOfStateBlindExemptions;
 
     @Column(name = "number_of_state_pensioner_exemptions")
-    private Short numberOfStatePensionerExemptions;
+    private Integer numberOfStatePensionerExemptions;
 
     @Column(name = "number_of_state_primary_exemptions")
-    private Short numberOfStatePrimaryExemptions;
+    private Integer numberOfStatePrimaryExemptions;
 
     @Column(name = "number_of_state_secondary_exemptions")
-    private Short numberOfStateSecondaryExemptions;
+    private Integer numberOfStateSecondaryExemptions;
 
-    @Column(name = "payable_to1party_number", length = 15)
-    private String payableTo1PartyNumber;
+    @Column(name = "payable_to1party_number")
+    private String payableTo1partyNumber;
 
-    @Column(name = "payable_to2party_number", length = 15)
-    private String payableTo2PartyNumber;
+    @Column(name = "payable_to2party_number")
+    private String payableTo2partyNumber;
 
-    @Column(name = "payee_amt", precision = 17, scale = 2)
+    @Column(name = "payee_amt")
     private BigDecimal payeeAmt;
 
-    @Column(name = "payee_amt_type", length = 10)
+    @Column(name = "payee_amt_type")
     private String payeeAmtType;
 
-    @Column(name = "payee_is_annuitant", nullable = false)
+    @Column(name = "payee_is_annuitant")
     private Boolean payeeIsAnnuitant;
 
-    @Column(name = "payee_party_number", length = 15, nullable = false)
+    @Column(name = "payee_party_number", nullable = false)
     private String payeePartyNumber;
 
-    @Column(name = "payee_pct", precision = 9, scale = 3)
+    @Column(name = "payee_pct")
     private BigDecimal payeePct;
 
-    @Column(name = "payee_status", length = 10)
+    @Column(name = "payee_status")
     private String payeeStatus;
 
-    @Column(name = "payment_form", length = 10)
+    @Column(name = "payment_form")
     private String paymentForm;
 
-    @Column(name = "policy_payout_id")
-    private Long policyPayoutId;
-
-    @Column(name = "reason_code", length = 10)
-    private String reasonCode;
-
-    @Column(name = "state_withholding_additional_amt", precision = 17, scale = 2)
+    @Column(name = "state_withholding_additional_amt")
     private BigDecimal stateWithholdingAdditionalAmt;
 
-    @Column(name = "state_withholding_override_amt", precision = 17, scale = 2)
+    @Column(name = "state_withholding_override_amt")
     private BigDecimal stateWithholdingOverrideAmt;
 
-    @Column(name = "tax_disbursement_type", length = 10)
+    @Column(name = "tax_disbursement_type")
     private String taxDisbursementType;
 
-    @Column(name = "tax_form", length = 10)
+    @Column(name = "tax_form")
     private String taxForm;
 
-    @Column(name = "taxable_to", length = 10)
+    @Column(name = "taxable_to")
     private String taxableTo;
 
-    @Column(name = "update_timestamp", nullable = false)
-    private LocalDateTime updateTimestamp;
-
-    @Column(name = "wager_type", length = 10)
+    @Column(name = "wager_type")
     private String wagerType;
 
     @Column(name = "wager_won_date")
     private LocalDate wagerWonDate;
-}
 
+    @Column(name = "policy_payout_id")
+    private Long policyPayoutId;
+
+    @Column(name = "update_timestamp", nullable = false)
+    private LocalDateTime updateTimestamp;
+
+    @Column(name = "reason_code")
+    private String reasonCode;
+
+    @Column(name = "garnishment_memo")
+    private String garnishmentMemo;
+
+    @Column(name = "do_not_withhold_for_federal")
+    private Boolean doNotWithholdForFederal;
+
+    @Column(name = "federal_deduction_other_than_standard")
+    private BigDecimal federalDeductionOtherThanStandard;
+
+    @Column(name = "federal_dependents_other_credit_amt")
+    private BigDecimal federalDependentsOtherCreditAmt;
+
+    @Column(name = "federal_other_income_pension_amt")
+    private BigDecimal federalOtherIncomePensionAmt;
+
+    @Column(name = "federal_other_than_job_pension_income_amt")
+    private BigDecimal federalOtherThanJobPensionIncomeAmt;
+
+    @Column(name = "federal_standard_deduction_ind")
+    private Boolean federalStandardDeductionInd;
+}

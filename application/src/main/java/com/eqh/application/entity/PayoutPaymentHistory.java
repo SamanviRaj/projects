@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Builder
@@ -242,7 +243,7 @@ public class PayoutPaymentHistory {
     private Long paymentHistorySeq;
 
     @Column(name = "payout_due_date")
-    private LocalDate payoutDueDate;
+    private Date payoutDueDate;
 
     @Column(name = "payout_extract_date")
     private LocalDate payoutExtractDate;
