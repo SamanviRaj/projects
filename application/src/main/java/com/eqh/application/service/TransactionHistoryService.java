@@ -4,6 +4,7 @@ import com.eqh.application.dto.Address;
 import com.eqh.application.feignClient.PartyClient;
 import com.eqh.application.repository.PolicyRepository;
 import com.eqh.application.repository.TransactionHistoryRepository;
+import com.eqh.application.utility.GovtIdTCodeUtil;
 import com.eqh.application.utility.ResidenceCountryUtil;
 import com.eqh.application.utility.ResidenceStateUtil;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -189,6 +190,19 @@ public class TransactionHistoryService {
             }
         }
 
+        // Transform taxableToGovtIdTCode using GovtIdTCodeUtil
+        String transformedGovtIdTCode = "Unknown";
+        if (govtIdTC != null && !govtIdTC.trim().isEmpty()) {
+            try {
+                int govtIdTCode = Integer.parseInt(govtIdTC.trim());
+                transformedGovtIdTCode = GovtIdTCodeUtil.getIdTCodeName(govtIdTCode);
+            } catch (NumberFormatException e) {
+                logger.warn("Invalid government ID type code: " + transformedGovtIdTCode, e);
+            }
+        } else {
+            logger.warn("Empty or null government ID type code: " + transformedGovtIdTCode);
+        }
+
         // Extract financial amounts
         BigDecimal settlementInterestAmt = Optional.ofNullable(dest.get("settlementInterestAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
         BigDecimal lateInterestAmt = Optional.ofNullable(dest.get("lateInterestAmt")).map(JsonNode::decimalValue).orElse(BigDecimal.ZERO);
@@ -257,6 +271,7 @@ public class TransactionHistoryService {
                 formatDate(transRunDate),
                 partyNumber,
                 govtID,
+                transformedGovtIdTCode,
                 firstName,
                 lastName,
                 formatBigDecimal(deathBenefitPayoutAmt),//Gross Amount
@@ -336,7 +351,7 @@ public class TransactionHistoryService {
         Row headerRow = sheet.createRow(0);
         String[] headers = {
                 "Run Year" ,"Product Code", "Policy Number", "Transaction Effective Date", "Transaction Run Date",
-                "Party Id", "govtID","First Name", "Last Name","Gross Amount", "Federal Withholding Amount", "State Withholding Amount",
+                "Party Id", "govtID","GovtIdTC","First Name", "Last Name","Gross Amount", "Federal Withholding Amount", "State Withholding Amount",
                 "Settlement Interest Amount", "Late Interest Amount","Residence State","Organization","residenceCountry",
                 "Preferred Mailing Address","mailingAddress"
         };
