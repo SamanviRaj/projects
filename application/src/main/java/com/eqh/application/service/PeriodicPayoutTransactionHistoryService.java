@@ -38,6 +38,7 @@ public class PeriodicPayoutTransactionHistoryService {
     private static final String DATE_FORMAT_FOR_DISPLAY = "dd/MM/yyyy";
     private static final String CURRENCY_FORMAT = "$#,##0.00";
 
+
     private static final String[] HEADERS = {
             "runYear", "transRunDate","Management Code",  "Product Code", "polNumber", "Policy Status",
             "QualPlanType","Suspend Code","Party ID", "Party Full Name","Govt ID", "Govt ID Status",
@@ -53,7 +54,7 @@ public class PeriodicPayoutTransactionHistoryService {
 
     private final PeriodicPayoutTransactionHistoryRepository repository;
     private final PolicyRepository policyRepository;
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
     private final SimpleDateFormat excelDateFormat = new SimpleDateFormat(DATE_FORMAT_FOR_EXCEL);
     private final SimpleDateFormat displayDateFormat = new SimpleDateFormat(DATE_FORMAT_FOR_DISPLAY);
     private final DecimalFormat currencyFormat = new DecimalFormat(CURRENCY_FORMAT);
@@ -65,20 +66,7 @@ public class PeriodicPayoutTransactionHistoryService {
     private final PayoutPaymentHistoryAdjustmentRepository payoutPaymentHistoryAdjustmentRepository;
 
     private final PayoutPaymentHistoryDeductionRepository payoutPaymentHistoryDeductionRepository;
-
-    private final ytdResponse ytdResponse;
-    com.eqh.application.dto.ytdResponse ytdResult = new com.eqh.application.dto.ytdResponse();
-
-    String taxablePartyNumber = "";
-    String endDate = "";
-    String taxableToGovtID = "";
-    String taxablePartyName = "";
-    String taxableToGovtIDStatus = "";
-    String taxableToGovtIdTCode = "";
-    String taxableToResidenceState = "";
-    String payeeStatus = "";
-    String taxableToResidenceCountry = "";
-
+    private ytdResponse ytdObj = new ytdResponse();
 
     @Autowired
     public PeriodicPayoutTransactionHistoryService(
@@ -90,17 +78,16 @@ public class PeriodicPayoutTransactionHistoryService {
             PolicyPayoutRepository policyPayoutRepository,
             PayoutPayeeRepository payoutPayeeRepository,
             PayoutPaymentHistoryAdjustmentRepository payoutPaymentHistoryAdjustmentRepository,
-            PayoutPaymentHistoryDeductionRepository payoutPaymentHistoryDeductionRepository,
-            ytdResponse ytdResponse) {
+            PayoutPaymentHistoryDeductionRepository payoutPaymentHistoryDeductionRepository) {
         this.repository = repository;
         this.policyRepository = policyRepository;
+        this.objectMapper = objectMapper;
         this.partyClient = partyClient;
         this.payoutPaymentHistoryRepository = payoutPaymentHistoryRepository;
         this.policyPayoutRepository = policyPayoutRepository;
         this.payoutPayeeRepository = payoutPayeeRepository;
         this.payoutPaymentHistoryAdjustmentRepository = payoutPaymentHistoryAdjustmentRepository;
         this.payoutPaymentHistoryDeductionRepository = payoutPaymentHistoryDeductionRepository;
-        this.ytdResponse = ytdResponse;
     }
 
     public byte[] getMessageImagesAsJson() throws IOException {
@@ -136,13 +123,11 @@ public class PeriodicPayoutTransactionHistoryService {
     }
 
     public byte[] generateReportAsBytes() throws IOException {
-//        LocalDate localStartDate = LocalDate.of(2024, 7, 15); // Adjust to the date you are querying
+        LocalDate localStartDate = LocalDate.of(2024, 7, 15); // Adjust to the date you are querying
 
-        LocalDate startDate = LocalDate.of(2024, 7, 15);
-        LocalDate endDate = LocalDate.of(2024, 7, 16);
-        logger.info("Fetching payout transactions from {} to {}", startDate, endDate);
-//        logger.info("Fetching payout transactions from {} ", localStartDate);
-        List<Object[]> data = repository.findPayoutTransactionsInRange(startDate.atStartOfDay(), endDate.atStartOfDay());
+//        LocalDateTime startDate = LocalDateTime.of(2021, 1, 1, 0, 0);
+//        LocalDateTime endDate = LocalDateTime.of(2022, 1, 1, 0, 0);
+        List<Object[]> data = repository.findPayoutTransactionsInRange(localStartDate.atStartOfDay());
 
         if (data.isEmpty()) {
             throw new IOException("No data found for the report.");
@@ -198,7 +183,7 @@ public class PeriodicPayoutTransactionHistoryService {
         // Transform data
         // Transform data
         List<List<Object>> transformedData = data.stream()
-                .map(row -> processRow(row, productInfoMap, mailingAddressesMap, ytdResponse))
+                .map(row -> processRow(row, productInfoMap, mailingAddressesMap))
                 .collect(Collectors.toList());
 
         String timestamp = new SimpleDateFormat(DATE_FORMAT).format(new Date());
@@ -273,7 +258,7 @@ public class PeriodicPayoutTransactionHistoryService {
                 ));
     }
 
-    private List<Object> processRow(Object[] row, Map<String, ProductInfo> productInfoMap, Map<String, Map<String, String>> mailingAddressesMap,ytdResponse ytd) {
+    private List<Object> processRow(Object[] row, Map<String, ProductInfo> productInfoMap, Map<String, Map<String, String>> mailingAddressesMap) {
         JsonNode jsonNode;
         try {
             jsonNode = objectMapper.readTree((String) row[0]);
@@ -296,10 +281,18 @@ public class PeriodicPayoutTransactionHistoryService {
         BigDecimal federalNonTaxableAmt = BigDecimal.ZERO;
         BigDecimal grossAmt = BigDecimal.ZERO;
         BigDecimal modalBenefit = BigDecimal.ZERO;
+        String taxablePartyNumber = "";
+        String endDate = "";
+        String taxableToGovtID = "";
+        String taxablePartyName = "";
+        String taxableToGovtIDStatus = "";
+        String taxableToGovtIdTCode = "";
+        String taxableToResidenceState = "";
+        String payeeStatus = "";
+        String taxableToResidenceCountry = "";
 
         // Process payeePayouts array
         JsonNode payeePayoutsNode = jsonNode.path("payeePayouts");
-        printJsonNode(payeePayoutsNode);
         if (payeePayoutsNode.isArray()) {
             for (JsonNode payout : payeePayoutsNode) {
                 federalNonTaxableAmt = federalNonTaxableAmt.add(payout.path("federalNonTaxableAmt").decimalValue());
@@ -433,6 +426,9 @@ public class PeriodicPayoutTransactionHistoryService {
         Long policyId = policyRepository.findPolicyByNumberAndStatus(polNumber);
         Long policyPayoutId = policyPayoutRepository.findPolicyPayoutByPolicyId(policyId);
 
+        // Fetch PayoutPayee by taxablePartyNumber
+//        List<PayoutPayee>  payoutPayee = payoutPayeeRepository.findPayoutPayeeByPolicyPayoutIdAndPartyNumber(policyPayoutId);
+
         PayoutPayee payoutPayeeObj = new PayoutPayee();
         List<PayoutPayee> payoutPayeeList = payoutPayeeRepository.findPayoutPayeeByPolicyPayoutIdAndPartyNumber(policyPayoutId);
         for (PayoutPayee payoutPayees : payoutPayeeList) {
@@ -457,7 +453,7 @@ public class PeriodicPayoutTransactionHistoryService {
         List<Long> paymentHistoryDeductionIds = payoutPaymentHistoryDeductionRepository.findAllPaymentHistoryIdsOfDeductions();
 
         System.out.println("payoutPaymentHistoryLists :");
-
+        ytdResponse ytd = new ytdResponse();
         payoutPaymentHistoryLists.forEach(pph -> {
             if (!"1000500003".equalsIgnoreCase(pph.getPayeeStatus()) && pph.getPayoutDueDate() != null) {
                 boolean isAdjustmentId = paymentHistoryAdjustmentIds.contains(pph.getId());
@@ -466,15 +462,13 @@ public class PeriodicPayoutTransactionHistoryService {
                 if (isAdjustmentId || isDeductionId) {
                     List<PayoutPaymentHistoryAdjustment> payoutPaymentHistoryAdjustment = payoutPaymentHistoryAdjustmentRepository.findFeeDetailsByPayoutPaymentHistoryId(pph.getId());
                     List<PayoutPaymentHistoryDeduction> payoutPaymentHistoryDeduction = payoutPaymentHistoryDeductionRepository.findFeeDetailsByPayoutPaymentHistoryId(pph.getId());
+
                     // Call the new ytdCalculation method
-                    ytdResult = ytdCalculation(transEffDate, pph, payoutPaymentHistoryAdjustment, payoutPaymentHistoryDeduction, ytdResponse);
+                    ytdObj = ytdCalculation(transEffDate, pph, payoutPaymentHistoryAdjustment, payoutPaymentHistoryDeduction, ytd);
                 }
             }
         });
 
-        logger.debug("Taxable To Govt ID: " + taxableToGovtID);
-        logger.debug("Transformed Govt ID Status: " + transformedGovtIDStatus);
-        logger.debug("Transformed Residence Country: " + transformedResidenceCountry);
 
         return Arrays.asList(
                 runYear,
@@ -495,23 +489,14 @@ public class PeriodicPayoutTransactionHistoryService {
                 transformedResidenceCountry,
                 preferredMailingAddress,
                 mailingAddress,
-                ytdResult.getYtdDisbursePeriodicPayout(),
-                ytdResult.getYtdDisburseFederalWithholdingAmt(),
-                ytdResult.getYtdDisburseStateWithholdingAmt()
+                ytdObj.getYtdDisbursePeriodicPayout(),
+                ytdObj.getYtdDisburseFederalWithholdingAmt(),
+                ytdObj.getYtdDisburseStateWithholdingAmt()
         );
     }
 
-    public static void printJsonNode(JsonNode jsonNode) {
-        try {
-            String prettyJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
-            System.out.println(prettyJson);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
-
-    private ytdResponse ytdCalculation(Date transEffDate, PayoutPaymentHistory pph,
+    private ytdResponse ytdCalculation(Date transEffDate , PayoutPaymentHistory pph,
                                        List<PayoutPaymentHistoryAdjustment> payoutPaymentHistoryAdjustment,
                                        List<PayoutPaymentHistoryDeduction> payoutPaymentHistoryDeduction,
                                        ytdResponse ytd) {
@@ -526,62 +511,51 @@ public class PeriodicPayoutTransactionHistoryService {
         ytdCalendar.set(Calendar.MONTH, Calendar.JANUARY);
         ytdCalendar.set(Calendar.DATE, 1);
 
+        if ((pph.getPayoutDueDate().compareTo(transEffDate) <= 0)
+                && (pph.getPayoutDueDate().compareTo(ytdCalendar.getTime()) >= 0)) {
+            
+        ytdCurrentPayoutAmount = ytdCurrentPayoutAmount.add(pph.getGrossAmt());
 
-            Date payoutDueDate = new Date(pph.getPayoutDueDate().getTime()); // Convert if necessary
-
-            if ((payoutDueDate.compareTo(transEffDate) <= 0
-                    && payoutDueDate.compareTo(ytdCalendar.getTime()) >= 0)) {
-
-                // Accumulate current payout amount
-                ytdCurrentPayoutAmount = ytdCurrentPayoutAmount.add(pph.getGrossAmt());
-
-                // Use empty lists if null
-                if (payoutPaymentHistoryDeduction != null) {
-                    for (PayoutPaymentHistoryDeduction deduction : payoutPaymentHistoryDeduction) {
-                        if (TWENTY_CONSTANT.equalsIgnoreCase(deduction.getFeeType())) {
-                            ytdFederalAmount = ytdFederalAmount.add(deduction.getFeeAmt());
-                        } else if (TWENTY_ONE_CONSTANT.equalsIgnoreCase(deduction.getFeeType())) {
-                            ytdStateAmount = ytdStateAmount.add(deduction.getFeeAmt());
-                        }
-                    }
-                }
-
-                if (payoutPaymentHistoryAdjustment != null) {
-                    for (PayoutPaymentHistoryAdjustment adjustment : payoutPaymentHistoryAdjustment) {
-                        // Adjust gross amount
-                        if (ZERO_CONSTANT.equalsIgnoreCase(adjustment.getFieldAdjustment())) {
-                            if (TWO_CONSTANT.equalsIgnoreCase(adjustment.getAdjustmentType())) {
-                                ytdCurrentPayoutAmount = ytdCurrentPayoutAmount.add(adjustment.getAdjustmentValue());
-                            } else if (ONE_CONSTANT.equalsIgnoreCase(adjustment.getAdjustmentType())) {
-                                ytdCurrentPayoutAmount = ytdCurrentPayoutAmount.add(adjustment.getAdjustmentValue().negate());
-                            }
-                        } else if (ONE_CONSTANT.equalsIgnoreCase(adjustment.getFieldAdjustment())) {
-                            // Interest adjustments
-                            if (TWO_CONSTANT.equalsIgnoreCase(adjustment.getAdjustmentType())) {
-                                ytdInterestAmount = ytdInterestAmount.add(adjustment.getAdjustmentValue());
-                            } else if (ONE_CONSTANT.equalsIgnoreCase(adjustment.getAdjustmentType())) {
-                                ytdInterestAmount = ytdInterestAmount.add(adjustment.getAdjustmentValue().negate());
-                            }
-                        } else if (TWO_CONSTANT.equalsIgnoreCase(adjustment.getFieldAdjustment())) {
-                            // Federal adjustments
-                            if (TWO_CONSTANT.equalsIgnoreCase(adjustment.getAdjustmentType())) {
-                                ytdFederalAmount = ytdFederalAmount.add(adjustment.getAdjustmentValue());
-                            } else if (ONE_CONSTANT.equalsIgnoreCase(adjustment.getAdjustmentType())) {
-                                ytdFederalAmount = ytdFederalAmount.add(adjustment.getAdjustmentValue().negate());
-                            }
-                        } else if (THREE_CONSTANT.equalsIgnoreCase(adjustment.getFieldAdjustment())) {
-                            // State adjustments
-                            if (TWO_CONSTANT.equalsIgnoreCase(adjustment.getAdjustmentType())) {
-                                ytdStateAmount = ytdStateAmount.add(adjustment.getAdjustmentValue());
-                            } else if (ONE_CONSTANT.equalsIgnoreCase(adjustment.getAdjustmentType())) {
-                                ytdStateAmount = ytdStateAmount.add(adjustment.getAdjustmentValue().negate());
-                            }
-                        }
-                    }
+            for (PayoutPaymentHistoryDeduction deduction : payoutPaymentHistoryDeduction) {
+                if (TWENTY_CONSTANT.equalsIgnoreCase(deduction.getFeeType())) {
+                    ytdFederalAmount = ytdFederalAmount.add(deduction.getFeeAmt());
+                } else if (TWENTY_ONE_CONSTANT.equalsIgnoreCase(deduction.getFeeType())) {
+                    ytdStateAmount = ytdStateAmount.add(deduction.getFeeAmt());
                 }
             }
 
-        // Accumulate totals to the ytdResponse
+            for (PayoutPaymentHistoryAdjustment adjustment : payoutPaymentHistoryAdjustment) {
+                // Adjust gross amount
+                if (ZERO_CONSTANT.equalsIgnoreCase(adjustment.getFieldAdjustment())) {
+                    if (TWO_CONSTANT.equalsIgnoreCase(adjustment.getAdjustmentType())) {
+                        ytdCurrentPayoutAmount = ytdCurrentPayoutAmount.add(adjustment.getAdjustmentValue());
+                    } else if (ONE_CONSTANT.equalsIgnoreCase(adjustment.getAdjustmentType())) {
+                        ytdCurrentPayoutAmount = ytdCurrentPayoutAmount.add(adjustment.getAdjustmentValue().negate());
+                    }
+                } else if (ONE_CONSTANT.equalsIgnoreCase(adjustment.getFieldAdjustment())) {
+                    // Interest adjustments
+                    if (TWO_CONSTANT.equalsIgnoreCase(adjustment.getAdjustmentType())) {
+                        ytdInterestAmount = ytdInterestAmount.add(adjustment.getAdjustmentValue());
+                    } else if (ONE_CONSTANT.equalsIgnoreCase(adjustment.getAdjustmentType())) {
+                        ytdInterestAmount = ytdInterestAmount.add(adjustment.getAdjustmentValue().negate());
+                    }
+                } else if (TWO_CONSTANT.equalsIgnoreCase(adjustment.getFieldAdjustment())) {
+                    // Federal adjustments
+                    if (TWO_CONSTANT.equalsIgnoreCase(adjustment.getAdjustmentType())) {
+                        ytdFederalAmount = ytdFederalAmount.add(adjustment.getAdjustmentValue());
+                    } else if (ONE_CONSTANT.equalsIgnoreCase(adjustment.getAdjustmentType())) {
+                        ytdFederalAmount = ytdFederalAmount.add(adjustment.getAdjustmentValue().negate());
+                    }
+                } else if (THREE_CONSTANT.equalsIgnoreCase(adjustment.getFieldAdjustment())) {
+                    // State adjustments
+                    if (TWO_CONSTANT.equalsIgnoreCase(adjustment.getAdjustmentType())) {
+                        ytdStateAmount = ytdStateAmount.add(adjustment.getAdjustmentValue());
+                    } else if (ONE_CONSTANT.equalsIgnoreCase(adjustment.getAdjustmentType())) {
+                        ytdStateAmount = ytdStateAmount.add(adjustment.getAdjustmentValue().negate());
+                    }
+                }
+            }
+        }
         ytd.setYtdDisbursePeriodicPayout(ytdCurrentPayoutAmount);
         ytd.setYtdDisburseFederalWithholdingAmt(ytdFederalAmount);
         ytd.setYtdDisburseStateWithholdingAmt(ytdStateAmount);
