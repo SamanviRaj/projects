@@ -37,14 +37,11 @@ public interface PayoutPaymentHistoryDeductionRepository extends JpaRepository<P
             @Param("policyNumber") String policyNumber
     );
 
-    @Query(value = """
-        SELECT id, fee_type, fee_amt, payout_payment_history_id, update_timestamp
-        FROM PAYOUT_PAYMENT_HISTORY_DEDUCTION
-        WHERE payout_payment_history_id = :payoutPaymentHistoryId
-    """, nativeQuery = true)
+    @Query(value = "SELECT id, fee_type, fee_amt, payout_payment_history_id, update_timestamp " +
+            "FROM public.\"PAYOUT_PAYMENT_HISTORY_DEDUCTION\" " +
+            "WHERE payout_payment_history_id = :payoutPaymentHistoryId", nativeQuery = true)
     List<PayoutPaymentHistoryDeduction> findFeeDetailsByPayoutPaymentHistoryId(
-            @Param("payoutPaymentHistoryId") Long payoutPaymentHistoryId
-    );
+            @Param("payoutPaymentHistoryId") Long payoutPaymentHistoryId);
 
     @Query(value = """
          SELECT payout_payment_history_id

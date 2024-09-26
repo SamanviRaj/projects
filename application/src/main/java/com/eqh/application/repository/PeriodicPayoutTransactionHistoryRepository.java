@@ -20,7 +20,7 @@ public interface PeriodicPayoutTransactionHistoryRepository extends JpaRepositor
             "AND entity_type = 'Policy' " +
             "AND request_name = 'PeriodicPayout' " +
             "AND trans_exe_date BETWEEN :startDate AND :endDate " +
-            "ORDER BY trans_eff_date DESC LIMIT 25",
+            "ORDER BY trans_eff_date DESC LIMIT 100",
             nativeQuery = true)
     List<Object[]> findPayoutTransactionsInRange(
             @Param("startDate") LocalDateTime startDate,
@@ -32,7 +32,7 @@ public interface PeriodicPayoutTransactionHistoryRepository extends JpaRepositor
             "AND entity_type = 'Policy' " +
             "AND request_name = 'PeriodicPayout' " +
             "AND trans_exe_date > :startDate " +
-            "ORDER BY trans_eff_date DESC LIMIT 50",
+            "ORDER BY trans_eff_date DESC LIMIT 100",
             nativeQuery = true)
     List<Object[]> findPayoutTransactionsInRange(@Param("startDate") LocalDateTime  startDate);
 }
