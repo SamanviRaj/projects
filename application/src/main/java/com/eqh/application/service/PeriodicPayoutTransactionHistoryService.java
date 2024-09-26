@@ -66,7 +66,9 @@ public class PeriodicPayoutTransactionHistoryService {
     private final PayoutPaymentHistoryAdjustmentRepository payoutPaymentHistoryAdjustmentRepository;
     private final PayoutPaymentHistoryDeductionRepository payoutPaymentHistoryDeductionRepository;
 
-    private ProcessedRow processedRow = new ProcessedRow();
+    private final ProcessedRow processedRow = new ProcessedRow();
+
+    private ytdResponse ytres = new ytdResponse();
 
     @Autowired
     public PeriodicPayoutTransactionHistoryService(
@@ -106,7 +108,7 @@ public class PeriodicPayoutTransactionHistoryService {
                                 if (jsonObject instanceof String) {
                                     return objectMapper.readTree((String) jsonObject);
                                 } else if (jsonObject instanceof BigDecimal) {
-                                    return objectMapper.readTree(((BigDecimal) jsonObject).toString());
+                                    return objectMapper.readTree(jsonObject.toString());
                                 } else {
                                     throw new IllegalArgumentException("Unexpected data type for JSON parsing: " + jsonObject.getClass());
                                 }
@@ -449,13 +451,17 @@ public class PeriodicPayoutTransactionHistoryService {
         List<PayoutPaymentHistory> payoutPaymentHistoryList = payoutPaymentHistoryRepository.findPayoutPaymentHistoryByPayeePartyNumberAndPayeeId(String.valueOf(taxablePartyNumber), payoutPayeeObj.getId());
 
         List<PayoutPaymentHistory> payoutPaymentHistoryLists = payoutPaymentHistoryList.stream()
-                .filter(m -> m.getReversed() == false).sorted(Comparator.comparingLong(PayoutPaymentHistory::getId))
+                .filter(m -> !m.getReversed()).sorted(Comparator.comparingLong(PayoutPaymentHistory::getId))
                 .collect(Collectors.toList());
 
         List<Long> paymentHistoryAdjustmentIds = payoutPaymentHistoryAdjustmentRepository.findAllPaymentHistoryIdsOfAdjustments();
         List<Long> paymentHistoryDeductionIds = payoutPaymentHistoryDeductionRepository.findAllPaymentHistoryIdsOfDeductions();
 
-        System.out.println("payoutPaymentHistoryLists :");
+        System.out.println("polNumber :: "+polNumber);
+        System.out.println("policyRepository.findPolicyByNumberAndStatus(polNumber)  :: "+policyId);
+        System.out.println("policyPayoutRepository.findPolicyPayoutByPolicyId(policyId)  :: "+policyPayoutId);
+        System.out.println("taxablePartyNumber :: "+taxablePartyNumber+" payoutPayee "+ payoutPayeeObj.toString());
+        payoutPaymentHistoryLists.forEach(pph -> System.out.println("payoutPaymentHistoryLists :: "+pph.toString()));
 
         payoutPaymentHistoryLists.forEach(pph -> {
             if (!"1000500003".equalsIgnoreCase(pph.getPayeeStatus()) && pph.getPayoutDueDate() != null) {
@@ -467,7 +473,7 @@ public class PeriodicPayoutTransactionHistoryService {
                     List<PayoutPaymentHistoryDeduction> payoutPaymentHistoryDeduction = payoutPaymentHistoryDeductionRepository.findFeeDetailsByPayoutPaymentHistoryId(pph.getId());
 
                     // Call the new ytdCalculation method
-                    ytdCalculation(transEffDate, pph, payoutPaymentHistoryDeduction, payoutPaymentHistoryAdjustment, ytdObj);
+                    ytres = ytdCalculation(transEffDate, pph, payoutPaymentHistoryDeduction, payoutPaymentHistoryAdjustment, ytdObj);
                 }
             }
         });
@@ -492,17 +498,17 @@ public class PeriodicPayoutTransactionHistoryService {
                 transformedResidenceCountry,
                 preferredMailingAddress,
                 mailingAddress,
-                ytdObj.getYtdDisbursePeriodicPayout(),
-                ytdObj.getYtdDisburseFederalWithholdingAmt(),
-                ytdObj.getYtdDisburseStateWithholdingAmt()
+                ytres.getYtdDisbursePeriodicPayout(),
+                ytres.getYtdDisburseFederalWithholdingAmt(),
+                ytres.getYtdDisburseStateWithholdingAmt()
         );
     }
 
-    private void ytdCalculation(Date transEffDate,
-                                PayoutPaymentHistory pph,
-                                List<PayoutPaymentHistoryDeduction> deductions,
-                                List<PayoutPaymentHistoryAdjustment> adjustments,
-                                ytdResponse ytd) {
+    private ytdResponse ytdCalculation(Date transEffDate,
+                                       PayoutPaymentHistory pph,
+                                       List<PayoutPaymentHistoryDeduction> deductions,
+                                       List<PayoutPaymentHistoryAdjustment> adjustments,
+                                       ytdResponse ytd) {
 
         // Initialize YTD values from ytdResponse
         BigDecimal ytdCurrentPayoutAmount = Optional.ofNullable(ytd.getYtdDisbursePeriodicPayout()).orElse(BigDecimal.ZERO);
@@ -516,7 +522,11 @@ public class PeriodicPayoutTransactionHistoryService {
         ytdCalendar.set(Calendar.MONTH, Calendar.JANUARY);
         ytdCalendar.set(Calendar.DATE, 1);
 
-        // Check payoutDueDate against effective date and year start
+        /* This checks if the payout due date is on or before the transaction effective date and is on or after the year start
+            If this part is true, it means the payout is either due today or has already passed.
+           and
+        This checks if the payout due date is on or after the start of the year (or whatever date ytdCalendar.getTime() represents).
+            If this part is true, it means the payout is due any time from the beginning of the year up to today.*/
         if (pph.getPayoutDueDate().compareTo(transEffDate) <= 0 &&
                 pph.getPayoutDueDate().compareTo(ytdCalendar.getTime()) >= 0) {
 
@@ -578,11 +588,17 @@ public class PeriodicPayoutTransactionHistoryService {
             }
         }
 
+        System.out.println("gross amount"+ytdCurrentPayoutAmount);
+        System.out.println("FederalAmount"+ytdFederalAmount);
+        System.out.println("StateAmount"+ytdStateAmount);
+        System.out.println("InterestAmount"+ytdInterestAmount);
+
         // Set calculated values in the response object
         ytd.setYtdDisbursePeriodicPayout(ytdCurrentPayoutAmount);
         ytd.setYtdDisburseFederalWithholdingAmt(ytdFederalAmount);
         ytd.setYtdDisburseStateWithholdingAmt(ytdStateAmount);
         ytd.setYtdDisburseInterest(ytdInterestAmount);
+        return ytd;
     }
 
 
