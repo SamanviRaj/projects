@@ -40,8 +40,6 @@ public class PeriodicPayoutTransactionHistoryService {
     private static final String DATE_FORMAT_FOR_EXCEL = "yyyy-MM-dd";
     private static final String DATE_FORMAT_FOR_DISPLAY = "dd/MM/yyyy";
     private static final String CURRENCY_FORMAT = "$#,##0.00";
-
-
     private static final String[] HEADERS = {
             "runYear", "transRunDate","Management Code",  "Product Code", "polNumber", "Policy Status",
             "QualPlanType","Suspend Code","Party ID", "Party Full Name","Govt ID", "Govt ID Status",
@@ -125,28 +123,53 @@ public class PeriodicPayoutTransactionHistoryService {
                             }
                         }
                 ));
-
-
-
         // Convert the map to JSON
         return objectMapper.writeValueAsBytes(messageImages);
     }
 
     public byte[] generateReportAsBytes() throws IOException {
-
-//        LocalDate localStartDate = LocalDate.of(2024, 7, 15); // Adjust to the date you are querying
-//        LocalDateTime startDate = LocalDateTime.of(2021, 1, 1, 0, 0);
-//        LocalDateTime endDate = LocalDateTime.of(2022, 1, 1, 0, 0);
-
+        // Convert startDate to LocalDate
         LocalDate startRangeDate = LocalDate.parse(startDate);
         List<Object[]> data = repository.findPayoutTransactionsInRange(startRangeDate.atStartOfDay());
-        logger.info("fetching transactions history size "+data.size()+" for date "+startRangeDate);
+
+        logger.info("Fetching transactions history size: " + data.size() + " for date: " + startRangeDate);
         if (data.isEmpty()) {
             throw new IOException("No data found for the report.");
         }
 
         // Extract unique policy numbers
-        Set<String> policyNumbers = data.stream()
+        Set<String> policyNumbers = extractUniquePolicyNumbers(data);
+
+        // Fetch product info for all policy numbers
+        Map<String, ProductInfo> productInfoMap = fetchProductInfoForPolicyNumbers(policyNumbers);
+
+        // Extract unique taxable party numbers
+        Set<String> uniqueTaxablePartyNumbers = extractUniqueTaxablePartyNumbers(data);
+
+        // Print unique taxable party numbers
+        System.out.println("Unique Taxable Party Numbers:");
+        uniqueTaxablePartyNumbers.forEach(System.out::println);
+
+        // Fetch mailing addresses for unique taxable party numbers
+        Map<String, Map<String, String>> mailingAddressesMap = fetchMailingAddressesForTaxablePartyNumbers(uniqueTaxablePartyNumbers);
+
+        // Prepare YTD response object
+        ytdResponse ytdObj = new ytdResponse();
+
+        // Transform data
+        List<List<Object>> transformedData = data.stream()
+                .map(row -> processRow(row, productInfoMap, mailingAddressesMap, ytdObj))
+                .collect(Collectors.toList());
+
+        // Generate timestamp
+        String timestamp = new SimpleDateFormat(DATE_FORMAT).format(new Date());
+
+        // Generate and return the Excel report as bytes
+        return generateExcelReportAsBytes(transformedData, timestamp);
+    }
+
+    private Set<String> extractUniquePolicyNumbers(List<Object[]> data) {
+        return data.stream()
                 .map(row -> {
                     try {
                         JsonNode jsonNode = objectMapper.readTree((String) row[0]);
@@ -158,17 +181,15 @@ public class PeriodicPayoutTransactionHistoryService {
                 })
                 .filter(polNumber -> !polNumber.isEmpty())
                 .collect(Collectors.toSet());
-
-        // Fetch product info for all policy numbers
-        Map<String, ProductInfo> productInfoMap = fetchProductInfoForPolicyNumbers(policyNumbers);
-
-        // Extract unique taxablePartyNumbers
-        Set<String> uniqueTaxablePartyNumbers = data.stream()
-                .map(row -> {
+    }
+    private Set<String> extractUniqueTaxablePartyNumbers(List<Object[]> data) {
+        return data.stream()
+                .flatMap(row -> {
                     try {
                         JsonNode jsonNode = objectMapper.readTree((String) row[0]);
                         JsonNode payeePayoutsNode = jsonNode.path("payeePayouts");
                         Set<String> taxablePartyNumbers = new HashSet<>();
+
                         if (payeePayoutsNode.isArray()) {
                             for (JsonNode payoutNode : payeePayoutsNode) {
                                 String taxablePartyNumber = payoutNode.path("taxablePartyNumber").asText();
@@ -177,31 +198,13 @@ public class PeriodicPayoutTransactionHistoryService {
                                 }
                             }
                         }
-                        return taxablePartyNumbers;
+                        return taxablePartyNumbers.stream(); // Return a stream of taxable party numbers
                     } catch (IOException e) {
                         logger.error("Error parsing JSON for row: " + Arrays.toString(row), e);
-                        return new HashSet<String>();
+                        return Stream.empty(); // Return an empty stream on error
                     }
                 })
-                .flatMap(Set::stream) // Flatten the set of sets
-                .collect(Collectors.toSet()); // Collect unique taxablePartyNumbers
-
-        // Print unique taxablePartyNumbers
-        System.out.println("Unique Taxable Party Numbers:");
-        uniqueTaxablePartyNumbers.forEach(System.out::println);
-
-        Map<String, Map<String, String>> mailingAddressesMap = fetchMailingAddressesForTaxablePartyNumbers(uniqueTaxablePartyNumbers);
-
-        ytdResponse ytdObj = new ytdResponse();
-
-        // Transform data
-        List<List<Object>> transformedData = data.stream()
-                .map(row -> processRow(row, productInfoMap, mailingAddressesMap,ytdObj))
-                .collect(Collectors.toList());
-
-        String timestamp = new SimpleDateFormat(DATE_FORMAT).format(new Date());
-
-        return generateExcelReportAsBytes(transformedData, timestamp);
+                .collect(Collectors.toSet()); // Collect unique taxable party numbers
     }
 
     public Map<String, Map<String, String>> fetchMailingAddressesForTaxablePartyNumbers(Set<String> uniqueTaxablePartyNumbers) {
