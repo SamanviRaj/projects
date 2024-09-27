@@ -4,12 +4,15 @@ import com.eqh.application.dto.Address;
 import com.eqh.application.dto.ProcessedRow;
 import com.eqh.application.dto.ProductInfo;
 import com.eqh.application.dto.ytdResponse;
-import com.eqh.application.entity.*;
+import com.eqh.application.entity.PayoutPayee;
+import com.eqh.application.entity.PayoutPaymentHistory;
+import com.eqh.application.entity.PayoutPaymentHistoryAdjustment;
+import com.eqh.application.entity.PayoutPaymentHistoryDeduction;
+import com.eqh.application.feignClient.PartyClient;
 import com.eqh.application.repository.*;
 import com.eqh.application.utility.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.poi.hpsf.Decimal;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
@@ -23,7 +26,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import com.eqh.application.feignClient.PartyClient;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -52,7 +54,6 @@ public class PeriodicPayoutTransactionHistoryService {
     private static final String TWO_CONSTANT = "2";
     private static final String ONE_CONSTANT = "1";
     private static final String THREE_CONSTANT = "3";
-
     private final PeriodicPayoutTransactionHistoryRepository repository;
     private final PolicyRepository policyRepository;
     private final ObjectMapper objectMapper;
@@ -65,14 +66,10 @@ public class PeriodicPayoutTransactionHistoryService {
     private final PayoutPayeeRepository payoutPayeeRepository;
     private final PayoutPaymentHistoryAdjustmentRepository payoutPaymentHistoryAdjustmentRepository;
     private final PayoutPaymentHistoryDeductionRepository payoutPaymentHistoryDeductionRepository;
-
     private final ProcessedRow processedRow = new ProcessedRow();
-
     private ytdResponse ytres = new ytdResponse();
-
     @Value("${payout.start.date}")
     private String startDate;
-
     @Value("${transaction.start.date}")
     private String payoutTransExectDate;
 
@@ -145,10 +142,6 @@ public class PeriodicPayoutTransactionHistoryService {
 
         // Extract unique taxable party numbers
         Set<String> uniqueTaxablePartyNumbers = extractUniqueTaxablePartyNumbers(data);
-
-        // Print unique taxable party numbers
-        System.out.println("Unique Taxable Party Numbers:");
-        uniqueTaxablePartyNumbers.forEach(System.out::println);
 
         // Fetch mailing addresses for unique taxable party numbers
         Map<String, Map<String, String>> mailingAddressesMap = fetchMailingAddressesForTaxablePartyNumbers(uniqueTaxablePartyNumbers);
@@ -234,7 +227,6 @@ public class PeriodicPayoutTransactionHistoryService {
 
             mailingAddressesMap.put(taxablePartyNumber, addressesMap);
         }
-
         return mailingAddressesMap;
     }
 
@@ -242,7 +234,6 @@ public class PeriodicPayoutTransactionHistoryService {
         if (address == null) {
             return "";
         }
-
         return Stream.of(
                         formatLine("Line 1", address.getLine1()),
                         formatLine("Line 2", address.getLine2()),
@@ -257,7 +248,6 @@ public class PeriodicPayoutTransactionHistoryService {
     private String formatLine(String label, String value) {
         return (value != null) ? label + ": " + value + " " : "";
     }
-
 
     private Map<String, ProductInfo> fetchProductInfoForPolicyNumbers(Set<String> policyNumbers) {
         // Convert Set to List
@@ -362,7 +352,6 @@ public class PeriodicPayoutTransactionHistoryService {
             logger.warn("Empty or null residence state code: " + taxableToResidenceState);
         }
 
-
         // Transform taxableToResidenceCountry using ResidenceStateUtil
         String transformedResidenceCountry = "Unknown";
         if (taxableToResidenceCountry != null && !taxableToResidenceCountry.trim().isEmpty()) {
@@ -417,7 +406,6 @@ public class PeriodicPayoutTransactionHistoryService {
 
         // Transform payeeStatus using PayeeStatusUtil
         String transformedPayeeStatus = null;
-
         if (payeeStatus != null && !payeeStatus.trim().isEmpty()) {
             try {
                 transformedPayeeStatus = PayeeStatusUtil.getDisplayName(Integer.parseInt(payeeStatus.trim()));
@@ -432,7 +420,6 @@ public class PeriodicPayoutTransactionHistoryService {
             transformedPayeeStatus = "Unknown"; // Or another appropriate default value
         }
 
-
         // Retrieve addresses from the map
         Map<String, String> addressesMap = mailingAddressesMap.getOrDefault(taxablePartyNumber, new HashMap<>());
         String preferredMailingAddress = addressesMap.getOrDefault("preferredAddress", "");
@@ -441,9 +428,6 @@ public class PeriodicPayoutTransactionHistoryService {
         // Fetch Policy by polNumber
         Long policyId = policyRepository.findPolicyByNumberAndStatus(polNumber);
         Long policyPayoutId = policyPayoutRepository.findPolicyPayoutByPolicyId(policyId);
-
-        // Fetch PayoutPayee by taxablePartyNumber
-//        List<PayoutPayee>  payoutPayee = payoutPayeeRepository.findPayoutPayeeByPolicyPayoutIdAndPartyNumber(policyPayoutId);
 
         PayoutPayee payoutPayeeObj = new PayoutPayee();
         List<PayoutPayee> payoutPayeeList = payoutPayeeRepository.findPayoutPayeeByPolicyPayoutIdAndPartyNumber(policyPayoutId);
@@ -471,7 +455,6 @@ public class PeriodicPayoutTransactionHistoryService {
         List<Long> paymentHistoryAdjustmentIds = payoutPaymentHistoryAdjustmentRepository.findAllPaymentHistoryIdsOfAdjustments();
         List<Long> paymentHistoryDeductionIds = payoutPaymentHistoryDeductionRepository.findAllPaymentHistoryIdsOfDeductions();
 
-
         System.out.println("polNumber :: "+polNumber);
         System.out.println("policyRepository.findPolicyByNumberAndStatus(polNumber)  :: "+policyId);
         System.out.println("policyPayoutRepository.findPolicyPayoutByPolicyId(policyId)  :: "+policyPayoutId);
@@ -481,7 +464,6 @@ public class PeriodicPayoutTransactionHistoryService {
         ytres.setYtdDisbursePeriodicPayout(BigDecimal.ZERO);
         ytres.setYtdDisburseFederalWithholdingAmt(BigDecimal.ZERO);
         ytres.setYtdDisburseStateWithholdingAmt(BigDecimal.ZERO);
-
 
         payoutPaymentHistoryLists.forEach(pph -> {
             if (!"1000500003".equalsIgnoreCase(pph.getPayeeStatus()) && pph.getPayoutDueDate() != null) {
@@ -498,7 +480,6 @@ public class PeriodicPayoutTransactionHistoryService {
                 }
             }
         });
-
 
         return Arrays.asList(
                 runYear,
@@ -622,7 +603,6 @@ public class PeriodicPayoutTransactionHistoryService {
         return ytd;
     }
 
-
     private Date parseDate(String dateStr) {
         if (dateStr == null || dateStr.isEmpty()) {
             return null;
@@ -634,11 +614,6 @@ public class PeriodicPayoutTransactionHistoryService {
             return null;
         }
     }
-
-    private String formatBigDecimal(BigDecimal value) {
-        return value == null ? "" : currencyFormat.format(value);
-    }
-
     private String formatDate(Date date) {
         return date == null ? "" : displayDateFormat.format(date);
     }
@@ -648,19 +623,14 @@ public class PeriodicPayoutTransactionHistoryService {
              ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
 
             Sheet sheet = workbook.createSheet("Transaction History");
-
             createHeaderRow(sheet);
-
             CellStyle currencyCellStyle = createCurrencyCellStyle(workbook);
-
             int rowNum = 1;
             for (List<Object> rowData : data) {
                 Row row = sheet.createRow(rowNum++);
                 populateRow(row, rowData, currencyCellStyle);
             }
-
             autoSizeColumns(sheet);
-
             workbook.write(baos);
             return baos.toByteArray();
         }

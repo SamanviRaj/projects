@@ -100,7 +100,7 @@ public class TransactionHistoryController {
     /**
      * Endpoint to download message_image data as a JSON file.
      *
-     * @param years List of years to filter the transactions.
+     * @param
      * @return A ResponseEntity with the JSON file.
      */
     @GetMapping("periodicpayout/download-json")

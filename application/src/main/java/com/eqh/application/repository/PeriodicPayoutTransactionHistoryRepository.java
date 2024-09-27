@@ -2,14 +2,11 @@ package com.eqh.application.repository;
 
 import com.eqh.application.entity.TransactionHistory;
 import feign.Param;
-import org.apache.xmlbeans.GDate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 @Repository
 public interface PeriodicPayoutTransactionHistoryRepository extends JpaRepository<TransactionHistory, Long> {
