@@ -140,7 +140,7 @@ public class PeriodicPayoutTransactionHistoryService {
 
         LocalDate startRangeDate = LocalDate.parse(startDate);
         List<Object[]> data = repository.findPayoutTransactionsInRange(startRangeDate.atStartOfDay());
-
+        logger.info("fetching transactions history size "+data.size()+" for date "+startRangeDate);
         if (data.isEmpty()) {
             throw new IOException("No data found for the report.");
         }
@@ -463,8 +463,11 @@ public class PeriodicPayoutTransactionHistoryService {
                 .filter(m -> !m.getReversed()).sorted(Comparator.comparingLong(PayoutPaymentHistory::getId))
                 .collect(Collectors.toList());
 
+        logger.info("fetching payoutPaymentHistoryLists size "+payoutPaymentHistoryList.size()+" for date "+payoutTransExecdate);
+
         List<Long> paymentHistoryAdjustmentIds = payoutPaymentHistoryAdjustmentRepository.findAllPaymentHistoryIdsOfAdjustments();
         List<Long> paymentHistoryDeductionIds = payoutPaymentHistoryDeductionRepository.findAllPaymentHistoryIdsOfDeductions();
+
 
         System.out.println("polNumber :: "+polNumber);
         System.out.println("policyRepository.findPolicyByNumberAndStatus(polNumber)  :: "+policyId);
