@@ -136,21 +136,27 @@ public class PeriodicPayoutTransactionHistoryService {
 
         // Extract unique policy numbers
         Set<String> policyNumbers = extractUniquePolicyNumbers(data);
-
         // Fetch product info for all policy numbers
         Map<String, ProductInfo> productInfoMap = fetchProductInfoForPolicyNumbers(policyNumbers);
-
         // Extract unique taxable party numbers
         Set<String> uniqueTaxablePartyNumbers = extractUniqueTaxablePartyNumbers(data);
-
         // Fetch mailing addresses for unique taxable party numbers
         Map<String, Map<String, String>> mailingAddressesMap = fetchMailingAddressesForTaxablePartyNumbers(uniqueTaxablePartyNumbers);
-
         // Prepare YTD response object
         ytdResponse ytdObj = new ytdResponse();
+        // Combine all payouts from all policy numbers
+        List<Object[]> periodicPayoutUponPolNumber = new ArrayList<>();
+        for (String policyNumber : policyNumbers) {
+            periodicPayoutUponPolNumber.addAll(repository.findPayoutTransactionsByPolicyNumber(policyNumber, startRangeDate.atStartOfDay()));
+        }
+
+        if (periodicPayoutUponPolNumber.isEmpty()) {
+            throw new IOException("No payout transactions found for the specified policies.");
+        }
+        logger.info("Fetching periodicPayoutUponPolNumber size: " + periodicPayoutUponPolNumber.size() + " for date: " + startRangeDate);
 
         // Transform data
-        List<List<Object>> transformedData = data.stream()
+        List<List<Object>> transformedData = periodicPayoutUponPolNumber.stream()
                 .map(row -> processRow(row, productInfoMap, mailingAddressesMap, ytdObj))
                 .collect(Collectors.toList());
 
