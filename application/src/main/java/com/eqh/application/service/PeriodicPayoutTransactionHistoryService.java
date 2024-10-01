@@ -126,8 +126,8 @@ public class PeriodicPayoutTransactionHistoryService {
 
     public byte[] generateReportAsBytes() throws IOException {
         // Convert startDate to LocalDate
-        LocalDate startRangeDate = LocalDate.parse(startDate);
-        List<Object[]> data = repository.findPayoutTransactionsInRange(startRangeDate.atStartOfDay());
+        LocalDateTime startRangeDate = LocalDateTime.parse(startDate);
+        List<Object[]> data = repository.findPayoutTransactionsInRange(startRangeDate);
 
         logger.info("Fetching transactions history size: " + data.size() + " for date: " + startRangeDate);
         if (data.isEmpty()) {
@@ -147,13 +147,12 @@ public class PeriodicPayoutTransactionHistoryService {
         // Combine all payouts from all policy numbers
         List<Object[]> periodicPayoutUponPolNumber = new ArrayList<>();
         for (String policyNumber : policyNumbers) {
-            periodicPayoutUponPolNumber.addAll(repository.findPayoutTransactionsByPolicyNumber(policyNumber, startRangeDate.atStartOfDay()));
+            periodicPayoutUponPolNumber.addAll(repository.findPayoutTransactionsByPolicyNumber(policyNumber, startRangeDate));
         }
 
         if (periodicPayoutUponPolNumber.isEmpty()) {
             throw new IOException("No payout transactions found for the specified policies.");
         }
-        logger.info("Fetching periodicPayoutUponPolNumber size: " + periodicPayoutUponPolNumber.size() + " for date: " + startRangeDate);
 
         // Transform data
         List<List<Object>> transformedData = periodicPayoutUponPolNumber.stream()
