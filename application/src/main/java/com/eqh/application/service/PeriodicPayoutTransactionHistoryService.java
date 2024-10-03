@@ -146,9 +146,14 @@ public class PeriodicPayoutTransactionHistoryService {
         ytdResponse ytdObj = new ytdResponse();
         // Combine all payouts from all policy numbers
         List<Object[]> periodicPayoutUponPolNumber = new ArrayList<>();
-        for (String policyNumber : policyNumbers) {
-            periodicPayoutUponPolNumber.addAll(repository.findPayoutTransactionsByPolicyNumber(policyNumber, startRangeDate));
+
+        for(Map.Entry<String, ProductInfo> entry : productInfoMap.entrySet()) {
+            periodicPayoutUponPolNumber.addAll(repository.findPayoutTransactionsByPolicyNumber(entry.getKey(), startRangeDate));
         }
+
+/*        for (String policyNumber : policyNumbers) {
+            periodicPayoutUponPolNumber.addAll(repository.findPayoutTransactionsByPolicyNumber(policyNumber, startRangeDate));
+        }*/
 
         if (periodicPayoutUponPolNumber.isEmpty()) {
             throw new IOException("No payout transactions found for the specified policies.");
@@ -447,9 +452,9 @@ public class PeriodicPayoutTransactionHistoryService {
             }
         }
 
-        LocalDate payoutTransExecdate = LocalDate.parse(payoutTransExectDate);
+        LocalDateTime payoutTransExecdate = LocalDateTime.parse(payoutTransExectDate);
         // Fetch PayoutPaymentHistory by policyPayoutId and payoutPayeeId
-        List<PayoutPaymentHistory> payoutPaymentHistoryList = payoutPaymentHistoryRepository.findPayoutPaymentHistoryByPayeePartyNumberAndPayeeId(String.valueOf(taxablePartyNumber), payoutPayeeObj.getId(),payoutTransExecdate.atStartOfDay());
+        List<PayoutPaymentHistory> payoutPaymentHistoryList = payoutPaymentHistoryRepository.findPayoutPaymentHistoryByPayeePartyNumberAndPayeeId(String.valueOf(taxablePartyNumber), payoutPayeeObj.getId(),payoutTransExecdate);
 
         List<PayoutPaymentHistory> payoutPaymentHistoryLists = payoutPaymentHistoryList.stream()
                 .filter(m -> !m.getReversed()).sorted(Comparator.comparingLong(PayoutPaymentHistory::getId))
@@ -529,6 +534,9 @@ public class PeriodicPayoutTransactionHistoryService {
         ytdCalendar.set(Calendar.MONTH, Calendar.JULY); // Note: Months are zero-based (0 = January, 6 = July)
         ytdCalendar.set(Calendar.DATE, 31);
 
+        // Update current payout amount
+        ytdCurrentPayoutAmount = ytdCurrentPayoutAmount.add(pph.getGrossAmt());
+
         /* This checks if the payout due date is on or before the transaction effective date and is on or after the year start
             If this part is true, it means the payout is either due today or has already passed.
            and
@@ -537,8 +545,6 @@ public class PeriodicPayoutTransactionHistoryService {
         if (pph.getPayoutDueDate().compareTo(transEffDate) <= 0 &&
                 pph.getPayoutDueDate().compareTo(ytdCalendar.getTime()) >= 0) {
 
-            // Update current payout amount
-            ytdCurrentPayoutAmount = ytdCurrentPayoutAmount.add(pph.getGrossAmt());
 
             // Process deductions
             for (PayoutPaymentHistoryDeduction deduction : deductions) {
