@@ -23,4 +23,58 @@ public interface PayoutPaymentHistoryRepository extends JpaRepository<PayoutPaym
             @Param("startDate") LocalDateTime startDate
     );
 
+    @Query(value = """
+        SELECT pph.*
+               -- Add other specific columns from pph as needed, e.g., pph.id, pph.someOtherColumn
+        FROM "POLICY" p
+        JOIN "POLICY_PAYOUT" pp ON pp.policy_id = p.id
+        JOIN "PAYOUT_PAYEE" ppy ON ppy.policy_payout_id = pp.id
+        JOIN public."PAYOUT_PAYMENT_HISTORY" pph ON pph.payee_party_number = ppy.payee_party_number
+        WHERE p.pol_number = :policyNumber
+          AND pph.payout_payee_id = ppy.id
+          AND pph.reversed = false
+          AND pph.trans_exe_date > :startDate
+        ORDER BY pph.trans_exe_date DESC
+        """, nativeQuery = true)
+    List<PayoutPaymentHistory> findPolicyPayouts(
+            @Param("policyNumber") String policyNumber,
+            @Param("startDate") LocalDateTime startDate
+    );
+
+    @Query(value = """
+            SELECT COALESCE(SUM(pph.gross_amt), 0)
+            FROM "POLICY" p 
+            JOIN "POLICY_PAYOUT" pp ON pp.policy_id = p.id 
+            JOIN "PAYOUT_PAYEE" ppy ON ppy.policy_payout_id = pp.id 
+            JOIN public."PAYOUT_PAYMENT_HISTORY" pph ON pph.payee_party_number = ppy.payee_party_number
+            WHERE p.pol_number = :policyNumber
+            AND pph.reversed = false 
+            AND pph.trans_exe_date > :startDate
+            """, nativeQuery = true)
+    Double findPolicyPayoutWithGrossAmount(
+            @Param("policyNumber") String policyNumber,
+            @Param("startDate") LocalDateTime startDate
+    );
+
+    @Query(value = """
+            SELECT pph.*
+            FROM "POLICY" p
+            JOIN "POLICY_PAYOUT" pp ON pp.policy_id = p.id
+            JOIN "PAYOUT_PAYEE" ppy ON ppy.policy_payout_id = pp.id
+            JOIN public."PAYOUT_PAYMENT_HISTORY" pph ON pph.payee_party_number = ppy.payee_party_number
+            WHERE p.pol_number = :policyNumber
+              AND pph.payout_payee_id = ppy.id
+              AND pph.reversed = false
+              AND pph.trans_exe_date > :startDate
+              AND pph.payout_due_date <= :transEffDate
+              AND pph.payout_due_date >= :ytdCalendarTime
+            ORDER BY pph.trans_exe_date DESC
+            """, nativeQuery = true)
+    List<PayoutPaymentHistory> findPolicyPayoutsWithDueDateCriteria(
+            @Param("policyNumber") String policyNumber,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("transEffDate") LocalDateTime transEffDate,  // For payoutDueDate comparison
+            @Param("ytdCalendarTime") LocalDateTime ytdCalendarTime // For ytdCalendar comparison
+    );
+
 }

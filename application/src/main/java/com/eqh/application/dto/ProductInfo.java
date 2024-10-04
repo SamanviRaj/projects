@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class ProductInfo {
+    private  String polNumber;
     private  String managementCode;
     private  String policyStatus;
     private  String productCode;

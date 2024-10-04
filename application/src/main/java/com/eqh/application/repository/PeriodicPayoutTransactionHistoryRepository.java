@@ -29,7 +29,7 @@ public interface PeriodicPayoutTransactionHistoryRepository extends JpaRepositor
             "AND entity_type = 'Policy' " +
             "AND request_name = 'PeriodicPayout' " +
             "AND trans_exe_date > :startDate " +
-            "ORDER BY trans_eff_date DESC LIMIT 100 ",
+            "ORDER BY trans_eff_date DESC LIMIT 50 ",
             nativeQuery = true)
     List<Object[]> findPayoutTransactionsInRange(@Param("startDate") LocalDateTime  startDate);
 
@@ -46,10 +46,39 @@ public interface PeriodicPayoutTransactionHistoryRepository extends JpaRepositor
             "AND request_name = 'PeriodicPayout' " +
             "AND message_image \\:\\: json->>'polNumber' = :policyNumber " +
             "AND trans_exe_date > :startDate " +
-            "ORDER BY trans_eff_date DESC LIMIT 100 ",
+            "ORDER BY trans_eff_date DESC Limit 1 ",
             nativeQuery = true)
     List<Object[]> findPayoutTransactionsByPolicyNumber(
             @Param("policyNumber") String policyNumber,
             @Param("startDate") LocalDateTime startDate);
+
+    @Query(value = """
+            WITH RankedTransactions AS (
+                SELECT 
+                    message_image\\:\\:json->>'polNumber' AS policy_number,
+                    trans_exe_date,
+                    request_name,
+                    message_image,
+                    ROW_NUMBER() OVER (PARTITION BY message_image\\:\\:json->>'polNumber' ORDER BY trans_exe_date DESC) AS rn
+                FROM 
+                    public."TRANSACTION_HISTORY"
+                WHERE 
+                    request_name = 'PeriodicPayout'
+                    AND reversed = false
+                    AND trans_exe_date > ?
+            )
+            SELECT 
+                policy_number,
+                trans_exe_date,
+                request_name,
+                message_image
+            FROM 
+                RankedTransactions
+            WHERE 
+                rn = 1
+            ORDER BY 
+                trans_exe_date DESC
+            """, nativeQuery = true)
+    List<Object[]> findLatestTransactions(@Param("date") LocalDateTime date);
 
 }

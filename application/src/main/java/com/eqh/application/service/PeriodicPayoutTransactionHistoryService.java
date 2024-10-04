@@ -127,7 +127,7 @@ public class PeriodicPayoutTransactionHistoryService {
     public byte[] generateReportAsBytes() throws IOException {
         // Convert startDate to LocalDate
         LocalDateTime startRangeDate = LocalDateTime.parse(startDate);
-        List<Object[]> data = repository.findPayoutTransactionsInRange(startRangeDate);
+        List<Object[]> data = repository.findLatestTransactions(startRangeDate);
 
         logger.info("Fetching transactions history size: " + data.size() + " for date: " + startRangeDate);
         if (data.isEmpty()) {
@@ -135,7 +135,7 @@ public class PeriodicPayoutTransactionHistoryService {
         }
 
         // Extract unique policy numbers
-        Set<String> policyNumbers = extractUniquePolicyNumbers(data);
+        Set<String> policyNumbers = extractPolicyNumbers(data);
         // Fetch product info for all policy numbers
         Map<String, ProductInfo> productInfoMap = fetchProductInfoForPolicyNumbers(policyNumbers);
         // Extract unique taxable party numbers
@@ -185,11 +185,22 @@ public class PeriodicPayoutTransactionHistoryService {
                 .filter(polNumber -> !polNumber.isEmpty())
                 .collect(Collectors.toSet());
     }
+
+    private Set<String> extractPolicyNumbers(List<Object[]> data) {
+        Set<String> policyNumbers = new HashSet<>();
+        for (Object[] row : data) {
+            // Assuming the first element is the policy number
+            String policyNumber = (String) row[0]; // Adjust index as necessary
+            policyNumbers.add(policyNumber);
+        }
+        return policyNumbers; // Return the Set directly
+    }
+
     private Set<String> extractUniqueTaxablePartyNumbers(List<Object[]> data) {
         return data.stream()
                 .flatMap(row -> {
                     try {
-                        JsonNode jsonNode = objectMapper.readTree((String) row[0]);
+                        JsonNode jsonNode = objectMapper.readTree((String) row[3]);
                         JsonNode payeePayoutsNode = jsonNode.path("payeePayouts");
                         Set<String> taxablePartyNumbers = new HashSet<>();
 
@@ -270,7 +281,7 @@ public class PeriodicPayoutTransactionHistoryService {
         return productInfoList.stream()
                 .collect(Collectors.toMap(
                         arr -> (String) arr[0], // polNumber
-                        arr -> new ProductInfo((String) arr[1], (String) arr[2], (String) arr[3], (String) arr[4]) // managementCode, policyStatus, productCode
+                        arr -> new ProductInfo((String) arr[0],(String) arr[1], (String) arr[2], (String) arr[3], (String) arr[4]) // managementCode, policyStatus, productCode
                 ));
     }
 
@@ -284,7 +295,7 @@ public class PeriodicPayoutTransactionHistoryService {
         }
 
         String polNumber = jsonNode.path("polNumber").asText();
-        ProductInfo productInfo = productInfoMap.getOrDefault(polNumber, new ProductInfo("", "", "", ""));
+        ProductInfo productInfo = productInfoMap.getOrDefault(polNumber, new ProductInfo("","", "", "", ""));
 
         Date transEffDate = parseDate(jsonNode.path("transEffDate").asText());
         Date transRunDate = parseDate(jsonNode.path("transRunDate").asText());
@@ -435,6 +446,61 @@ public class PeriodicPayoutTransactionHistoryService {
         String preferredMailingAddress = addressesMap.getOrDefault("preferredAddress", "");
         String mailingAddress = addressesMap.getOrDefault("mailingAddress", "");
 
+
+        LocalDateTime payoutTransExecdate = LocalDateTime.parse(payoutTransExectDate);
+        ytres.setYtdDisbursePeriodicPayout(BigDecimal.ZERO);//Sum of gross amunt
+        ytres.setYtdDisburseFederalWithholdingAmt(BigDecimal.ZERO);//Sum of fedral Withholdingamount
+        ytres.setYtdDisburseStateWithholdingAmt(BigDecimal.ZERO);//Sum of state Withholding amunt
+        Double totalGrossAmount = 0.0;
+        Double totalFeeAmtForState = 0.0;
+        Double totalFeeAmtForFederal = 0.0;
+        Double totalAdjustmentValueForState = 0.0;
+        Double totalAdjustmentValueForFederal = 0.0;
+        Calendar ytdCalendar = Calendar.getInstance();
+        ytdCalendar.set(Calendar.YEAR, 2024);
+        ytdCalendar.set(Calendar.MONTH, Calendar.AUGUST); // Note: Months are zero-based (0 = January, 6 = July)
+        ytdCalendar.set(Calendar.DATE, 21);
+
+
+        totalGrossAmount = payoutPaymentHistoryRepository.findPolicyPayoutWithGrossAmount(productInfo.getPolNumber(), payoutTransExecdate);
+
+        totalFeeAmtForFederal = payoutPaymentHistoryDeductionRepository.sumFeeAmtByFeeTypeFederal(taxablePartyNumber, payoutTransExecdate, productInfo.getPolNumber());
+        totalFeeAmtForState = payoutPaymentHistoryDeductionRepository.sumFeeAmtByFeeTypeState(taxablePartyNumber,payoutTransExecdate,productInfo.getPolNumber());
+
+        totalAdjustmentValueForFederal = payoutPaymentHistoryAdjustmentRepository.sumAdjustmentValueByFieldAdjustmentFederal(taxablePartyNumber,payoutTransExecdate,productInfo.getPolNumber());
+        totalAdjustmentValueForState = payoutPaymentHistoryAdjustmentRepository.sumAdjustmentValueByFieldAdjustmentState(taxablePartyNumber,payoutTransExecdate,productInfo.getPolNumber());
+        List<PayoutPaymentHistory> policyPayouts = payoutPaymentHistoryRepository.findPolicyPayouts(productInfo.getPolNumber(), payoutTransExecdate);
+
+        Double finalTotalGrossAmount = totalGrossAmount;
+        Double finalTotalFeeAmtForFederal = totalFeeAmtForFederal;
+        Double finalTotalFeeAmtForState = totalFeeAmtForState;
+
+        Double finalTotalAdjustmentValueForFederal = totalAdjustmentValueForFederal;
+        Double finalTotalAdjustmentValueForState = totalAdjustmentValueForState;
+
+        if(finalTotalGrossAmount != null && finalTotalGrossAmount > 0) {
+            ytres.setYtdDisbursePeriodicPayout(BigDecimal.valueOf(finalTotalGrossAmount));
+        }
+
+        policyPayouts.forEach(policyPayout -> {
+
+            if (policyPayout.getPayoutDueDate().compareTo(transEffDate) <= 0 &&
+                    policyPayout.getPayoutDueDate().compareTo(ytdCalendar.getTime()) >= 0) {
+
+                if((finalTotalFeeAmtForFederal != null && finalTotalFeeAmtForFederal > 0) || (finalTotalAdjustmentValueForFederal != null && finalTotalAdjustmentValueForFederal > 0)) {
+                    ytres.setYtdDisburseFederalWithholdingAmt(BigDecimal.valueOf(finalTotalFeeAmtForFederal + finalTotalAdjustmentValueForFederal));
+                }
+                if((finalTotalFeeAmtForState != null && finalTotalFeeAmtForState > 0) || (finalTotalAdjustmentValueForState != null && finalTotalAdjustmentValueForState > 0)) {
+                    ytres.setYtdDisburseStateWithholdingAmt(BigDecimal.valueOf(finalTotalFeeAmtForState + finalTotalAdjustmentValueForState));
+                }
+             }
+            });
+
+
+
+
+
+        /*
         // Fetch Policy by polNumber
         Long policyId = policyRepository.findPolicyByNumberAndStatus(polNumber);
         Long policyPayoutId = policyPayoutRepository.findPolicyPayoutByPolicyId(policyId);
@@ -452,7 +518,7 @@ public class PeriodicPayoutTransactionHistoryService {
             }
         }
 
-        LocalDateTime payoutTransExecdate = LocalDateTime.parse(payoutTransExectDate);
+
         // Fetch PayoutPaymentHistory by policyPayoutId and payoutPayeeId
         List<PayoutPaymentHistory> payoutPaymentHistoryList = payoutPaymentHistoryRepository.findPayoutPaymentHistoryByPayeePartyNumberAndPayeeId(String.valueOf(taxablePartyNumber), payoutPayeeObj.getId(),payoutTransExecdate);
 
@@ -489,7 +555,7 @@ public class PeriodicPayoutTransactionHistoryService {
                     ytres = ytdCalculation(transEffDate, pph, payoutPaymentHistoryDeduction, payoutPaymentHistoryAdjustment, ytdObj);
                 }
             }
-        });
+        });*/
 
         return Arrays.asList(
                 runYear,
@@ -531,7 +597,7 @@ public class PeriodicPayoutTransactionHistoryService {
         // Set calendar to the beginning of the year for comparison
         Calendar ytdCalendar = Calendar.getInstance();
         ytdCalendar.set(Calendar.YEAR, 2024);
-        ytdCalendar.set(Calendar.MONTH, Calendar.JULY); // Note: Months are zero-based (0 = January, 6 = July)
+        ytdCalendar.set(Calendar.MONTH, Calendar.AUGUST); // Note: Months are zero-based (0 = January, 6 = July)
         ytdCalendar.set(Calendar.DATE, 31);
 
         // Update current payout amount
