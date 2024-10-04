@@ -457,10 +457,9 @@ public class PeriodicPayoutTransactionHistoryService {
         Double totalAdjustmentValueForState = 0.0;
         Double totalAdjustmentValueForFederal = 0.0;
         Calendar ytdCalendar = Calendar.getInstance();
-        ytdCalendar.set(Calendar.YEAR, 2024);
-        ytdCalendar.set(Calendar.MONTH, Calendar.AUGUST); // Note: Months are zero-based (0 = January, 6 = July)
-        ytdCalendar.set(Calendar.DATE, 21);
-
+        ytdCalendar.set(Calendar.YEAR, 2025);
+        ytdCalendar.set(Calendar.MONTH, Calendar.OCTOBER); // Note: Months are zero-based (0 = January, 6 = July)
+        ytdCalendar.set(Calendar.DATE, 18);
 
         totalGrossAmount = payoutPaymentHistoryRepository.findPolicyPayoutWithGrossAmount(productInfo.getPolNumber(), payoutTransExecdate);
 
@@ -483,9 +482,13 @@ public class PeriodicPayoutTransactionHistoryService {
         }
 
         policyPayouts.forEach(policyPayout -> {
-
-            if (policyPayout.getPayoutDueDate().compareTo(transEffDate) <= 0 &&
-                    policyPayout.getPayoutDueDate().compareTo(ytdCalendar.getTime()) >= 0) {
+               /* This checks if the payout due date is on or before the transaction effective date and is on or after the year start
+            If this part is true, it means the payout is either due today or has already passed.
+           and
+        This checks if the payout due date is on or after the start of the year (or whatever date ytdCalendar.getTime() represents).
+            If this part is true, it means the payout is due any time from the beginning of the year up to today.*/
+//            if (policyPayout.getPayoutDueDate().compareTo(transEffDate) <= 0 &&
+//                    policyPayout.getPayoutDueDate().compareTo(ytdCalendar.getTime()) >= 0) {
 
                 if((finalTotalFeeAmtForFederal != null && finalTotalFeeAmtForFederal > 0) || (finalTotalAdjustmentValueForFederal != null && finalTotalAdjustmentValueForFederal > 0)) {
                     ytres.setYtdDisburseFederalWithholdingAmt(BigDecimal.valueOf(finalTotalFeeAmtForFederal + finalTotalAdjustmentValueForFederal));
@@ -493,7 +496,7 @@ public class PeriodicPayoutTransactionHistoryService {
                 if((finalTotalFeeAmtForState != null && finalTotalFeeAmtForState > 0) || (finalTotalAdjustmentValueForState != null && finalTotalAdjustmentValueForState > 0)) {
                     ytres.setYtdDisburseStateWithholdingAmt(BigDecimal.valueOf(finalTotalFeeAmtForState + finalTotalAdjustmentValueForState));
                 }
-             }
+//             }
             });
 
 
