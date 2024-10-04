@@ -461,7 +461,7 @@ public class PeriodicPayoutTransactionHistoryService {
         ytdCalendar.set(Calendar.MONTH, Calendar.OCTOBER); // Note: Months are zero-based (0 = January, 6 = July)
         ytdCalendar.set(Calendar.DATE, 18);
 
-        totalGrossAmount = payoutPaymentHistoryRepository.findPolicyPayoutWithGrossAmount(productInfo.getPolNumber(), payoutTransExecdate);
+        Double policyPayoutsGrossAmt = payoutPaymentHistoryRepository.findPolicyPayoutWithGrossAmount(productInfo.getPolNumber(), payoutTransExecdate);
 
         totalFeeAmtForFederal = payoutPaymentHistoryDeductionRepository.sumFeeAmtByFeeTypeFederal(taxablePartyNumber, payoutTransExecdate, productInfo.getPolNumber());
         totalFeeAmtForState = payoutPaymentHistoryDeductionRepository.sumFeeAmtByFeeTypeState(taxablePartyNumber,payoutTransExecdate,productInfo.getPolNumber());
@@ -470,7 +470,7 @@ public class PeriodicPayoutTransactionHistoryService {
         totalAdjustmentValueForState = payoutPaymentHistoryAdjustmentRepository.sumAdjustmentValueByFieldAdjustmentState(taxablePartyNumber,payoutTransExecdate,productInfo.getPolNumber());
         List<PayoutPaymentHistory> policyPayouts = payoutPaymentHistoryRepository.findPolicyPayouts(productInfo.getPolNumber(), payoutTransExecdate);
 
-        Double finalTotalGrossAmount = totalGrossAmount;
+        Double finalTotalGrossAmount = policyPayoutsGrossAmt;
         Double finalTotalFeeAmtForFederal = totalFeeAmtForFederal;
         Double finalTotalFeeAmtForState = totalFeeAmtForState;
 
@@ -490,75 +490,14 @@ public class PeriodicPayoutTransactionHistoryService {
 //            if (policyPayout.getPayoutDueDate().compareTo(transEffDate) <= 0 &&
 //                    policyPayout.getPayoutDueDate().compareTo(ytdCalendar.getTime()) >= 0) {
 
-                if((finalTotalFeeAmtForFederal != null && finalTotalFeeAmtForFederal > 0) || (finalTotalAdjustmentValueForFederal != null && finalTotalAdjustmentValueForFederal > 0)) {
-                    ytres.setYtdDisburseFederalWithholdingAmt(BigDecimal.valueOf(finalTotalFeeAmtForFederal + finalTotalAdjustmentValueForFederal));
-                }
-                if((finalTotalFeeAmtForState != null && finalTotalFeeAmtForState > 0) || (finalTotalAdjustmentValueForState != null && finalTotalAdjustmentValueForState > 0)) {
-                    ytres.setYtdDisburseStateWithholdingAmt(BigDecimal.valueOf(finalTotalFeeAmtForState + finalTotalAdjustmentValueForState));
-                }
+            if((finalTotalFeeAmtForFederal != null && finalTotalFeeAmtForFederal > 0) || (finalTotalAdjustmentValueForFederal != null && finalTotalAdjustmentValueForFederal > 0)) {
+                ytres.setYtdDisburseFederalWithholdingAmt(BigDecimal.valueOf(finalTotalFeeAmtForFederal + finalTotalAdjustmentValueForFederal));
+            }
+            if((finalTotalFeeAmtForState != null && finalTotalFeeAmtForState > 0) || (finalTotalAdjustmentValueForState != null && finalTotalAdjustmentValueForState > 0)) {
+                ytres.setYtdDisburseStateWithholdingAmt(BigDecimal.valueOf(finalTotalFeeAmtForState + finalTotalAdjustmentValueForState));
+            }
 //             }
-            });
-
-
-
-
-
-        /*
-        // Fetch Policy by polNumber
-        Long policyId = policyRepository.findPolicyByNumberAndStatus(polNumber);
-        Long policyPayoutId = policyPayoutRepository.findPolicyPayoutByPolicyId(policyId);
-
-        PayoutPayee payoutPayeeObj = new PayoutPayee();
-        List<PayoutPayee> payoutPayeeList = payoutPayeeRepository.findPayoutPayeeByPolicyPayoutIdAndPartyNumber(policyPayoutId);
-        for (PayoutPayee payoutPayees : payoutPayeeList) {
-            if (payoutPayees.getPayeePartyNumber().equalsIgnoreCase(String.valueOf(taxablePartyNumber))) {
-                try {
-                    payoutPayeeObj = payoutPayees;
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }
-
-
-        // Fetch PayoutPaymentHistory by policyPayoutId and payoutPayeeId
-        List<PayoutPaymentHistory> payoutPaymentHistoryList = payoutPaymentHistoryRepository.findPayoutPaymentHistoryByPayeePartyNumberAndPayeeId(String.valueOf(taxablePartyNumber), payoutPayeeObj.getId(),payoutTransExecdate);
-
-        List<PayoutPaymentHistory> payoutPaymentHistoryLists = payoutPaymentHistoryList.stream()
-                .filter(m -> !m.getReversed()).sorted(Comparator.comparingLong(PayoutPaymentHistory::getId))
-                .collect(Collectors.toList());
-
-        logger.info("fetching payoutPaymentHistoryLists size "+payoutPaymentHistoryList.size()+" for date "+payoutTransExecdate);
-
-        List<Long> paymentHistoryAdjustmentIds = payoutPaymentHistoryAdjustmentRepository.findAllPaymentHistoryIdsOfAdjustments();
-        List<Long> paymentHistoryDeductionIds = payoutPaymentHistoryDeductionRepository.findAllPaymentHistoryIdsOfDeductions();
-
-        System.out.println("polNumber :: "+polNumber);
-        System.out.println("policyRepository.findPolicyByNumberAndStatus(polNumber)  :: "+policyId);
-        System.out.println("policyPayoutRepository.findPolicyPayoutByPolicyId(policyId)  :: "+policyPayoutId);
-        System.out.println("taxablePartyNumber :: "+taxablePartyNumber+" payoutPayee "+ payoutPayeeObj.toString());
-        payoutPaymentHistoryLists.forEach(pph -> System.out.println("payoutPaymentHistoryLists :: "+pph.toString()));
-
-        ytres.setYtdDisbursePeriodicPayout(BigDecimal.ZERO);
-        ytres.setYtdDisburseFederalWithholdingAmt(BigDecimal.ZERO);
-        ytres.setYtdDisburseStateWithholdingAmt(BigDecimal.ZERO);
-
-        payoutPaymentHistoryLists.forEach(pph -> {
-            if (!"1000500003".equalsIgnoreCase(pph.getPayeeStatus()) && pph.getPayoutDueDate() != null) {
-                boolean isAdjustmentId = paymentHistoryAdjustmentIds.contains(pph.getId());
-                boolean isDeductionId = paymentHistoryDeductionIds.contains(pph.getId());
-
-                if (isAdjustmentId || isDeductionId) {
-                    List<PayoutPaymentHistoryAdjustment> payoutPaymentHistoryAdjustment = payoutPaymentHistoryAdjustmentRepository.findFeeDetailsByPayoutPaymentHistoryId(pph.getId());
-                    List<PayoutPaymentHistoryDeduction> payoutPaymentHistoryDeduction = payoutPaymentHistoryDeductionRepository.findFeeDetailsByPayoutPaymentHistoryId(pph.getId());
-                    payoutPaymentHistoryAdjustment.forEach(ppd -> System.out.println("payoutPaymentHistoryAdjustment :: "+ppd.toString()));
-                    payoutPaymentHistoryDeduction.forEach(ppd -> System.out.println("payoutPaymentHistoryDeduction :: "+ppd.toString()));
-                    // Call the new ytdCalculation method
-                    ytres = ytdCalculation(transEffDate, pph, payoutPaymentHistoryDeduction, payoutPaymentHistoryAdjustment, ytdObj);
-                }
-            }
-        });*/
+        });
 
         return Arrays.asList(
                 runYear,
@@ -583,104 +522,6 @@ public class PeriodicPayoutTransactionHistoryService {
                 ytres.getYtdDisburseFederalWithholdingAmt(),
                 ytres.getYtdDisburseStateWithholdingAmt()
         );
-    }
-
-    private ytdResponse ytdCalculation(Date transEffDate,
-                                       PayoutPaymentHistory pph,
-                                       List<PayoutPaymentHistoryDeduction> deductions,
-                                       List<PayoutPaymentHistoryAdjustment> adjustments,
-                                       ytdResponse ytd) {
-
-        // Initialize YTD values from ytdResponse
-        BigDecimal ytdCurrentPayoutAmount = Optional.ofNullable(ytd.getYtdDisbursePeriodicPayout()).orElse(BigDecimal.ZERO);
-        BigDecimal ytdFederalAmount = Optional.ofNullable(ytd.getYtdDisburseFederalWithholdingAmt()).orElse(BigDecimal.ZERO);
-        BigDecimal ytdStateAmount = Optional.ofNullable(ytd.getYtdDisburseStateWithholdingAmt()).orElse(BigDecimal.ZERO);
-        BigDecimal ytdInterestAmount = Optional.ofNullable(ytd.getYtdDisburseInterest()).orElse(BigDecimal.ZERO);
-
-        // Set calendar to the beginning of the year for comparison
-        Calendar ytdCalendar = Calendar.getInstance();
-        ytdCalendar.set(Calendar.YEAR, 2024);
-        ytdCalendar.set(Calendar.MONTH, Calendar.AUGUST); // Note: Months are zero-based (0 = January, 6 = July)
-        ytdCalendar.set(Calendar.DATE, 31);
-
-        // Update current payout amount
-        ytdCurrentPayoutAmount = ytdCurrentPayoutAmount.add(pph.getGrossAmt());
-
-        /* This checks if the payout due date is on or before the transaction effective date and is on or after the year start
-            If this part is true, it means the payout is either due today or has already passed.
-           and
-        This checks if the payout due date is on or after the start of the year (or whatever date ytdCalendar.getTime() represents).
-            If this part is true, it means the payout is due any time from the beginning of the year up to today.*/
-        if (pph.getPayoutDueDate().compareTo(transEffDate) <= 0 &&
-                pph.getPayoutDueDate().compareTo(ytdCalendar.getTime()) >= 0) {
-
-
-            // Process deductions
-            for (PayoutPaymentHistoryDeduction deduction : deductions) {
-                if (TWENTY_CONSTANT.equalsIgnoreCase(deduction.getFeeType())) {
-                    ytdFederalAmount = ytdFederalAmount.add(deduction.getFeeAmt());
-                } else if (TWENTY_ONE_CONSTANT.equalsIgnoreCase(deduction.getFeeType())) {
-                    ytdStateAmount = ytdStateAmount.add(deduction.getFeeAmt());
-                }
-            }
-
-            // Process adjustments
-            for (PayoutPaymentHistoryAdjustment adjustment : adjustments) {
-                String fieldAdjustment = adjustment.getFieldAdjustment();
-                String adjustmentType = adjustment.getAdjustmentType();
-                BigDecimal adjustmentValue = adjustment.getAdjustmentValue();
-
-                switch (fieldAdjustment) {
-                    case ZERO_CONSTANT: // Gross adjustments
-                        if (TWO_CONSTANT.equalsIgnoreCase(adjustmentType)) {
-                            ytdCurrentPayoutAmount = ytdCurrentPayoutAmount.add(adjustmentValue);
-                        } else if (ONE_CONSTANT.equalsIgnoreCase(adjustmentType)) {
-                            ytdCurrentPayoutAmount = ytdCurrentPayoutAmount.subtract(adjustmentValue);
-                        }
-                        break;
-
-                    case ONE_CONSTANT: // Interest adjustments
-                        if (TWO_CONSTANT.equalsIgnoreCase(adjustmentType)) {
-                            ytdInterestAmount = ytdInterestAmount.add(adjustmentValue);
-                        } else if (ONE_CONSTANT.equalsIgnoreCase(adjustmentType)) {
-                            ytdInterestAmount = ytdInterestAmount.subtract(adjustmentValue);
-                        }
-                        break;
-
-                    case TWO_CONSTANT: // Federal adjustments
-                        if (TWO_CONSTANT.equalsIgnoreCase(adjustmentType)) {
-                            ytdFederalAmount = ytdFederalAmount.add(adjustmentValue);
-                        } else if (ONE_CONSTANT.equalsIgnoreCase(adjustmentType)) {
-                            ytdFederalAmount = ytdFederalAmount.subtract(adjustmentValue);
-                        }
-                        break;
-
-                    case THREE_CONSTANT: // State adjustments
-                        if (TWO_CONSTANT.equalsIgnoreCase(adjustmentType)) {
-                            ytdStateAmount = ytdStateAmount.add(adjustmentValue);
-                        } else if (ONE_CONSTANT.equalsIgnoreCase(adjustmentType)) {
-                            ytdStateAmount = ytdStateAmount.subtract(adjustmentValue);
-                        }
-                        break;
-
-                    default:
-                        // Handle unexpected field adjustments if necessary
-                        break;
-                }
-            }
-        }
-
-        System.out.println("gross amount"+ytdCurrentPayoutAmount);
-        System.out.println("FederalAmount"+ytdFederalAmount);
-        System.out.println("StateAmount"+ytdStateAmount);
-        System.out.println("InterestAmount"+ytdInterestAmount);
-
-        // Set calculated values in the response object
-        ytd.setYtdDisbursePeriodicPayout(ytdCurrentPayoutAmount);
-        ytd.setYtdDisburseFederalWithholdingAmt(ytdFederalAmount);
-        ytd.setYtdDisburseStateWithholdingAmt(ytdStateAmount);
-        ytd.setYtdDisburseInterest(ytdInterestAmount);
-        return ytd;
     }
 
     private Date parseDate(String dateStr) {
