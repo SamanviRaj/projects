@@ -77,7 +77,7 @@ public interface PeriodicPayoutTransactionHistoryRepository extends JpaRepositor
             WHERE 
                 rn = 1
             ORDER BY 
-                trans_exe_date DESC LIMIT 50
+                trans_exe_date DESC
             """, nativeQuery = true)
     List<Object[]> findLatestTransactions(@Param("date") LocalDateTime date);
 
