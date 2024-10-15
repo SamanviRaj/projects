@@ -24,6 +24,24 @@ public interface PayoutPaymentHistoryRepository extends JpaRepository<PayoutPaym
     );
 
     @Query(value = """
+            SELECT pph.*
+            FROM "POLICY" p
+            JOIN "POLICY_PAYOUT" pp ON pp.policy_id = p.id
+            JOIN "PAYOUT_PAYEE" ppy ON ppy.policy_payout_id = pp.id
+            JOIN public."PAYOUT_PAYMENT_HISTORY" pph ON pph.payee_party_number = ppy.payee_party_number
+            WHERE p.pol_number = :policyNumber
+              AND pph.payout_payee_id = ppy.id
+              AND pph.reversed = false
+              AND trans_exe_date >= :startDate
+              AND trans_exe_date <= :endDate
+            ORDER BY pph.trans_exe_date DESC
+            """, nativeQuery = true)
+    List<PayoutPaymentHistory> findPolicyPayouts(
+            @Param("policyNumber") String policyNumber,
+           @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate
+    );
+
+    @Query(value = """
         SELECT pph.*
         FROM "POLICY" p
         JOIN "POLICY_PAYOUT" pp ON pp.policy_id = p.id
@@ -41,6 +59,20 @@ public interface PayoutPaymentHistoryRepository extends JpaRepository<PayoutPaym
     );
 
     @Query(value = """
+                  SELECT sum(gross_amt)
+                  FROM public."TRANSACTION_HISTORY"
+                  WHERE reversed = false
+                  AND entity_type = 'Policy'
+                  AND request_name in ('OverduePayment','PeriodicPayout')
+                  AND message_image \\:\\: json->>'polNumber' = :policyNumber
+                AND trans_exe_date >= :startDate
+                AND trans_exe_date <= :endDate
+            """, nativeQuery = true)
+    Double findPolicyPayoutWithGrossAmount(
+            @Param("policyNumber") String policyNumber,
+           @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate); // Ensure the parameter name matches
+
+    @Query(value = """
     SELECT COALESCE(SUM(pph.gross_amt), 0) 
     FROM "POLICY" p
     JOIN "POLICY_PAYOUT" pp ON pp.policy_id = p.id
@@ -54,6 +86,7 @@ public interface PayoutPaymentHistoryRepository extends JpaRepository<PayoutPaym
             @Param("policyNumber") String policyNumber,
             @Param("date") LocalDateTime date // Ensure the parameter name matches
     );
+
 
     @Query(value = """
             SELECT pph.*

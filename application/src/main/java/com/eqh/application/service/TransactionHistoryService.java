@@ -31,7 +31,7 @@ public class TransactionHistoryService {
 
     private static final Logger logger = LoggerFactory.getLogger(TransactionHistoryService.class);
     private static final String DATE_FORMAT = "ddMMyyyy_HHmmss";
-    private static final String DATE_FORMAT_FOR_EXCEL = "yyyy-MM-dd";
+    private static final String DATE_FORMAT_FOR_EXCEL = "MM-dd-yyyy";
     private static final String CURRENCY_FORMAT = "$#,##0.00";
     private static final String ERROR_PROCESSING_ROW = "Error processing row";
     private static final String UNKNOWN = "Unknown";

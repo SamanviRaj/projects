@@ -24,7 +24,7 @@ import java.util.Date;
 public class TransactionHistoryController {
 
     private static final Logger logger = LoggerFactory.getLogger(TransactionHistoryController.class);
-    private static final String TIMESTAMP_FORMAT = "dd-MM-yyyy_HHmmss";
+    private static final String TIMESTAMP_FORMAT = "MM-dd-yyyy_HHmmss";
     private static final String FILENAME_PREFIX = "transaction_history_death_claim_report_";
     private static final String PERIODIC_PAYOUT_FILENAME_PREFIX = "transaction_history_periodic_payout_report_";
     private static final String FILE_EXTENSION = ".xlsx";
@@ -41,7 +41,7 @@ public class TransactionHistoryController {
         this.periodicPayoutTransactionHistoryService = periodicPayoutTransactionHistoryService;
     }
 
-    @GetMapping("/generate-report")
+    @GetMapping("deathclaim/generate-report")
     public ResponseEntity<byte[]> generateReport() {
         try {
             byte[] reportBytes = transactionHistoryService.generateReportAsBytes();

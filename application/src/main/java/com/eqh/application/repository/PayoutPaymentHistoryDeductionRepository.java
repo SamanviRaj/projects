@@ -51,6 +51,40 @@ public interface PayoutPaymentHistoryDeductionRepository extends JpaRepository<P
     List<Long> findAllPaymentHistoryIdsOfDeductions();
 
     @Query(value = """
+                SELECT COALESCE(SUM(fee_amt), 0)
+                FROM "PAYOUT_PAYMENT_HISTORY_DEDUCTION" 
+                WHERE payout_payment_history_id IN (
+                    SELECT id 
+                    FROM "PAYOUT_PAYMENT_HISTORY" pph 
+                    WHERE payee_party_number = :payeePartyNumber 
+                      AND reversed = false 
+                      AND trans_exe_date >= :startDate
+                      AND trans_exe_date <= :endDate
+                      AND payout_payee_id IN (
+                          SELECT id 
+                          FROM "PAYOUT_PAYEE" pp 
+                          WHERE policy_payout_id IN (
+                              SELECT id 
+                              FROM "POLICY_PAYOUT" pp 
+                              WHERE policy_id IN (
+                                  SELECT id 
+                                  FROM "POLICY" 
+                                  WHERE pol_number = :policyNumber 
+                                  AND policy_status <> 'R'
+                              )
+                          ) 
+                          AND payee_party_number = :payeePartyNumber
+                      )
+                ) 
+                AND fee_type = '21'
+            """, nativeQuery = true)
+    Double sumFeeAmtByFeeTypeState(
+            @Param("payeePartyNumber") String payeePartyNumber,
+            @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate,
+            @Param("policyNumber") String policyNumber
+    );
+
+    @Query(value = """
         SELECT COALESCE(SUM(fee_amt), 0)
         FROM "PAYOUT_PAYMENT_HISTORY_DEDUCTION" 
         WHERE payout_payment_history_id IN (
@@ -82,6 +116,41 @@ public interface PayoutPaymentHistoryDeductionRepository extends JpaRepository<P
             @Param("transExeDate") LocalDateTime transExeDate,
             @Param("policyNumber") String policyNumber
     );
+
+    @Query(value = """
+                SELECT COALESCE(SUM(fee_amt), 0)
+                FROM "PAYOUT_PAYMENT_HISTORY_DEDUCTION" 
+                WHERE payout_payment_history_id IN (
+                    SELECT id 
+                    FROM "PAYOUT_PAYMENT_HISTORY" pph 
+                    WHERE payee_party_number = :payeePartyNumber 
+                      AND reversed = false 
+                      AND trans_exe_date >= :startDate
+                      AND trans_exe_date <= :endDate
+                      AND payout_payee_id IN (
+                          SELECT id 
+                          FROM "PAYOUT_PAYEE" pp 
+                          WHERE policy_payout_id IN (
+                              SELECT id 
+                              FROM "POLICY_PAYOUT" pp 
+                              WHERE policy_id IN (
+                                  SELECT id 
+                                  FROM "POLICY" 
+                                  WHERE pol_number = :policyNumber 
+                                  AND policy_status <> 'R'
+                              )
+                          ) 
+                          AND payee_party_number = :payeePartyNumber
+                      )
+                ) 
+                AND fee_type = '20'
+            """, nativeQuery = true)
+    Double sumFeeAmtByFeeTypeFederal(
+            @Param("payeePartyNumber") String payeePartyNumber,
+            @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate,
+            @Param("policyNumber") String policyNumber
+    );
+
 
     @Query(value = """
         SELECT COALESCE(SUM(fee_amt), 0)

@@ -45,12 +45,57 @@ public interface PeriodicPayoutTransactionHistoryRepository extends JpaRepositor
             "AND entity_type = 'Policy' " +
             "AND request_name = 'PeriodicPayout' " +
             "AND message_image \\:\\: json->>'polNumber' = :policyNumber " +
+            "AND trans_exe_date >= :startDate " + // Added a space here
+            "AND trans_exe_date <= :endDate " + // Added a space here
+            "ORDER BY trans_eff_date DESC LIMIT 1",
+            nativeQuery = true)
+    List<Object[]> findPayoutTransactionsByPolicyNumber(
+            @Param("policyNumber") String policyNumber,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate);
+
+    @Query(value = "SELECT message_image, gross_amt, trans_eff_date, trans_run_date " +
+            "FROM public.\"TRANSACTION_HISTORY\" " +
+            "WHERE reversed = false " +
+            "AND entity_type = 'Policy' " +
+            "AND request_name = 'PeriodicPayout' " +
+            "AND message_image \\:\\: json->>'polNumber' = :policyNumber " +
             "AND trans_exe_date > :startDate " +
             "ORDER BY trans_eff_date DESC Limit 1 ",
             nativeQuery = true)
     List<Object[]> findPayoutTransactionsByPolicyNumber(
             @Param("policyNumber") String policyNumber,
             @Param("startDate") LocalDateTime startDate);
+
+    @Query(value = """
+            WITH RankedTransactions AS (
+                                                 SELECT
+                                                     message_image\\:\\:json->>'polNumber' AS policy_number,
+                                                     trans_exe_date,
+                                                     request_name,
+                                                     message_image,
+                                                     ROW_NUMBER() OVER (PARTITION BY message_image\\:\\:json->>'polNumber' ORDER BY trans_exe_date DESC) AS rn
+                                                 FROM
+                                                     public."TRANSACTION_HISTORY"
+                                                 WHERE
+                                                     request_name IN ('PeriodicPayout')
+                                                     AND reversed = false
+                                                     AND trans_exe_date >= :startDate
+                                                     AND trans_exe_date <= :endDate
+                                             )
+                                             SELECT
+                                                 policy_number,
+                                                 trans_exe_date,
+                                                 request_name,
+                                                 message_image
+                                             FROM
+                                                 RankedTransactions
+                                             WHERE
+                                                 rn = 1
+                                             ORDER BY
+                                                 trans_exe_date DESC
+            """, nativeQuery = true)
+    List<Object[]> findLatestTransactions(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
     @Query(value = """
             WITH RankedTransactions AS (
@@ -80,5 +125,63 @@ public interface PeriodicPayoutTransactionHistoryRepository extends JpaRepositor
                 trans_exe_date DESC
             """, nativeQuery = true)
     List<Object[]> findLatestTransactions(@Param("date") LocalDateTime date);
+
+    @Query(value = """
+        SELECT message_image, gross_amt, trans_eff_date, trans_run_date
+        FROM public."TRANSACTION_HISTORY"
+        WHERE reversed = false 
+        AND entity_type = 'Policy' 
+        AND request_name = 'OverduePayment'
+        AND message_image\\:\\:json->>'polNumber' = :policyNumber
+        AND trans_exe_date > :executionDate
+        ORDER BY trans_eff_date DESC
+    """, nativeQuery = true)
+    List<Object[]> findOverduePaymentsByPolicyNumberAndDate(
+            @Param("policyNumber") String policyNumber,
+            @Param("executionDate") LocalDateTime executionDate);
+
+    @Query(value = """
+    SELECT 
+        message_image::json->>'polNumber' AS policy_number,
+        trans_exe_date,
+        request_name,
+        message_image
+    FROM 
+        public."TRANSACTION_HISTORY" 
+    WHERE 
+        request_name IN ('OverduePayment', 'PeriodicPayout')
+        AND reversed = false
+        AND message_image::json->>'polNumber' = :policyNumber
+        AND trans_exe_date > :executionDate
+    ORDER BY 
+        trans_exe_date DESC Limit 1
+""", nativeQuery = true)
+    List<Object[]> findOverdueAndPeriodicPayoutTransactionsByPolicyNumber(
+            @Param("policyNumber") String policyNumber,
+            @Param("executionDate") LocalDateTime executionDate);
+
+
+    @Query(value = """
+    SELECT 
+        message_image\\:\\:json->>'polNumber' AS policy_number,
+        trans_exe_date,
+        request_name,
+        message_image
+    FROM 
+        public."TRANSACTION_HISTORY" 
+    WHERE 
+        request_name IN ('OverduePayment') 
+        AND reversed = false
+        AND message_image\\:\\:json->>'polNumber' = :policyNumber
+        AND message_image\\:\\:json->'adjustments'->'arrDestinations'->0->'payeeInfo'->>'taxablePartyNumber' = :taxablePartyNumber
+        AND trans_exe_date > :executionDate
+    ORDER BY 
+        trans_exe_date DESC 
+    LIMIT 1
+""", nativeQuery = true)
+    List<Object[]> findOverduePaymentsByPolicyNumberAndTaxablePartyNumber(
+            @Param("policyNumber") String policyNumber,
+            @Param("taxablePartyNumber") String taxablePartyNumber,
+            @Param("executionDate") LocalDateTime executionDate);
 
 }

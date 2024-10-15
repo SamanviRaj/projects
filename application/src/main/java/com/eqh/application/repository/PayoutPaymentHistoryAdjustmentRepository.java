@@ -51,6 +51,40 @@ public interface PayoutPaymentHistoryAdjustmentRepository extends JpaRepository<
     List<Long> findAllPaymentHistoryIdsOfAdjustments();
 
     @Query(value = """
+                SELECT COALESCE(SUM(adjustment_value), 0)
+                FROM "PAYOUT_PAYMENT_HISTORY_ADJUSTMENT" 
+                WHERE payout_payment_history_id IN (
+                    SELECT id 
+                    FROM "PAYOUT_PAYMENT_HISTORY" pph 
+                    WHERE payee_party_number = :payeePartyNumber 
+                      AND reversed = false 
+                      AND trans_exe_date >= :startDate
+                      AND trans_exe_date <= :endDate
+                      AND payout_payee_id IN (
+                          SELECT id 
+                          FROM "PAYOUT_PAYEE" pp 
+                          WHERE policy_payout_id IN (
+                              SELECT id 
+                              FROM "POLICY_PAYOUT" pp 
+                              WHERE policy_id IN (
+                                  SELECT id 
+                                  FROM "POLICY" 
+                                  WHERE pol_number = :policyNumber 
+                                  AND policy_status <> 'R'
+                              )
+                          ) 
+                          AND payee_party_number = :payeePartyNumber
+                      )
+                ) 
+                AND field_adjustment = '2'
+            """, nativeQuery = true)
+    Double sumAdjustmentValueByFieldAdjustmentFederal(
+            @Param("payeePartyNumber") String payeePartyNumber,
+            @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate,
+            @Param("policyNumber") String policyNumber
+    );
+
+    @Query(value = """
         SELECT COALESCE(SUM(adjustment_value), 0)
         FROM "PAYOUT_PAYMENT_HISTORY_ADJUSTMENT" 
         WHERE payout_payment_history_id IN (
@@ -80,6 +114,40 @@ public interface PayoutPaymentHistoryAdjustmentRepository extends JpaRepository<
     Double sumAdjustmentValueByFieldAdjustmentFederal(
             @Param("payeePartyNumber") String payeePartyNumber,
             @Param("transExeDate") LocalDateTime transExeDate,
+            @Param("policyNumber") String policyNumber
+    );
+
+    @Query(value = """
+                SELECT COALESCE(SUM(adjustment_value), 0)
+                FROM "PAYOUT_PAYMENT_HISTORY_ADJUSTMENT" 
+                WHERE payout_payment_history_id IN (
+                    SELECT id 
+                    FROM "PAYOUT_PAYMENT_HISTORY" pph 
+                    WHERE payee_party_number = :payeePartyNumber 
+                      AND reversed = false 
+                      AND trans_exe_date >= :startDate
+                      AND trans_exe_date <= :endDate
+                      AND payout_payee_id IN (
+                          SELECT id 
+                          FROM "PAYOUT_PAYEE" pp 
+                          WHERE policy_payout_id IN (
+                              SELECT id 
+                              FROM "POLICY_PAYOUT" pp 
+                              WHERE policy_id IN (
+                                  SELECT id 
+                                  FROM "POLICY" 
+                                  WHERE pol_number = :policyNumber 
+                                  AND policy_status <> 'R'
+                              )
+                          ) 
+                          AND payee_party_number = :payeePartyNumber
+                      )
+                ) 
+                AND field_adjustment = '3'
+            """, nativeQuery = true)
+    Double sumAdjustmentValueByFieldAdjustmentState(
+            @Param("payeePartyNumber") String payeePartyNumber,
+           @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate,
             @Param("policyNumber") String policyNumber
     );
 

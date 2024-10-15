@@ -29,6 +29,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -38,12 +39,12 @@ import java.util.stream.Stream;
 public class PeriodicPayoutTransactionHistoryService {
 
     private static final Logger logger = LoggerFactory.getLogger(PeriodicPayoutTransactionHistoryService.class);
-    private static final String DATE_FORMAT = "ddMMyyyy_HHmmss";
-    private static final String DATE_FORMAT_FOR_EXCEL = "yyyy-MM-dd";
-    private static final String DATE_FORMAT_FOR_DISPLAY = "dd/MM/yyyy";
+    private static final String DATE_FORMAT = "MMddyyyy_HHmmss";
+    private static final String DATE_FORMAT_FOR_EXCEL = "MM-dd-yyyy";
+    private static final String DATE_FORMAT_FOR_DISPLAY = "MM/dd/yyyy";
     private static final String CURRENCY_FORMAT = "$#,##0.00";
     private static final String[] HEADERS = {
-            "runYear", "transRunDate","Management Code",  "Product Code", "polNumber", "Policy Status",
+            "runYear", "transEffDate","transRunDate","Management Code",  "Product Code", "polNumber", "Policy Status",
             "QualPlanType","Suspend Code","Party ID", "Party Full Name","Govt ID", "Govt ID Status",
             "govt ID Type Code","payeeStatus", "Residence State" , "Residence Country", "preferredMailingAddress",
             "mailingAddress",   "YTD Gross amount" ,"YTD fedral amount ","YTD State amount"
@@ -71,7 +72,12 @@ public class PeriodicPayoutTransactionHistoryService {
     @Value("${payout.start.date}")
     private String startDate;
     @Value("${transaction.start.date}")
-    private String payoutTransExectDate;
+    private String payoutTransExectStartDate;
+
+    @Value("${transaction.end.date}")
+    private String payoutTransExectEndDate;
+
+
 
     @Autowired
     public PeriodicPayoutTransactionHistoryService(
@@ -125,9 +131,10 @@ public class PeriodicPayoutTransactionHistoryService {
     }
 
     public byte[] generateReportAsBytes() throws IOException {
+        LocalDateTime startRangeDate = LocalDateTime.parse(payoutTransExectStartDate);
+        LocalDateTime endRangeDate = LocalDateTime.parse(payoutTransExectEndDate);
         // Convert startDate to LocalDate
-        LocalDateTime startRangeDate = LocalDateTime.parse(startDate);
-        List<Object[]> data = repository.findLatestTransactions(startRangeDate);
+        List<Object[]> data = repository.findLatestTransactions(endRangeDate);
 
         logger.info("Fetching transactions history size: " + data.size() + " for date: " + startRangeDate);
         if (data.isEmpty()) {
@@ -146,9 +153,11 @@ public class PeriodicPayoutTransactionHistoryService {
         ytdResponse ytdObj = new ytdResponse();
         // Combine all payouts from all policy numbers
         List<Object[]> periodicPayoutUponPolNumber = new ArrayList<>();
+        List<Object[]> overduePeriodicPayoutUponPolNumber = new ArrayList<>();
 
         for(Map.Entry<String, ProductInfo> entry : productInfoMap.entrySet()) {
-            periodicPayoutUponPolNumber.addAll(repository.findPayoutTransactionsByPolicyNumber(entry.getKey(), startRangeDate));
+            periodicPayoutUponPolNumber.addAll(repository.findPayoutTransactionsByPolicyNumber(entry.getKey(),endRangeDate));
+//            overduePeriodicPayoutUponPolNumber.addAll(repository.findOverduePaymentsByPolicyNumberAndDate(entry.getKey(), startRangeDate));
         }
 
 /*        for (String policyNumber : policyNumbers) {
@@ -297,17 +306,19 @@ public class PeriodicPayoutTransactionHistoryService {
         String polNumber = jsonNode.path("polNumber").asText();
         ProductInfo productInfo = productInfoMap.getOrDefault(polNumber, new ProductInfo("","", "", "", ""));
 
-        Date transEffDate = parseDate(jsonNode.path("transEffDate").asText());
-        Date transRunDate = parseDate(jsonNode.path("transRunDate").asText());
-        String runYear = Optional.ofNullable(transRunDate)
-                .map(date -> new SimpleDateFormat("yyyy").format(date))
-                .orElse("");
+        String transEffDate = convertDateString(jsonNode.path("transEffDate").asText());
+        String transRunDate = convertDateString(jsonNode.path("transRunDate").asText());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate date = LocalDate.parse(transRunDate, formatter);
+        String runYear = String.valueOf(date.getYear());
         String suspendCode = jsonNode.path("suspendCode").asText();
 
         // Initialize variables for aggregated or extracted data
         BigDecimal federalNonTaxableAmt = BigDecimal.ZERO;
         BigDecimal grossAmt = BigDecimal.ZERO;
         BigDecimal modalBenefit = BigDecimal.ZERO;
+        LocalDateTime startRangeDate = LocalDateTime.parse(payoutTransExectStartDate);
+        LocalDateTime endRangeDate = LocalDateTime.parse(payoutTransExectEndDate);
         String taxablePartyNumber = "";
         String endDate = "";
         String taxableToGovtID = "";
@@ -447,7 +458,7 @@ public class PeriodicPayoutTransactionHistoryService {
         String mailingAddress = addressesMap.getOrDefault("mailingAddress", "");
 
 
-        LocalDateTime payoutTransExecdate = LocalDateTime.parse(payoutTransExectDate);
+        LocalDateTime payoutTransExecdate = LocalDateTime.parse(payoutTransExectStartDate);
         ytres.setYtdDisbursePeriodicPayout(BigDecimal.ZERO);//Sum of gross amunt
         ytres.setYtdDisburseFederalWithholdingAmt(BigDecimal.ZERO);//Sum of fedral Withholdingamount
         ytres.setYtdDisburseStateWithholdingAmt(BigDecimal.ZERO);//Sum of state Withholding amunt
@@ -458,17 +469,17 @@ public class PeriodicPayoutTransactionHistoryService {
         Double totalAdjustmentValueForFederal = 0.0;
         Calendar ytdCalendar = Calendar.getInstance();
         ytdCalendar.set(Calendar.YEAR, 2025);
-        ytdCalendar.set(Calendar.MONTH, Calendar.OCTOBER); // Note: Months are zero-based (0 = January, 6 = July)
-        ytdCalendar.set(Calendar.DATE, 18);
+        ytdCalendar.set(Calendar.MONTH, Calendar.AUGUST); // Note: Months are zero-based (0 = January, 6 = July)
+        ytdCalendar.set(Calendar.DATE, 21);
 
-        Double policyPayoutsGrossAmt = payoutPaymentHistoryRepository.findPolicyPayoutWithGrossAmount(productInfo.getPolNumber(), payoutTransExecdate);
+        Double policyPayoutsGrossAmt = payoutPaymentHistoryRepository.findPolicyPayoutWithGrossAmount(productInfo.getPolNumber(), endRangeDate);
 
-        totalFeeAmtForFederal = payoutPaymentHistoryDeductionRepository.sumFeeAmtByFeeTypeFederal(taxablePartyNumber, payoutTransExecdate, productInfo.getPolNumber());
-        totalFeeAmtForState = payoutPaymentHistoryDeductionRepository.sumFeeAmtByFeeTypeState(taxablePartyNumber,payoutTransExecdate,productInfo.getPolNumber());
+        totalFeeAmtForFederal = payoutPaymentHistoryDeductionRepository.sumFeeAmtByFeeTypeFederal(taxablePartyNumber, endRangeDate, productInfo.getPolNumber());
+        totalFeeAmtForState = payoutPaymentHistoryDeductionRepository.sumFeeAmtByFeeTypeState(taxablePartyNumber,endRangeDate,productInfo.getPolNumber());
 
-        totalAdjustmentValueForFederal = payoutPaymentHistoryAdjustmentRepository.sumAdjustmentValueByFieldAdjustmentFederal(taxablePartyNumber,payoutTransExecdate,productInfo.getPolNumber());
-        totalAdjustmentValueForState = payoutPaymentHistoryAdjustmentRepository.sumAdjustmentValueByFieldAdjustmentState(taxablePartyNumber,payoutTransExecdate,productInfo.getPolNumber());
-        List<PayoutPaymentHistory> policyPayouts = payoutPaymentHistoryRepository.findPolicyPayouts(productInfo.getPolNumber(), payoutTransExecdate);
+        totalAdjustmentValueForFederal = payoutPaymentHistoryAdjustmentRepository.sumAdjustmentValueByFieldAdjustmentFederal(taxablePartyNumber,endRangeDate ,productInfo.getPolNumber());
+        totalAdjustmentValueForState = payoutPaymentHistoryAdjustmentRepository.sumAdjustmentValueByFieldAdjustmentState(taxablePartyNumber,endRangeDate ,productInfo.getPolNumber());
+        List<PayoutPaymentHistory> policyPayouts = payoutPaymentHistoryRepository.findPolicyPayouts(productInfo.getPolNumber(),endRangeDate);
 
         Double finalTotalGrossAmount = policyPayoutsGrossAmt;
         Double finalTotalFeeAmtForFederal = totalFeeAmtForFederal;
@@ -501,7 +512,8 @@ public class PeriodicPayoutTransactionHistoryService {
 
         return Arrays.asList(
                 runYear,
-                formatDate(transRunDate),
+                transEffDate,
+                transRunDate,
                 productInfo.getManagementCode(),
                 productInfo.getProductCode(),
                 polNumber,
@@ -524,18 +536,26 @@ public class PeriodicPayoutTransactionHistoryService {
         );
     }
 
-    private Date parseDate(String dateStr) {
-        if (dateStr == null || dateStr.isEmpty()) {
-            return null;
-        }
+    public String convertDateString(String inputDate) {
+        // Define the input and output date formats
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat outputFormat = new SimpleDateFormat("MM/dd/yyyy");
+
         try {
-            return excelDateFormat.parse(dateStr);
+            // Parse the input date string to a Date object
+            Date date = inputFormat.parse(inputDate);
+            // Format the Date to the desired output format
+            return outputFormat.format(date);
         } catch (ParseException e) {
-            logger.error("Error parsing date string: " + dateStr, e);
-            return null;
+            // Handle parsing exceptions (e.g., log or rethrow)
+            e.printStackTrace();
+            return null; // or throw an exception
         }
     }
     private String formatDate(Date date) {
+        // Create a SimpleDateFormat with the desired format
+        SimpleDateFormat displayDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
         return date == null ? "" : displayDateFormat.format(date);
     }
 
