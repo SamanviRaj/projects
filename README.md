@@ -6,7 +6,9 @@ EXCEL Report -> GET -  http://localhost:8082/api/transactions/generate-report
 
 Json file -> GET - http://localhost:8082/api/transactions/download-json
 
-PP EXCEL Report -> http://localhost:8082/api/transactions/periodicpayout/generate-report
+PP EXCEL Report on after specific date -> http://localhost:8082/api/transactions/periodicpayout/generate-report
+
+PP EXCEL Report with date range -> http://localhost:8082/api/transactions/periodicpayout/dateRange/generate-report
 
 Json file -> GET - http://localhost:8082/api/transactions/periodicpayout/download-json
 
