@@ -1,5 +1,6 @@
 package com.eqh.application.controller;
 
+import com.eqh.application.service.PeriodicPayoutTransactionHistoryDateRangeService;
 import com.eqh.application.service.PeriodicPayoutTransactionHistoryService;
 import com.eqh.application.service.TransactionHistoryService;
 import org.slf4j.Logger;
@@ -35,10 +36,14 @@ public class TransactionHistoryController {
 
     private final PeriodicPayoutTransactionHistoryService periodicPayoutTransactionHistoryService;
 
+    private final PeriodicPayoutTransactionHistoryDateRangeService periodicPayoutTransactionHistoryDateRangeService;
+
     @Autowired
-    public TransactionHistoryController(TransactionHistoryService transactionHistoryService,PeriodicPayoutTransactionHistoryService periodicPayoutTransactionHistoryService) {
+    public TransactionHistoryController(TransactionHistoryService transactionHistoryService,PeriodicPayoutTransactionHistoryService periodicPayoutTransactionHistoryService,
+    PeriodicPayoutTransactionHistoryDateRangeService periodicPayoutTransactionHistoryDateRangeService) {
         this.transactionHistoryService = transactionHistoryService;
         this.periodicPayoutTransactionHistoryService = periodicPayoutTransactionHistoryService;
+        this.periodicPayoutTransactionHistoryDateRangeService = periodicPayoutTransactionHistoryDateRangeService;
     }
 
     @GetMapping("deathclaim/generate-report")
@@ -78,6 +83,26 @@ public class TransactionHistoryController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("periodicpayout/dateRange/generate-report")
+    public ResponseEntity<byte[]> periodicPayoutgenerateDateRangeReport() {
+        try {
+            byte[] reportBytes = periodicPayoutTransactionHistoryDateRangeService.generateReportAsBytes();
+
+            String timestamp = new SimpleDateFormat(TIMESTAMP_FORMAT).format(new Date());
+            String filename = PERIODIC_PAYOUT_FILENAME_PREFIX + timestamp + FILE_EXTENSION;
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentDispositionFormData("attachment", filename);
+
+            return new ResponseEntity<>(reportBytes, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            logger.error("Error generating report", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/download-json")
     public ResponseEntity<byte[]> downloadJson() {
         try {

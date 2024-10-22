@@ -4,10 +4,7 @@ import com.eqh.application.dto.Address;
 import com.eqh.application.dto.ProcessedRow;
 import com.eqh.application.dto.ProductInfo;
 import com.eqh.application.dto.ytdResponse;
-import com.eqh.application.entity.PayoutPayee;
 import com.eqh.application.entity.PayoutPaymentHistory;
-import com.eqh.application.entity.PayoutPaymentHistoryAdjustment;
-import com.eqh.application.entity.PayoutPaymentHistoryDeduction;
 import com.eqh.application.feignClient.PartyClient;
 import com.eqh.application.repository.*;
 import com.eqh.application.utility.*;
@@ -36,15 +33,15 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @Service
-public class PeriodicPayoutTransactionHistoryService {
+public class PeriodicPayoutTransactionHistoryDateRangeService {
 
-    private static final Logger logger = LoggerFactory.getLogger(PeriodicPayoutTransactionHistoryService.class);
+    private static final Logger logger = LoggerFactory.getLogger(PeriodicPayoutTransactionHistoryDateRangeService.class);
     private static final String DATE_FORMAT = "MMddyyyy_HHmmss";
     private static final String DATE_FORMAT_FOR_EXCEL = "MM-dd-yyyy";
     private static final String DATE_FORMAT_FOR_DISPLAY = "MM/dd/yyyy";
     private static final String CURRENCY_FORMAT = "$#,##0.00";
     private static final String[] HEADERS = {
-            "runYear","transRunDate","transExeDate","Management Code",  "Product Code", "polNumber", "Policy Status",
+            "runYear", "transRunDate","transExeDate","Management Code",  "Product Code", "polNumber", "Policy Status",
             "QualPlanType","Suspend Code","Party ID", "Party Full Name","Govt ID", "Govt ID Status",
             "govt ID Type Code","payeeStatus", "Residence State" , "Residence Country", "preferredMailingAddress",
             "mailingAddress",   "YTD Gross amount" ,"YTD fedral amount ","YTD State amount"
@@ -71,16 +68,16 @@ public class PeriodicPayoutTransactionHistoryService {
     private ytdResponse ytres = new ytdResponse();
     @Value("${payout.start.date}")
     private String startDate;
-    @Value("${transaction.start.date}")
+    @Value("${payout.transaction.start.date}")
     private String payoutTransExectStartDate;
 
-    @Value("${transaction.end.date}")
+    @Value("${payout.transaction.end.date}")
     private String payoutTransExectEndDate;
 
 
 
     @Autowired
-    public PeriodicPayoutTransactionHistoryService(
+    public PeriodicPayoutTransactionHistoryDateRangeService(
             PeriodicPayoutTransactionHistoryRepository repository,
             PolicyRepository policyRepository,
             ObjectMapper objectMapper,
@@ -134,7 +131,7 @@ public class PeriodicPayoutTransactionHistoryService {
         LocalDateTime startRangeDate = LocalDateTime.parse(payoutTransExectStartDate);
         LocalDateTime endRangeDate = LocalDateTime.parse(payoutTransExectEndDate);
         // Convert startDate to LocalDate
-        List<Object[]> data = repository.findLatestTransactions(endRangeDate);
+        List<Object[]> data = repository.findLatestTransactions(startRangeDate, endRangeDate);
 
         logger.info("Fetching transactions history size: " + data.size() + " for date: " + startRangeDate);
         if (data.isEmpty()) {
@@ -156,7 +153,7 @@ public class PeriodicPayoutTransactionHistoryService {
         List<Object[]> overduePeriodicPayoutUponPolNumber = new ArrayList<>();
 
         for(Map.Entry<String, ProductInfo> entry : productInfoMap.entrySet()) {
-            periodicPayoutUponPolNumber.addAll(repository.findPayoutTransactionsByPolicyNumber(entry.getKey(),endRangeDate));
+            periodicPayoutUponPolNumber.addAll(repository.findPayoutTransactionsByPolicyNumber(entry.getKey(),startRangeDate,endRangeDate));
 //            overduePeriodicPayoutUponPolNumber.addAll(repository.findOverduePaymentsByPolicyNumberAndDate(entry.getKey(), startRangeDate));
         }
 
@@ -472,14 +469,14 @@ public class PeriodicPayoutTransactionHistoryService {
         ytdCalendar.set(Calendar.MONTH, Calendar.AUGUST); // Note: Months are zero-based (0 = January, 6 = July)
         ytdCalendar.set(Calendar.DATE, 21);
 
-        Double policyPayoutsGrossAmt = payoutPaymentHistoryRepository.findPolicyPayoutWithGrossAmount(productInfo.getPolNumber(), endRangeDate);
+        Double policyPayoutsGrossAmt = payoutPaymentHistoryRepository.findPolicyPayoutWithGrossAmount(productInfo.getPolNumber(), startRangeDate,endRangeDate);
 
-        totalFeeAmtForFederal = payoutPaymentHistoryDeductionRepository.sumFeeAmtByFeeTypeFederal(taxablePartyNumber, endRangeDate, productInfo.getPolNumber());
-        totalFeeAmtForState = payoutPaymentHistoryDeductionRepository.sumFeeAmtByFeeTypeState(taxablePartyNumber,endRangeDate,productInfo.getPolNumber());
+        totalFeeAmtForFederal = payoutPaymentHistoryDeductionRepository.sumFeeAmtByFeeTypeFederal(taxablePartyNumber, startRangeDate,endRangeDate, productInfo.getPolNumber());
+        totalFeeAmtForState = payoutPaymentHistoryDeductionRepository.sumFeeAmtByFeeTypeState(taxablePartyNumber,startRangeDate,endRangeDate,productInfo.getPolNumber());
 
-        totalAdjustmentValueForFederal = payoutPaymentHistoryAdjustmentRepository.sumAdjustmentValueByFieldAdjustmentFederal(taxablePartyNumber,endRangeDate ,productInfo.getPolNumber());
-        totalAdjustmentValueForState = payoutPaymentHistoryAdjustmentRepository.sumAdjustmentValueByFieldAdjustmentState(taxablePartyNumber,endRangeDate ,productInfo.getPolNumber());
-        List<PayoutPaymentHistory> policyPayouts = payoutPaymentHistoryRepository.findPolicyPayouts(productInfo.getPolNumber(),endRangeDate);
+        totalAdjustmentValueForFederal = payoutPaymentHistoryAdjustmentRepository.sumAdjustmentValueByFieldAdjustmentFederal(taxablePartyNumber,startRangeDate,endRangeDate ,productInfo.getPolNumber());
+        totalAdjustmentValueForState = payoutPaymentHistoryAdjustmentRepository.sumAdjustmentValueByFieldAdjustmentState(taxablePartyNumber,startRangeDate,endRangeDate ,productInfo.getPolNumber());
+        List<PayoutPaymentHistory> policyPayouts = payoutPaymentHistoryRepository.findPolicyPayouts(productInfo.getPolNumber(),startRangeDate,endRangeDate);
 
         Double finalTotalGrossAmount = policyPayoutsGrossAmt;
         Double finalTotalFeeAmtForFederal = totalFeeAmtForFederal;
