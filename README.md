@@ -2,7 +2,7 @@
 
 REST API :- 
 
-EXCEL Report -> GET -  http://localhost:8082/api/transactions/generate-report
+EXCEL Report -> GET -  http://localhost:8082/api/transactions/deathclaim/generate-report
 
 Json file -> GET - http://localhost:8082/api/transactions/download-json
 
