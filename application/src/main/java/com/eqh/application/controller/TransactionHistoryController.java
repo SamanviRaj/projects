@@ -1,19 +1,18 @@
 package com.eqh.application.controller;
 
 import com.eqh.application.service.PeriodicPayoutTransactionHistoryDateRangeService;
+import com.eqh.application.service.OverduePaymentTransactionHistoryService;
 import com.eqh.application.service.PeriodicPayoutTransactionHistoryService;
 import com.eqh.application.service.TransactionHistoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -31,17 +30,20 @@ public class TransactionHistoryController {
     private static final String FILE_EXTENSION = ".xlsx";
     private static final String JSON_FILENAME_PREFIX = "transaction_history_data_";
     private static final String JSON_FILE_EXTENSION = ".json";
+    private static final String OVERDUE_PAYMENT_FILENAME_PREFIX = "transaction_history_overdue_payment_report_";
+
+
 
     private final TransactionHistoryService transactionHistoryService;
-
+    private final OverduePaymentTransactionHistoryService overduePaymentTransactionHistoryService;
     private final PeriodicPayoutTransactionHistoryService periodicPayoutTransactionHistoryService;
 
     private final PeriodicPayoutTransactionHistoryDateRangeService periodicPayoutTransactionHistoryDateRangeService;
 
     @Autowired
-    public TransactionHistoryController(TransactionHistoryService transactionHistoryService,PeriodicPayoutTransactionHistoryService periodicPayoutTransactionHistoryService,
-    PeriodicPayoutTransactionHistoryDateRangeService periodicPayoutTransactionHistoryDateRangeService) {
+    public TransactionHistoryController(TransactionHistoryService transactionHistoryService, OverduePaymentTransactionHistoryService overduePaymentTransactionHistoryService, PeriodicPayoutTransactionHistoryService periodicPayoutTransactionHistoryService, PeriodicPayoutTransactionHistoryDateRangeService periodicPayoutTransactionHistoryDateRangeService) {
         this.transactionHistoryService = transactionHistoryService;
+        this.overduePaymentTransactionHistoryService = overduePaymentTransactionHistoryService;
         this.periodicPayoutTransactionHistoryService = periodicPayoutTransactionHistoryService;
         this.periodicPayoutTransactionHistoryDateRangeService = periodicPayoutTransactionHistoryDateRangeService;
     }
@@ -53,6 +55,25 @@ public class TransactionHistoryController {
 
             String timestamp = new SimpleDateFormat(TIMESTAMP_FORMAT).format(new Date());
             String filename = FILENAME_PREFIX + timestamp + FILE_EXTENSION;
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentDispositionFormData("attachment", filename);
+
+            return new ResponseEntity<>(reportBytes, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            logger.error("Error generating report", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("overduepayment/generate-report")
+    public ResponseEntity<byte[]> overdueGenerateReport() {
+        try {
+            byte[] reportBytes = overduePaymentTransactionHistoryService.generateReportAsBytes();
+
+            String timestamp = new SimpleDateFormat(TIMESTAMP_FORMAT).format(new Date());
+            String filename = OVERDUE_PAYMENT_FILENAME_PREFIX + timestamp + FILE_EXTENSION;
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);

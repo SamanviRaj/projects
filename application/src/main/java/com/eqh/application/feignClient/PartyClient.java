@@ -2,6 +2,7 @@ package com.eqh.application.feignClient;
 
 import com.eqh.application.dto.Address;
 import com.eqh.application.dto.Party;
+import com.eqh.application.dto.Person;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,9 @@ public interface PartyClient {
 
     @GetMapping("/{partyNumber}")
     public Party getPartyDetails(@PathVariable("partyNumber") String partyNumber);
+
+    @GetMapping("/{partyNumber}/person")
+    public Person getPersonDetails(@PathVariable("partyNumber") String partyNumber);
 }
 
 

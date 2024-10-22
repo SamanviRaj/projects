@@ -2,6 +2,7 @@ package com.eqh.party.repository;
 
 import com.eqh.party.entity.EmailAddress;
 import com.eqh.party.entity.Party;
+import com.eqh.party.entity.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -41,4 +42,21 @@ public interface PartyRepository extends JpaRepository<Party, Long> {
             nativeQuery = true
     )
     List<Object[]> findAddressesByPartyId(@Param("partyId") Long partyId);
+
+
+    @Query(
+            value = "SELECT person.id, person.alternate_tax_id, person.alternate_tax_id_type_code, person.birth_countrytc, person.birth_date, " +
+                    "person.birth_jurisdiction, person.cause_of_death, person.citizenship, person.date_of_arrival, person.date_of_death, " +
+                    "person.disability_ind, person.drivers_license_num, person.drivers_license_state, person.first_name, person.gender, " +
+                    "person.height_measure_units, person.height_measure_value, person.immigration_status, person.last_name, person.legal_name_ind, " +
+                    "person.life_status, person.mar_stat, person.middle_name, person.occupation, person.prefix, person.proof_of_death_received_date, " +
+                    "person.proof_of_death_requested_date, person.restriction_ind, person.restriction_reason, person.smoker_stat, person.status_change_date, " +
+                    "person.suffix, person.us_citizen_ind, person.weight_measure_units, person.weight_measure_value, person.party_id, " +
+                    "person.greencard_number, person.visa_number, person.passport_number, person.passport_expiry_date, person.passport_issue_country, " +
+                    "person.country_of_residenship, person.update_timestamp " +
+                    "FROM \"PERSON\" person, \"PARTY\" party WHERE person.party_id = party.id AND party.id = :partyId",
+            nativeQuery = true
+    )
+    Optional<Object> findPersonByPartyId(@Param("partyId") Long partyId);
+
 }

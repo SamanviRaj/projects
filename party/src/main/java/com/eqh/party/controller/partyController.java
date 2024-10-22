@@ -3,6 +3,7 @@ package com.eqh.party.controller;
 import com.eqh.party.entity.Address;
 import com.eqh.party.entity.EmailAddress;
 import com.eqh.party.entity.Party;
+import com.eqh.party.entity.Person;
 import com.eqh.party.service.PartyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,14 @@ public class partyController {
     public List<Address> getAddresses(@PathVariable("partyNumber") String partyNumber) {
         return partyService.getAddressesByPartyNumber(partyNumber);
     }
+
+    @GetMapping("/{partyNumber}/person")
+    public Person getPersonDetails(@PathVariable("partyNumber") String partyNumber) {
+        return partyService.getPersonDetailsByPartyNumber(partyNumber);
+    }
+
+
+
 }
 
 
