@@ -12,6 +12,8 @@ PP EXCEL Report with date range -> http://localhost:8082/api/transactions/period
 
 Json file -> GET - http://localhost:8082/api/transactions/periodicpayout/download-json
 
+overduepayout API - http://localhost:8082/api/transactions/overduepayment/generate-report
+
 Note :
 Added docker file but unable to run it as DEV1 DB connection VPN
 
