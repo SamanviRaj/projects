@@ -27,7 +27,7 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
     @Query(value = "SELECT pol_number, management_code ,policy_status ,product_code,qual_plan_type " +
             "FROM public.\"POLICY\" " +
             "WHERE pol_number IN :policyNumbers " +
-            "AND policy_status NOT IN ('R', '13')", nativeQuery = true)
+            "AND policy_status NOT IN ('13')", nativeQuery = true)
     List<Object[]> findProductInfoByPolicyNumbersOverduePayment(@Param("policyNumbers") List<String> policyNumbers);
 
     @Query(value = "SELECT id FROM \"POLICY\"  WHERE pol_number = :polNumber AND policy_status <> 'R'", nativeQuery = true)

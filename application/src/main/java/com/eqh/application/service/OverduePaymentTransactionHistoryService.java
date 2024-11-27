@@ -1,6 +1,7 @@
 package com.eqh.application.service;
 
 import com.eqh.application.dto.Address;
+import com.eqh.application.dto.Party;
 import com.eqh.application.dto.Person;
 import com.eqh.application.dto.ProductInfo;
 import com.eqh.application.feignClient.PartyClient;
@@ -23,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -75,10 +77,28 @@ public class OverduePaymentTransactionHistoryService {
         // Fetch product info for all policy numbers
         Map<String, ProductInfo> productInfoMap = fetchProductInfoForPolicyNumbers(policyNumbers);
 
-        // Transform raw data into a format suitable for Excel
-        List<List<Object>> transformedData = data.stream()
+        // Filter out rows with policy status "R"
+        List<Object[]> filteredData = data.stream()
+                .filter(row -> {
+                    String policyNumber = (String) row[4];  // Assuming policy number is at index 4
+                    ProductInfo productInfo = productInfoMap.get(policyNumber);
+
+                    // Keep the row if the policy status is not "R"
+                    return productInfo == null || !"R".equals(productInfo.getPolicyStatus());
+                })
+                .collect(Collectors.toList());
+
+
+//        // Transform raw data into a format suitable for Excel
+//        List<List<Object>> transformedData = data.stream()
+//                .flatMap(row -> processRow(row, policyProductCodes, productInfoMap).stream())
+//                .collect(Collectors.toList());
+
+        // Transform the filtered data into a format suitable for Excel
+        List<List<Object>> transformedData = filteredData.stream()
                 .flatMap(row -> processRow(row, policyProductCodes, productInfoMap).stream())
                 .collect(Collectors.toList());
+
 
         String timestamp = new SimpleDateFormat(DATE_FORMAT).format(new Date());
 
@@ -190,31 +210,36 @@ public class OverduePaymentTransactionHistoryService {
 
         String residenceCountry = Optional.ofNullable(payeeInfo.get("taxableToResidenceCountry")).map(JsonNode::asText).orElse("");
         String  partyNumber = Optional.ofNullable(payeeInfo.get("taxablePartyNumber")).map(JsonNode::asText).orElse("");
+
+        //Fetch Party details using Taxable party number
+        Party party = new Party();
+        party = partyClient.getPartyDetails(partyNumber);
         // Extract government ID and type code
-        String govtID = Optional.ofNullable(payeeInfo.get("taxableToGovtID")).map(JsonNode::asText).orElse(UNKNOWN);
+        Party finalParty = party;
+        String govtID = Optional.ofNullable(payeeInfo.get("taxableToGovtID"))
+                .map(JsonNode::asText)
+                .or(() -> Optional.ofNullable(finalParty.getGovtId())) // This acts as an 'else if'
+                .orElse(UNKNOWN);
+
         String govtIdTC = Optional.ofNullable(payeeInfo.get("taxableToGovtIdTC")).map(JsonNode::asText).orElse(UNKNOWN);
         // Transform suspendCode using SuspendCodeUtil
         String transformedSuspendCode = SuspendCodeUtil.getSuspendCodeName(suspendCode);
 
-        //Fetch party using Taxable party number
+        //Fetch person using Taxable party number
         Person person = new Person();
         if( partyNumber!=null){
             person = partyClient.getPersonDetails(partyNumber);
         }
         String firstName = "";
         String lastName ="";
-        //String organization ="";
         String partyFullName = "";
         if (payee != null && "1".equals(payee.get("partyTypeCode").asText())) {
             firstName = Optional.ofNullable(person.getFirstName()).orElse(UNKNOWN);
             lastName = Optional.ofNullable(person.getLastName()).orElse(UNKNOWN);
             partyFullName = firstName + " " + lastName;
-//            organization = UNKNOWN;
         }
         else if(payee != null && "2".equals(payee.get("partyTypeCode").asText())){
             partyFullName = Optional.ofNullable(payeeInfo.get("taxablePartyName")).map(JsonNode::asText).orElse(UNKNOWN);
-//            firstName = UNKNOWN;
-//            lastName = UNKNOWN;
         }
 
 
@@ -264,7 +289,11 @@ public class OverduePaymentTransactionHistoryService {
             } catch (NumberFormatException e) {
                 logger.warn("Invalid government ID type code: " + transformedGovtIdTCode, e);
             }
-        } else {
+        }
+       else if (govtIdTC.equals(UNKNOWN) && party.getGovtIdtc()!=null) {
+          transformedGovtIdTCode =  GovtIdTCodeUtil.getIdTCodeName(Integer.parseInt(party.getGovtIdtc()));
+       }
+        else {
             logger.warn("Empty or null government ID type code: " + transformedGovtIdTCode);
         }
 
@@ -278,7 +307,11 @@ public class OverduePaymentTransactionHistoryService {
             } catch (NumberFormatException e) {
                 logger.warn("Invalid government ID status code: " + taxableToGovtIDStatus, e);
             }
-        } else {
+        }
+       else if(taxableToGovtIDStatus.equals(UNKNOWN) && party.getGovtIdStat()!=null){
+           transformedGovtIDStatus = GovtIDStatusUtil.getStatusName(Integer.parseInt(party.getGovtIdStat()));
+       }
+        else {
             logger.warn("Empty or null government ID status code: " + taxableToGovtIDStatus);
         }
 
@@ -339,11 +372,16 @@ public class OverduePaymentTransactionHistoryService {
             transformedPayeeStatus = "Unknown"; // Or another appropriate default value
         }
 
+        String transactionExeDate = convertDateString(transExecDate);
+        String transactionRunDate = convertDateString(String.valueOf(transRunDate));
+
+
         // Return the transformed data
         List<Object> processedData = Arrays.asList(
                 runYear,
-                formatDate(transRunDate),
-                transExecDate,
+                transactionRunDate,
+//                formatDate(transRunDate),
+                transactionExeDate,
                 productInfo.getManagementCode(),
                 productCode,
                 polNumber,
@@ -355,7 +393,7 @@ public class OverduePaymentTransactionHistoryService {
                 govtID,
                 transformedGovtIDStatus,
                 transformedGovtIdTCode,
-                payeeStatus,
+                transformedPayeeStatus,
                 residenceStateText,
                 residenceCountry,
                 preferredMailingAddress,
@@ -365,32 +403,6 @@ public class OverduePaymentTransactionHistoryService {
                 formatBigDecimal(stateWithholdingAmt)
 
         );
-
-//        // Return the transformed data
-//        List<Object> processedData = Arrays.asList(
-//                runYear,
-//                productCode,
-//                polNumber,
-//                formatDate(transEffDate),
-//                formatDate(transRunDate),
-//                transExecDate,
-//                partyNumber,
-//                govtID,
-//                transformedGovtIdTCode,
-//                firstName,
-//                lastName,
-//                formatBigDecimal(grossAmt),
-//                formatBigDecimal(federalWithholdingAmt),
-//                formatBigDecimal(stateWithholdingAmt),
-//                formatBigDecimal(BigDecimal.valueOf(0)),
-//                formatBigDecimal(BigDecimal.valueOf(0)),
-//                residenceStateText,
-//                organization,
-//                residenceCountry,
-//                preferredMailingAddress,
-//                mailingAddress
-//        );
-
         return Collections.singletonList(processedData);
     }
     /**
@@ -434,11 +446,6 @@ public class OverduePaymentTransactionHistoryService {
     private void createHeaderRow(Sheet sheet) {
         Row headerRow = sheet.createRow(0);
         String[] headers = {
-//                "Run Year" ,"Product Code", "Policy Number", "Transaction Effective Date", "Transaction Run Date","Transaction Execution Date",
-//                "Party Id", "govtID","GovtIdTC","First Name", "Last Name","Gross Amount", "Federal Withholding Amount", "State Withholding Amount",
-//                "Settlement Interest Amount", "Late Interest Amount","Residence State","Organization","residenceCountry",
-//                "Preferred Mailing Address","mailingAddress"
-
                 "runYear","transRunDate","transExeDate","Management Code","Product Code", "polNumber", "Policy Status",
                 "QualPlanType", "Suspend Code", "Party ID","Party Full Name", "Govt ID", "Govt ID Status", "govt ID Type Code",
                 "payeeStatus", "Residence State", "Residence Country", "preferredMailingAddress", "mailingAddress", "YTD Gross amount",
@@ -526,10 +533,27 @@ public class OverduePaymentTransactionHistoryService {
     private Set<String> extractPolicyNumbers(List<Object[]> data) {
         Set<String> policyNumbers = new HashSet<>();
         for (Object[] row : data) {
-            // Assuming the first element is the policy number
+            // Assuming the fourth element is the policy number
             String policyNumber = (String) row[4]; // Adjust index as necessary
             policyNumbers.add(policyNumber);
         }
         return policyNumbers; // Return the Set directly
+    }
+
+    public String convertDateString(String inputDate) {
+        // Define the input and output date formats
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat outputFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+        try {
+            // Parse the input date string to a Date object
+            Date date = inputFormat.parse(inputDate);
+            // Format the Date to the desired output format
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            // Handle parsing exceptions (e.g., log or rethrow)
+            e.printStackTrace();
+            return null; // or throw an exception
+        }
     }
 }
